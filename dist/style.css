@@ -1,0 +1,289 @@
+/*!*******************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[1].use[2]!./node_modules/sass-loader/dist/cjs.js!./src/style.scss ***!
+  \*******************************************************************************************************************************************************************************/
+html {
+  scroll-behavior: smooth;
+}
+
+.dashicons {
+  font-family: dashicons !important;
+}
+
+.wp-block-bpgpb-google-photos * {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+.wp-block-bpgpb-google-photos .BPGPBBlockDirectory .layoutSection {
+  display: grid;
+}
+.wp-block-bpgpb-google-photos .BPGPBBlockDirectory .layoutSection .imgArea .img {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.wp-block-bpgpb-google-photos .BPGPBBlockDirectory .layoutSection .imgArea .img img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  text-align: center;
+  height: 100%;
+  width: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.wp-block-bpgpb-google-photos .BPGPBBlockDirectory .layoutSection .singleAlbum {
+  cursor: pointer;
+}
+.wp-block-bpgpb-google-photos .BPGPBBlockDirectory .layoutSection .singleAlbum .mainImage .img {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding-top: 100%;
+}
+.wp-block-bpgpb-google-photos .BPGPBBlockDirectory .layoutSection .singleAlbum .mainImage .img img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  text-align: center;
+  height: 100%;
+  width: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border-radius: 8px;
+}
+.wp-block-bpgpb-google-photos .BPGPBBlockDirectory .layoutSection .singleAlbum .title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+  font-family: "Google Sans", Roboto, Arial, sans-serif;
+  color: #3c4043;
+  margin-top: 8px;
+}
+.wp-block-bpgpb-google-photos .BPGPBBlockDirectory .layoutSection .singleAlbum .totalCount {
+  color: #5f6368;
+  font-size: 14px;
+  font-weight: 400;
+  font-family: "Google Sans", Roboto, Arial, sans-serif;
+  padding-top: 3px;
+  margin: 0;
+}
+.wp-block-bpgpb-google-photos .BPGPBBlockDirectory .loadingIcon {
+  text-align: center;
+}
+.wp-block-bpgpb-google-photos .BPGPBBlockDirectory .btnArea {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+.wp-block-bpgpb-google-photos .BPGPBBlockDirectory .btnArea .loadMoreBtn {
+  margin-top: 15px;
+  cursor: pointer;
+}
+.wp-block-bpgpb-google-photos .BPGPBBlockDirectory .backArrow {
+  display: inline-block;
+  cursor: pointer;
+}
+.wp-block-bpgpb-google-photos .BPGPBBlockDirectory .bpgpbTopSection {
+  margin-bottom: 20px;
+  margin-top: 15px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 30px;
+}
+.wp-block-bpgpb-google-photos .BPGPBBlockDirectory .bpgpbTopSection h2 {
+  margin: 0px;
+  font-size: 20px;
+  font-weight: 500;
+  color: #000;
+}
+.wp-block-bpgpb-google-photos .BPGPBBlockDirectory .bpgpbTopSection p {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 400;
+  color: #000;
+}
+.wp-block-bpgpb-google-photos .BPGPBBlockDirectory .bpgpbTopSection .item {
+  width: 328px;
+  height: 184px;
+  display: block;
+}
+.wp-block-bpgpb-google-photos .BPGPBBlockDirectory .bpgpbTopSection .item .topImg {
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+/*
+*
+*column set
+*/
+.columns-1 {
+  grid-template-columns: repeat(1, 1fr);
+}
+
+.columns-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.columns-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.columns-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.columns-5 {
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.columns-6 {
+  grid-template-columns: repeat(6, 1fr);
+}
+
+.columns-7 {
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.columns-8 {
+  grid-template-columns: repeat(8, 1fr);
+}
+
+.columns-9 {
+  grid-template-columns: repeat(9, 1fr);
+}
+
+.columns-10 {
+  grid-template-columns: repeat(10, 1fr);
+}
+
+.columns-11 {
+  grid-template-columns: repeat(11, 1fr);
+}
+
+.columns-12 {
+  grid-template-columns: repeat(12, 1fr);
+}
+
+@media (max-width: 768px) {
+  .columns-tablet-1 {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .columns-tablet-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .columns-tablet-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .columns-tablet-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .columns-tablet-5 {
+    grid-template-columns: repeat(5, 1fr);
+  }
+  .columns-tablet-6 {
+    grid-template-columns: repeat(6, 1fr);
+  }
+  .columns-tablet-7 {
+    grid-template-columns: repeat(7, 1fr);
+  }
+  .columns-tablet-8 {
+    grid-template-columns: repeat(8, 1fr);
+  }
+  .columns-tablet-9 {
+    grid-template-columns: repeat(9, 1fr);
+  }
+  .columns-tablet-10 {
+    grid-template-columns: repeat(10, 1fr);
+  }
+  .columns-tablet-11 {
+    grid-template-columns: repeat(11, 1fr);
+  }
+  .columns-tablet-12 {
+    grid-template-columns: repeat(12, 1fr);
+  }
+}
+@media (max-width: 576px) {
+  .columns-mobile-1 {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .columns-mobile-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .columns-mobile-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .columns-mobile-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .columns-mobile-5 {
+    grid-template-columns: repeat(5, 1fr);
+  }
+  .columns-mobile-6 {
+    grid-template-columns: repeat(6, 1fr);
+  }
+  .columns-mobile-7 {
+    grid-template-columns: repeat(7, 1fr);
+  }
+  .columns-mobile-8 {
+    grid-template-columns: repeat(8, 1fr);
+  }
+  .columns-mobile-9 {
+    grid-template-columns: repeat(9, 1fr);
+  }
+  .columns-mobile-10 {
+    grid-template-columns: repeat(10, 1fr);
+  }
+  .columns-mobile-11 {
+    grid-template-columns: repeat(11, 1fr);
+  }
+  .columns-mobile-12 {
+    grid-template-columns: repeat(12, 1fr);
+  }
+}
+.bpgpb-gallery .bpgpb-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--bpgpb-cols, 3), 1fr);
+  gap: 12px;
+}
+.bpgpb-gallery .bpgpb-item {
+  display: block;
+  overflow: hidden;
+  border-radius: 4px;
+  aspect-ratio: 1/1;
+}
+.bpgpb-gallery .bpgpb-item img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  display: block;
+}
+@media (max-width: 768px) {
+  .bpgpb-gallery .bpgpb-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 576px) {
+  .bpgpb-gallery .bpgpb-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/*# sourceMappingURL=style.css.map*/

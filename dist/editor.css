@@ -1,0 +1,143 @@
+/*!********************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[1].use[2]!./node_modules/sass-loader/dist/cjs.js!./src/editor.scss ***!
+  \********************************************************************************************************************************************************************************/
+.bdbNowEditing {
+  outline: 2px solid #4527a4;
+}
+
+.bpgpbSelectArea {
+  background: rgba(0, 0, 0, 0.0901960784);
+  border-radius: 4px;
+  -webkit-box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.1803921569);
+  box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.1803921569);
+  padding: 50px;
+}
+.bpgpbSelectArea > h2 {
+  background: #ffccba !important;
+  color: #d63503;
+  font-size: 18px !important;
+  font-weight: 400 !important;
+  margin: 0 !important;
+  padding: 10px 0 !important;
+  text-align: center !important;
+}
+.bpgpbSelectArea label {
+  font-size: 16px;
+  font-weight: 400;
+  color: #000;
+}
+.bpgpbSelectArea button {
+  border: 1px solid #000;
+  font-size: 18px;
+  font-weight: 500;
+  margin-top: 20px;
+  padding: 5px 10px;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.pbgpbPhotoType {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+.pbgpbPhotoType label {
+  margin-right: 5px;
+}
+
+.bpgpbPanelBody .gpAuthorization .bpgpbGetHelp {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+.bpgpbPanelBody .gpAuthorization .bpgpbGetHelp .components-base-control {
+  width: 100%;
+}
+.bpgpbPanelBody .gpAuthorization .components-input-base {
+  width: 100%;
+  margin-bottom: 10px;
+}
+.bpgpbPanelBody .gpAuthorization .gpAuthBtn {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  gap: 17px;
+  font-size: 15px;
+  background-color: #2962ff;
+  color: #fff;
+  font-weight: 500;
+}
+.bpgpbPanelBody .gpAuthorization .gpAuthBtn svg {
+  background: #fff;
+  border-radius: 3px;
+}
+.bpgpbPanelBody .gpAuthorization .gpSignOut {
+  background: #fff !important;
+  border: 1px solid #979191 !important;
+  padding: 5px 20px !important;
+  font-size: 15px !important;
+  font-weight: 500;
+  color: #483d3d !important;
+  -webkit-box-sizing: border-box !important;
+          box-sizing: border-box !important;
+  line-height: normal !important;
+}
+.bpgpbPanelBody .gpAuthorization button:focus {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  outline: none;
+}
+
+.loadingIcon {
+  text-align: center;
+}
+
+.bpgpb-editor-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.bpgpb-editor-grid .bpgpb-editor-item {
+  aspect-ratio: 1/1;
+  overflow: hidden;
+  border-radius: 4px;
+}
+.bpgpb-editor-grid .bpgpb-editor-item img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  display: block;
+}
+
+.bpgpb-picker-status {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 10px;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.bpgpb-picker-note {
+  margin-top: 10px;
+  text-align: center;
+  color: #d63503;
+}
+
+/*# sourceMappingURL=editor.css.map*/
