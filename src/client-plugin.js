@@ -1,71 +1,185 @@
-
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { __ } from '@wordpress/i18n';
-import { PanelBody, Button, __experimentalInputControl as InputControl } from '@wordpress/components';
-const { registerPlugin } = wp.plugins;
-const { PluginSidebar, PluginSidebarMoreMenuItem } = wp.editPost;
+import { PanelBody, Button, Spinner, __experimentalInputControl as InputControl } from '@wordpress/components';
+import { registerPlugin } from '@wordpress/plugins';
+import { PluginSidebar, PluginSidebarMoreMenuItem } from '@wordpress/edit-post';
 import useWPAjax from './utils/useWPAjax';
-import { blockIcon } from './utils/icons';
-
+import { blockIcon, googleIcon } from './utils/icons';
 
 const bpgpbEvent = new CustomEvent('bpgpbEventEdit');
 
 const RenderPlugin = () => {
+	const [bpgpbData, setbpgpbData] = useState({});
+	const { client_id = '', client_secret = '', refresh_token = '' } = bpgpbData || {};
 
-    const [bpgpbData, setbpgpbData] = useState({});
-    const { client_id = '', client_secret = '', refresh_token = '' } = bpgpbData || {};
+	const [errors, setErrors] = useState({});
+	const [notice, setNotice] = useState(null); // { type: 'success' | 'error', text }
+	const [pending, setPending] = useState(false);
+	const wasDisconnect = useRef(false);
 
-    // retrieve nonce and authorized if exists
-    // const { fetchData: refetchSavedToken } = useWPOptionQuery('ajax_info');
+	// Fetch existing credentials on load.
+	const { data: token = null, isLoading, isError, error, saveData } = useWPAjax(
+		'retrieve_refresh_token',
+		{ nonce: window.wpApiSettings?.nonce }
+	);
 
-    // fetch token from bplugins server using ajax
-    const { data: token = null, isLoading, saveData } = useWPAjax('retrieve_refresh_token', { nonce: window.wpApiSettings?.nonce }); //authorize
+	// Populate the fields from the saved credentials ONCE (first load only), so a
+	// save-triggered refetch never overwrites what the user is typing.
+	const initialized = useRef(false);
+	useEffect(() => {
+		if (!isLoading && token && !initialized.current) {
+			setbpgpbData(token);
+			initialized.current = true;
+		}
+	}, [isLoading, token]);
 
+	// Let the editor block re-check the connection after a save.
+	useEffect(() => {
+		if (!isLoading && token) {
+			window.dispatchEvent(bpgpbEvent);
+		}
+	}, [isLoading]);
 
-    useEffect(() => {
-        if (!isLoading && token) {
-            setbpgpbData(token);
-        }
-    }, [isLoading])
+	// Report the result once a save finishes.
+	useEffect(() => {
+		if (!pending || isLoading) {
+			return;
+		}
+		setPending(false);
+		if (isError) {
+			const text =
+				(typeof error === 'string' && error) ||
+				error?.message ||
+				__('We could not verify your credentials. Please double-check them and try again.', 'embed-google-photos');
+			setNotice({ type: 'error', text });
+		} else {
+			setNotice({
+				type: 'success',
+				text: wasDisconnect.current
+					? __('Disconnected. Your credentials were removed.', 'embed-google-photos')
+					: __('Connected! Your Google Photos account is ready.', 'embed-google-photos'),
+			});
+		}
+	}, [isLoading, pending]);
 
+	const setField = (key) => (val) => {
+		setbpgpbData({ ...bpgpbData, [key]: val || '' });
+		if (errors[key]) {
+			setErrors({ ...errors, [key]: undefined });
+		}
+	};
 
-    useEffect(() => {
-        // will run when authorization window closed
-        if (!isLoading && token) {
-            window.dispatchEvent(bpgpbEvent);
-            // refetchSavedToken();
-        }
-    }, [isLoading]);
+	const saveInformation = () => {
+		setNotice(null);
 
-    const saveInformation = () => {
-        saveData({ ...bpgpbData, save: true });
-    }
+		const cid = client_id.trim();
+		const cs = client_secret.trim();
+		const rt = refresh_token.trim();
 
+		// All three empty + save => intentional disconnect.
+		if (!cid && !cs && !rt) {
+			setErrors({});
+			wasDisconnect.current = true;
+			setPending(true);
+			saveData({ client_id: '', client_secret: '', refresh_token: '', save: true });
+			return;
+		}
 
-    return <>
-        <PluginSidebarMoreMenuItem target='bpgpb-google-photos'>{__('Google Photos Block', 'embed-google-photos')}</PluginSidebarMoreMenuItem>
+		const nextErrors = {};
+		if (!cid) {
+			nextErrors.client_id = __('Client ID is required.', 'embed-google-photos');
+		} else if (!/\.apps\.googleusercontent\.com$/i.test(cid)) {
+			nextErrors.client_id = __('This usually ends with ".apps.googleusercontent.com".', 'embed-google-photos');
+		}
+		if (!cs) {
+			nextErrors.client_secret = __('Client Secret is required.', 'embed-google-photos');
+		}
+		if (!rt) {
+			nextErrors.refresh_token = __('Refresh Token is required.', 'embed-google-photos');
+		}
 
-        <PluginSidebar className='bPlPluginSidebar' name='bpgpb-google-photos' title={__('Google Photos', 'embed-google-photos')}>
-            <PanelBody className='bPlPanelBody bpgpbPanelBody' title={__('Authorization', 'embed-google-photos')} initialOpen={true}>
+		setErrors(nextErrors);
+		if (Object.keys(nextErrors).length) {
+			setNotice({ type: 'error', text: __('Please fix the highlighted fields below.', 'embed-google-photos') });
+			return;
+		}
 
-                <div className='gpAuthorization mt15'>
-                    <div className='bpgpbGetHelp'>
-                        <InputControl label={__('Client ID', 'embed-google-photos')} labelPosition='top' value={client_id} onChange={(val) => setbpgpbData({ ...bpgpbData, client_id: val })} />
-                        <a target='__blank' href='https://bplugins.com/docs/embed-google-photos/guides/'>{__('Help', 'embed-google-photos')}</a>
-                    </div>
+		wasDisconnect.current = false;
+		setPending(true);
+		saveData({ client_id: cid, client_secret: cs, refresh_token: rt, save: true });
+	};
 
-                    <InputControl label={__('Client Secret', 'embed-google-photos')} labelPosition='top' value={client_secret} onChange={(val) => setbpgpbData({ ...bpgpbData, client_secret: val })} />
+	const field = (key, label, value, placeholder) => (
+		<div className={`bpgpb-field${errors[key] ? ' has-error' : ''}`}>
+			<InputControl
+				label={label}
+				labelPosition="top"
+				value={value}
+				placeholder={placeholder}
+				onChange={setField(key)}
+			/>
+			{errors[key] && <p className="bpgpb-field-error">{errors[key]}</p>}
+		</div>
+	);
 
-                    <InputControl label={__('Refresh Token', 'embed-google-photos')} labelPosition='top' value={refresh_token} onChange={(val) => setbpgpbData({ ...bpgpbData, refresh_token: val })} />
+	return (
+		<>
+			<PluginSidebarMoreMenuItem target="bpgpb-google-photos">
+				{__('Google Photos Block', 'embed-google-photos')}
+			</PluginSidebarMoreMenuItem>
 
-                    <Button className="button button-secondary gpSignOut" onClick={saveInformation}>{__('Save Information')}</Button>
-                </div>
-            </PanelBody>
-        </PluginSidebar>
-    </>
+			<PluginSidebar className="bPlPluginSidebar" name="bpgpb-google-photos" title={__('Google Photos', 'embed-google-photos')}>
+				<PanelBody className="bPlPanelBody bpgpbPanelBody" title={__('Authorization', 'embed-google-photos')} initialOpen={true}>
+					<div className="gpAuthorization">
+						<div className="bpgpb-auth-head">
+							<span className="bpgpb-auth-head__icon">{googleIcon}</span>
+							<p className="bpgpb-auth-head__text">
+								{__('Enter your Google API credentials to connect your account.', 'embed-google-photos')}
+								{' '}
+								<a target="_blank" rel="noreferrer" href="https://bplugins.com/docs/embed-google-photos/guides/">
+									{__('Need help?', 'embed-google-photos')}
+								</a>
+							</p>
+						</div>
+
+						{notice && (
+							<div className={`bpgpb-notice bpgpb-notice--${notice.type}`}>
+								{notice.text}
+							</div>
+						)}
+
+						{field('client_id', __('Client ID', 'embed-google-photos'), client_id, 'xxxxxx.apps.googleusercontent.com')}
+						{field('client_secret', __('Client Secret', 'embed-google-photos'), client_secret, 'GOCSPX-…')}
+						{field('refresh_token', __('Refresh Token', 'embed-google-photos'), refresh_token, '1//0…')}
+
+						<Button
+							variant="primary"
+							className="bpgpb-btn bpgpb-btn--full"
+							onClick={saveInformation}
+							isBusy={pending}
+							disabled={pending}
+						>
+							{pending ? (
+								<>
+									<Spinner />
+									{__('Saving…', 'embed-google-photos')}
+								</>
+							) : (
+								__('Save Information', 'embed-google-photos')
+							)}
+						</Button>
+
+						<p className="bpgpb-auth-hint">
+							{__('Tip: clear all fields and save to disconnect your account.', 'embed-google-photos')}
+						</p>
+					</div>
+				</PanelBody>
+			</PluginSidebar>
+		</>
+	);
 };
 
 registerPlugin('bpgpb-google-photos', {
-    icon: blockIcon,
-    render: RenderPlugin
+	icon: blockIcon,
+	render: RenderPlugin,
 });

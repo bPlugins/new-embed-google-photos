@@ -5,39 +5,109 @@ $primaryColor: #4527a4;
 	outline: 2px solid $primaryColor;
 }
 
+// Modern select / connect area
 .bpgpbSelectArea {
-	background: #00000017;
-	border-radius: 4px;
-	-webkit-box-shadow: 1px 1px 2px 1px #0000002e;
-	box-shadow: 1px 1px 2px 1px #0000002e;
-	padding: 50px;
-	// text-align: center;
+	margin-top: 16px;
 
-	>h2 {
-		background: #ffccba !important;
-		color: #d63503;
-		font-size: 18px !important;
-		font-weight: 400 !important;
+	&.is-compact {
+		display: flex;
+		justify-content: center;
+		padding: 16px;
+		background: #f6f7f7;
+		border: 1px solid #e0e0e0;
+		border-radius: 10px;
+	}
+}
+
+// Reusable centered card (connect + empty select states)
+.bpgpb-card {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	gap: 6px;
+	padding: 40px 24px;
+	background: linear-gradient(180deg, #fbfbfe 0%, #f3f4fb 100%);
+	border: 1px solid #e6e8f0;
+	border-radius: 14px;
+
+	&__icon {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 56px;
+		height: 56px;
+		margin-bottom: 6px;
+		background: #fff;
+		border-radius: 50%;
+		box-shadow: 0 2px 10px rgba(60, 64, 67, 0.12);
+
+		svg {
+			width: 28px;
+			height: 28px;
+		}
+	}
+
+	&__title {
 		margin: 0 !important;
-		padding: 10px 0 !important;
-		text-align: center !important;
+		font-size: 18px !important;
+		font-weight: 600 !important;
+		color: #1e1e1e;
 	}
 
-	label {
-		font-size: 16px;
-		font-weight: 400;
-		color: #000;
+	&__desc {
+		margin: 0 0 8px;
+		max-width: 360px;
+		font-size: 13px;
+		line-height: 1.5;
+		color: #6b7280;
+	}
+}
+
+// Primary button used across the block UI
+.components-button.bpgpb-btn {
+	justify-content: center;
+	height: auto;
+	min-height: 40px;
+	padding: 9px 22px;
+	font-size: 14px;
+	font-weight: 600;
+	border-radius: 8px;
+	box-shadow: 0 1px 2px rgba(37, 90, 174, 0.25);
+	transition: transform 0.12s ease, box-shadow 0.12s ease;
+
+	&:not(:disabled):hover {
+		transform: translateY(-1px);
+		box-shadow: 0 4px 12px rgba(37, 90, 174, 0.28);
 	}
 
-	button {
-		border: 1px solid #000;
-		font-size: 18px;
-		font-weight: 500;
-		margin-top: 20px;
-		padding: 5px 10px;
-		border-radius: 2px;
-		cursor: pointer;
+	&--full {
+		width: 100%;
+		margin-top: 4px;
 	}
+
+	.components-spinner {
+		margin: 0 8px 0 0;
+	}
+}
+
+.bpgpb-loading {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 8px;
+	padding: 48px 24px;
+	color: #6b7280;
+	font-size: 13px;
+}
+
+.bpgpb-picker-status {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	justify-content: center;
+	color: #4b5563;
+	font-size: 14px;
 }
 
 .pbgpbPhotoType {
@@ -51,56 +121,101 @@ $primaryColor: #4527a4;
 
 .bpgpbPanelBody {
 	.gpAuthorization {
-		.bpgpbGetHelp {
+		display: flex;
+		flex-direction: column;
+		gap: 14px;
 
+		// Intro row with the Google icon + help link
+		.bpgpb-auth-head {
 			display: flex;
+			gap: 10px;
+			align-items: flex-start;
+			padding: 12px;
+			background: #f6f7fb;
+			border: 1px solid #e6e8f0;
+			border-radius: 8px;
 
-			.components-base-control {
-				width: 100%;
-			}
-
-		}
-
-		.components-input-base {
-			width: 100%;
-			margin-bottom: 10px;
-		}
-
-		.gpAuthBtn {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			gap: 17px;
-			font-size: 15px;
-			background-color: #2962ff;
-			color: #fff;
-			font-weight: 500;
-
-			svg {
+			&__icon {
+				flex: 0 0 auto;
+				display: inline-flex;
+				width: 28px;
+				height: 28px;
+				align-items: center;
+				justify-content: center;
 				background: #fff;
-				border-radius: 3px;
+				border-radius: 6px;
+				box-shadow: 0 1px 3px rgba(60, 64, 67, 0.15);
+
+				svg { width: 18px; height: 18px; }
+			}
+
+			&__text {
+				margin: 0;
+				font-size: 12.5px;
+				line-height: 1.5;
+				color: #4b5563;
+
+				a { font-weight: 600; }
 			}
 		}
 
-		.gpSignOut {
-			background: #fff !important;
-			border: 1px solid #979191 !important;
-			padding: 5px 20px !important;
-			font-size: 15px !important;
-			font-weight: 500;
-			color: #483d3d !important;
-			box-sizing: border-box !important;
-			line-height: normal !important;
+		// Fields
+		.bpgpb-field {
+			.components-input-base,
+			.components-base-control { width: 100%; }
+
+			.components-input-control__container input {
+				border-radius: 6px;
+			}
+
+			&.has-error .components-input-control__container {
+				box-shadow: 0 0 0 1px #d63638;
+				border-radius: 6px;
+			}
 		}
 
-		button {
-			&:focus {
-				box-shadow: none;
-				outline: none;
+		.bpgpb-field-error {
+			margin: 6px 0 0;
+			font-size: 12px;
+			color: #d63638;
+			display: flex;
+			gap: 4px;
 
+			&::before { content: '⚠'; }
+		}
+
+		// Inline notice banner
+		.bpgpb-notice {
+			padding: 10px 12px;
+			border-radius: 8px;
+			font-size: 12.5px;
+			line-height: 1.45;
+			border: 1px solid transparent;
+
+			&--success {
+				background: #edfaef;
+				border-color: #b7e4c1;
+				color: #16794c;
 			}
+
+			&--error {
+				background: #fcf0f1;
+				border-color: #f1b0b3;
+				color: #b32d2e;
+			}
+		}
+
+		.bpgpb-auth-hint {
+			margin: 2px 0 0;
+			font-size: 11.5px;
+			color: #8b8f98;
+			font-style: italic;
 		}
 	}
+}
+
+.loadingIcon {
+	text-align: center;
 }
 
 .loadingIcon {
@@ -139,4 +254,81 @@ $primaryColor: #4527a4;
 	margin-top: 10px;
 	text-align: center;
 	color: #d63503;
+}
+
+// Shortcode copy box shown when editing a Gallery (bpgpb_gallery) post.
+.clipBtnWrapper {
+	max-width: 620px;
+	margin: 0 auto 30px;
+	text-align: center;
+
+	.clipBoard__label {
+		margin: 0 0 12px;
+		font-size: 15px;
+		font-weight: 500;
+		line-height: 1.5;
+		color: #6b6880;
+	}
+
+	.clipBoard__btn {
+		display: flex;
+		align-items: stretch;
+		justify-content: space-between;
+		width: 100%;
+		padding: 0;
+		overflow: hidden;
+		background: #faf9ff;
+		border: 1px solid #e6e0fb;
+		border-radius: 12px;
+		cursor: pointer;
+		transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+		&:hover {
+			border-color: #c8bbf5;
+			box-shadow: 0 8px 22px -10px rgba(69, 39, 164, 0.4);
+		}
+
+		.clipBoard__code {
+			flex: 1;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 12px 16px;
+			font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+			font-size: 15px;
+			font-weight: 600;
+			letter-spacing: 0.3px;
+			color: #4527a4;
+			background: transparent;
+		}
+
+		.clipBoard__action {
+			display: inline-flex;
+			align-items: center;
+			gap: 7px;
+			padding: 0 20px;
+			font-size: 14px;
+			font-weight: 600;
+			color: #fff;
+			background: linear-gradient(135deg, #5b34c9 0%, #4527a4 100%);
+			transition: opacity 0.2s ease;
+
+			svg {
+				flex-shrink: 0;
+			}
+		}
+
+		&.is-copied {
+			border-color: #b6e6c5;
+			background: #f2fcf5;
+
+			.clipBoard__code {
+				color: #1f8f4e;
+			}
+
+			.clipBoard__action {
+				background: linear-gradient(135deg, #27ae60 0%, #1f8f4e 100%);
+			}
+		}
+	}
 }

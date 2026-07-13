@@ -1,38 +1,83 @@
-
 import { getBoxValue } from '../../bpl-tools/utils/functions';
-import { getBorderCSS, getColorsCSS, getTypoCSS } from '../../bpl-tools/utils/getCSS';
-import { ratioCheck } from './utils/functions';
+import { getBorderCSS, getTypoCSS } from '../../bpl-tools/utils/getCSS';
 
-const Style = ({ attributes, clientId }) => {
-	const { columnGap, rowGap, coverImage, imgBorder, loadMoreBtnTypo, loadMoreBtnColors, loadMoreBtnBorder, loadMoreBtnPadding } = attributes;
+/**
+ * Per-instance CSS for the gallery, rendered in BOTH the editor and the
+ * frontend so every Style-tab setting matches in both places.
+ *
+ * Scoped to the gallery's own id (#bpgpb-<cId>) so it never depends on the
+ * outer block wrapper, which differs between the editor and the frontend.
+ *
+ * @param {Object} props.attributes Block attributes.
+ * @param {string} props.cId        Stable client id shared with the Gallery.
+ */
+const Style = ({ attributes, cId }) => {
+	const {
+		imgBorder,
+		hover = {},
+		captionTypo,
+		captionColor,
+		loadMoreBtnTypo,
+		loadMoreBtnColors = {},
+		loadMoreBtnBorder,
+		loadMoreBtnPadding,
+	} = attributes;
 
-	const mainSl = `#BPGPBBlockDirectory-${clientId}`;
-	const directorySl = `${mainSl} .layoutSection`;
+	const sl = `#bpgpb-${cId}`;
+	const btnColor = loadMoreBtnColors.color || '#fff';
+	const btnBg = loadMoreBtnColors.bg || '#2f5aae';
+	const typo = getTypoCSS(`${sl} .bpgpb-load-more`, loadMoreBtnTypo) || {};
+	const capTypo = getTypoCSS(`${sl} .bpgpb-caption`, captionTypo) || {};
 
-	return <style dangerouslySetInnerHTML={{
-		__html: `
+	// Hover-effect tuning (all scoped per instance).
+	const zoomScale = 1 + (Number(hover.zoom ?? 8) / 100);
+	const overlayColor = hover.overlayColor || 'rgba(0,0,0,0.4)';
+	const dur = Number(hover.duration ?? 450);
 
-		${getTypoCSS('', loadMoreBtnTypo)?.googleFontLink}
-		${getTypoCSS(`${mainSl}  .loadMoreBtn`, loadMoreBtnTypo)?.styles}
-		 
-		${directorySl}{
-			grid-gap: ${rowGap} ${columnGap};  
-		} 
+	return (
+		<style
+			dangerouslySetInnerHTML={{
+				__html: `
+					${typo.googleFontLink || ''}
+					${typo.styles || ''}
+					${capTypo.googleFontLink || ''}
+					${capTypo.styles || ''}
 
-		${directorySl} .imgArea .img img {
-			${getBorderCSS(imgBorder)};
-		}
+					${sl} .bpgpb-item.bpgpb-hover--zoom .bpgpb-item__media img {
+						transition: transform ${dur}ms ease;
+					}
+					${sl} .bpgpb-item.bpgpb-hover--zoom:hover .bpgpb-item__media img {
+						transform: scale(${zoomScale});
+					}
+					${sl} .bpgpb-item.bpgpb-hover--overlay .bpgpb-item__media::after {
+						background: ${overlayColor};
+						transition: opacity ${dur}ms ease;
+					}
+					${sl} .bpgpb-caption--overlay {
+						transition: opacity ${dur}ms ease, transform ${dur}ms ease;
+					}
 
-		${directorySl} .imgArea .img {
-			padding-top: ${ratioCheck(coverImage?.ratio)}%;
-		}
+					${captionColor ? `${sl} .bpgpb-caption { color: ${captionColor}; }` : ''}
 
-		${mainSl}  .loadMoreBtn {
-			${getColorsCSS(loadMoreBtnColors)};
-			${getBorderCSS(loadMoreBtnBorder)};
-			padding:${getBoxValue(loadMoreBtnPadding)}
-		}
+					${sl} .bpgpb-item {
+						${getBorderCSS(imgBorder)}
+					}
 
-	`}} />;
-}
+					${sl} .bpgpb-load-more {
+						color: ${btnColor};
+						background: ${btnBg};
+						${getBorderCSS(loadMoreBtnBorder)}
+						padding: ${getBoxValue(loadMoreBtnPadding)};
+					}
+
+					${sl} .bpgpb-page.is-active {
+						color: ${btnColor};
+						background: ${btnBg};
+						border-color: ${btnBg};
+					}
+				`.replace(/\s+/g, ' '),
+			}}
+		/>
+	);
+};
 export default Style;

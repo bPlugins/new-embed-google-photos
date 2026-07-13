@@ -116,6 +116,21 @@ You can post your questions on the [support forum here](https://wordpress.org/su
 
 == Changelog ==
 
+= 1.2.0 - 13 July, 2026 =
+* New: Video support — pick images and videos together; videos show a poster with a play icon and open in the lightbox.
+* New: Media Type filter (All Media / Photos / Videos) applied to the selected media.
+* New: Layout options — Grid, Masonry, and Carousel (Swiper) with autoplay, loop, navigation arrows and pagination dots.
+* New: Load More and numbered Pagination with configurable items-per-page and button text.
+* New: Captions — show the image Title or Date, either below the image or as a hover overlay.
+* New: Image Aspect Ratio and Image Border controls now apply to the gallery.
+* Improved: Redesigned Authorization sidebar with field validation, loading state, and success/error messages.
+* Improved: Modern connect / select-photos card design and buttons.
+* Improved: Clearing all credential fields and saving now disconnects the account; the block updates without a page reload.
+* Improved: Server-side credential verification — invalid credentials now show a clear message instead of being saved silently.
+* Dev: Migrated the build to @wordpress/scripts (build/ folder) with a shared editor/frontend render (view.js + render.php).
+* Fixed: Block not appearing in the inserter due to an async transpile crash in the editor script.
+* Fixed: Carousel now works correctly in both the editor and the frontend.
+
 = 1.1.0 - 5 July, 2026 =
 * Security: fixed unauthenticated exposure of the Google Photos OAuth token (including the refresh_token) in the block's public output and the token AJAX handler.
 * Security: the frontend token endpoint now returns only the short-lived access token.
@@ -156,6 +171,9 @@ You can post your questions on the [support forum here](https://wordpress.org/su
 
 
 == Upgrade Notice ==
+
+= 1.2.0 - 13 July, 2026 =
+* Adds video support, Masonry & Carousel layouts, Load More/Pagination, captions, and a redesigned authorization flow.
 
 = 1.1.0 - 5 July, 2026 =
 * Security release: update immediately. Fixes exposure of Google Photos OAuth credentials (including the refresh_token) to unauthenticated visitors.

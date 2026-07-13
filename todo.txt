@@ -1,30 +1,101 @@
-I attempted to contact you from within the WP Plug-in Directory, but that doesn't work unless I login to WordPress.org. I have a self-hosted webpress site, and do not have a wordpress.org account, to my knowledge or that I was able to successfully login to.
-
-I have some questions regarding your Embed Google Photos plugin:
-
-1) Can all features of the plugin be installed and used on a self-hosted wordpress site?
-
-2) I noticed you named your plugin almost identical to an already existing plugin that has been in the WP Directory for years, by Pavex. His plugin includes the word "Album" after the first 3 words. Do you have any association with Pavex, as I have communicated with him in the past regarding his plugin which I have been using for a couple of years now?
-
-3) Does your plugin require that I provide you with my Google login credentials in order to make it work?
-
-4) Does your plugin use the Google API which requires or gains my Google account account access in order to load content from my account?
-
-5) Can your plugin be used like Pavex's plugin to display content from any SHARED google photos link without having to have API or account privileges?
-
-6) Does your plugin display Videos found in Google Photo Albums that also have pictures in the same album?
-
-7) Does your plugin display annotations made to Google Photos AND Videos? If Yes, how does it display those annotations: for instance, do they show up as captions or are they embedded in or over the photo and videos? If No, are you planning to eventually capture and display annotations?
-
-8) Does your plugin display Text Panels that have been added to Google Photos Albums? If yes, again, how are these displayed or where do they appear?
-
-9) Does your plugin work like a framing of the google photos album, provide an image gallery, allow zooming or full screen of an individual photo or video as a viewer option, and/or allow in container viewing of clicked on videos or photos present in a Google Photos Album?
-
-10) Do you have a working, live, demo giving potential, interested plug-in downloaders the ability to see and explore how your plugin works, prior to installing it?
+ 
 
 
-11) Album show all
+==================================================================
+ FEATURE ROADMAP  (Embed Google Photos)
+ Legend: [ ] planned   [~] in progress   [x] done
+==================================================================
 
-12) Note Backend Data asteche na access token expire howa karone.
+------------------------------------------------------------------
+ ALREADY DONE (current state)
+------------------------------------------------------------------
+[x] Google Photos Picker import (photos + videos) to Media Library
+[x] Responsive grid (desktop / tablet / mobile columns)
+[x] Column gap / row gap
+[x] Image aspect ratio
+[x] Image border (Style tab)
+[x] Fancybox lightbox (photos + video playback)
+[x] Load More + numbered Pagination (items per page, button text)
+[x] Media Type filter (All / Photos / Videos)
+[x] Authorization form: validation, loading state, connect/disconnect
 
-13) Dashboard e user select option dite hobe plan
+==================================================================
+ FREE VERSION  (ship these to grow installs + good reviews)
+==================================================================
+
+-- High priority (biggest visual impact) --
+[ ] Layouts: Grid (done) + MASONRY (Pinterest style, each image its own ratio)
+[ ] Layout: Carousel / Slider (one prominent layout users expect)
+[ ] Captions: show title / date under image or on hover (toggle on/off)
+[x] Hover effects: zoom, overlay, caption slide-in
+[x] Lightbox extras: caption, keyboard nav, slideshow autoplay, thumbnails bar
+
+-- Performance & SEO (retention) --
+[ ] Lazy-load images + blur/low-res placeholder
+[ ] Responsive srcset (multiple image sizes, not just =w2048)
+[ ] Schema.org ImageObject markup (Google Image SEO)
+[ ] Per-image alt text editing (accessibility + SEO)
+
+-- Usability --
+[ ] Drag-to-reorder selected photos in the editor
+[x] Shortcode support: [google_photos id=..] (use outside Gutenberg)
+[ ] Empty / not-connected states polish (mostly done)
+
+==================================================================
+ PRO VERSION  (monetization / upsell)
+==================================================================
+
+-- Layout & display --
+[ ] Extra layouts: Justified / Mosaic, advanced Carousel options
+[ ] Frontend filtering (visitor filters by type / tag, isotope style)
+[ ] Premium lightbox skins + video autoplay
+[ ] Per-image custom link + advanced hover/overlay styling
+[ ] Image shadow, advanced radius, gradient overlays
+
+-- Automation (the "wow" differentiators) --
+[ ] Album AUTO-SYNC: link a Google album, new photos appear automatically (cron)
+[ ] Embed via SHARED album URL (no full OAuth needed) -- big ask from users
+[ ] Bulk import whole albums
+
+-- Protection & extras --
+[ ] Password-protected gallery
+[ ] Disable right-click / download protection
+[ ] Watermark on images
+[ ] WebP conversion on import
+[ ] Elementor / other page-builder widgets
+
+==================================================================
+ SUGGESTED FIRST 3 TO BUILD
+==================================================================
+1. Masonry + Carousel layouts        (fits current architecture, instant visual impact)
+2. Captions + enhanced lightbox       (low effort, big UX win)
+3. Album auto-sync / shared-album     (unique, differentiates from competitors)
+
+==================================================================
+ FROM USER QUESTIONS  (feasibility-tagged)
+ ✅ doable   ⚠️ doable with caveats   ❌ blocked by Google API
+==================================================================
+
+-- Features to add --
+[x] ✅ Dashboard: modern React dashboard (welcome, demos, our plugins) (Q13)
+[ ] ⚠️ Whole-album display: show ALL items of an album (Q11)
+       -> needs Shared-Album mode; Picker API cannot browse albums
+[ ] ⚠️ Captions from Google descriptions / annotations (Q7)
+       -> Picker API does NOT expose descriptions; only via shared-album scraping
+       -> filename / date captions ARE doable now (see FREE > Captions)
+[ ] ❌ Display album Text Panels (Q8)
+       -> not a media item; not available via Picker API (scraping only)
+[ ] ⚠️ Embed any SHARED Google Photos link without OAuth, Pavex-style (Q5)
+       -> only via unofficial scraping (fragile); already noted in PRO > shared album
+
+-- Bugs / fixes --
+[ ] 🐛 Access token auto-refresh: backend data stops loading when token expires (Q12)
+
+-- Non-code reminders (business) --
+[ ] Rename plugin to avoid confusion with Pavex's "Embed Google Photos Album" (Q2)
+[ ] Publish a live demo page for the listing (Q10)
+[ ] Docs: make clear credentials stay on the user's own server, never sent to us (Q3)
+
+-- Already covered (no action) --
+[x] Self-hosted support (Q1)  |  [x] Photos + videos in same album (Q6)
+[x] Gallery + zoom / fullscreen lightbox (Q9)

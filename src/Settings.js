@@ -18,7 +18,7 @@ import Style from './Components/Settings/Style/Style';
 
 
 const Settings = ({ attributes, setAttributes, token }) => {
-	const { photosType, favorite, albumId, mediaType, columns, columnGap, rowGap, coverImage, imgBorder, loadMoreBtnTypo, loadMoreBtnColors, loadMoreBtnBorder, loadMoreBtnPadding, layoutShow, album } = attributes;
+	const { photosType, favorite, albumId, mediaType, layout, carousel, caption, lightbox, paginationType, perPage, loadMoreText, columns, columnGap, rowGap, coverImage, imgBorder, hoverEffect, hover, captionTypo, captionColor, loadMoreBtnTypo, loadMoreBtnColors, loadMoreBtnBorder, loadMoreBtnPadding, layoutShow, album } = attributes;
 	const [device, setDevice] = useState('desktop');
 	const [albumList, setAlbumList] = useState([]);
 	const { title, isTitle } = album;
@@ -41,9 +41,9 @@ const Settings = ({ attributes, setAttributes, token }) => {
 		return { label: album.title, value: album.id }
 	});
 
-	const generalProps = { setAttributes, photosType, favorite, albumId, mediaType, columns, columnGap, rowGap, coverImage, layoutShow, album, categoriesOpt };
+	const generalProps = { setAttributes, photosType, favorite, albumId, mediaType, layout, carousel, caption, lightbox, paginationType, perPage, loadMoreText, columns, columnGap, rowGap, coverImage, layoutShow, album, categoriesOpt };
 
-	const styleProps = { setAttributes, imgBorder, loadMoreBtnTypo, loadMoreBtnColors, loadMoreBtnBorder, loadMoreBtnPadding };
+	const styleProps = { setAttributes, paginationType, imgBorder, hoverEffect, hover, captionTypo, captionColor, caption, loadMoreBtnTypo, loadMoreBtnColors, loadMoreBtnBorder, loadMoreBtnPadding };
 
 	return <>
 		<InspectorControls>

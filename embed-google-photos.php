@@ -38,20 +38,23 @@ class bpgpb_Embed_Google_Photos {
         // Constant
         define( 'BPGPB_PLUGIN_VERSION', isset( $_SERVER['HTTP_HOST'] ) && 'localhost' === $_SERVER['HTTP_HOST'] ? time() : '1.1.0' );
         define('BPGPB_ASSETS_DIR', plugin_dir_url(__FILE__) . 'assets/');
+        define('BPGPB_DIR_URL', plugin_dir_url(__FILE__));
+        define('BPGPB_DIR_PATH', plugin_dir_path(__FILE__));
     }
 
     public function load_classes () {
         require_once plugin_dir_path(__FILE__) . '/GoogleAPI/google-api.php';
         require_once plugin_dir_path(__FILE__) . '/GoogleAPI/GooglePhotos.php';
+        require_once plugin_dir_path(__FILE__) . '/includes/custom-post.php';
+        require_once plugin_dir_path(__FILE__) . '/includes/admin-menu.php';
     }
 
     public function enqueueBlockAssets()
     {
+        // External Fancybox lightbox assets. Registered here so the block's
+        // block.json can list them as `style` / `viewScript` dependencies.
         wp_register_style('fancyapps', BPGPB_ASSETS_DIR . 'css/fancyapps.min.css', [], '5.0');
-        wp_register_style('bpgpb-google-photos-style', plugins_url('dist/style.css', __FILE__), ['fancyapps'], BPGPB_PLUGIN_VERSION);
-
         wp_register_script('fancyapps', BPGPB_ASSETS_DIR . 'js/fancyapps.min.js', [], '5.0', true);
-        wp_register_script('bpgpb-google-photos-script', plugins_url('dist/script.js', __FILE__), ['fancyapps'], BPGPB_PLUGIN_VERSION, true);
 
         wp_localize_script('fancyapps', 'bpgpbSessionId', [
             'ajaxUrl' => admin_url('admin-ajax.php'),
@@ -61,56 +64,10 @@ class bpgpb_Embed_Google_Photos {
 
     public function onInit()
     {
-        wp_register_style('bpgpb-block-directory-editor-style', plugins_url('dist/editor.css', __FILE__), ['wp-edit-blocks', 'bpgpb-google-photos-style'], BPGPB_PLUGIN_VERSION); // Backend Style
+        // All scripts, styles and the render.php are declared in build/block.json.
+        register_block_type(__DIR__ . '/build'); // Register Block
 
-        register_block_type(__DIR__, [
-            'editor_style' => 'bpgpb-block-directory-editor-style',
-            'render_callback' => [$this, 'render'],
-        ]); // Register Block
-
-        wp_set_script_translations('BPGPB-block-directory-editor-script', 'embed-google-photos', plugin_dir_path(__FILE__) . 'languages'); // Translate
+        wp_set_script_translations('bpgpb-google-photos-editor-script', 'embed-google-photos', plugin_dir_path(__FILE__) . 'languages'); // Translate
     }
-
-    public function render($attributes)
-    {
-        $cId      = isset($attributes['cId']) ? $attributes['cId'] : '';
-        $selected = (isset($attributes['selectedPhotos']) && is_array($attributes['selectedPhotos'])) ? $attributes['selectedPhotos'] : [];
-
-        $columns = isset($attributes['columns']['desktop']) ? absint($attributes['columns']['desktop']) : 3;
-        if ($columns < 1) {
-            $columns = 1;
-        }
-
-        wp_enqueue_style('bpgpb-google-photos-style');
-        wp_enqueue_script('bpgpb-google-photos-script');
-
-        // apiVersion 3: WordPress builds the wrapper (class, alignment, custom
-        // classNames). Photos render from the Media Library — no token client-side.
-        $wrapper_attributes = get_block_wrapper_attributes([
-            'id'    => 'BPGPBBlockDirectory-' . $cId,
-            'class' => 'bpgpb-gallery',
-        ]);
-
-        ob_start(); ?>
-		<div <?php echo $wrapper_attributes; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- get_block_wrapper_attributes() escapes its values. ?>>
-			<?php if (!empty($selected)) : ?>
-				<div class="bpgpb-grid" style="--bpgpb-cols: <?php echo esc_attr($columns); ?>">
-					<?php foreach ($selected as $photo) :
-						$full  = isset($photo['url']) ? $photo['url'] : '';
-						$thumb = isset($photo['thumb']) ? $photo['thumb'] : $full;
-						if (!$full) {
-							continue;
-						}
-						?>
-						<a class="bpgpb-item" href="<?php echo esc_url($full); ?>" data-fancybox="bpgpb-<?php echo esc_attr($cId); ?>">
-							<img src="<?php echo esc_url($thumb); ?>" loading="lazy" alt="" />
-						</a>
-					<?php endforeach; ?>
-				</div>
-			<?php endif; ?>
-		</div>
-
-		<?php return ob_get_clean();
-    } // Render
 }
 bpgpb_Embed_Google_Photos::get_instance();

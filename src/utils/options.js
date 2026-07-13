@@ -21,6 +21,35 @@ export const mediaTypeOpt = [
 	{ label: __('Videos', 'embed-google-photos'), value: 'video' }
 ]
 
+export const layoutOpt = [
+	{ label: __('Grid', 'embed-google-photos'), value: 'grid' },
+	{ label: __('Masonry', 'embed-google-photos'), value: 'masonry' },
+	{ label: __('Carousel', 'embed-google-photos'), value: 'carousel' }
+]
+
+export const hoverEffectOpt = [
+	{ label: __('None', 'embed-google-photos'), value: 'none' },
+	{ label: __('Zoom', 'embed-google-photos'), value: 'zoom' },
+	{ label: __('Overlay', 'embed-google-photos'), value: 'overlay' },
+	{ label: __('Caption Slide-in', 'embed-google-photos'), value: 'slide' }
+]
+
+export const captionSourceOpt = [
+	{ label: __('Title', 'embed-google-photos'), value: 'title' },
+	{ label: __('Date', 'embed-google-photos'), value: 'date' }
+]
+
+export const captionPositionOpt = [
+	{ label: __('Below Image', 'embed-google-photos'), value: 'below' },
+	{ label: __('Overlay (on hover)', 'embed-google-photos'), value: 'overlay' }
+]
+
+export const paginationOpt = [
+	{ label: __('None', 'embed-google-photos'), value: 'none' },
+	{ label: __('Load More', 'embed-google-photos'), value: 'load_more' },
+	{ label: __('Pagination', 'embed-google-photos'), value: 'pagination' }
+]
+
 export const favoriteOpt = [
 	{ label: __('All', 'embed-google-photos'), value: 'none' },
 	{ label: __('FAVORITES', 'embed-google-photos'), value: 'favorites' },

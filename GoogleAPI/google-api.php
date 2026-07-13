@@ -71,6 +71,14 @@ class GooglePhotosAPI
         $client_secret = isset($_POST['client_secret']) ? sanitize_text_field(wp_unslash($_POST['client_secret'])) : '';
         $refresh_token = isset($_POST['refresh_token']) ? sanitize_text_field(wp_unslash($_POST['refresh_token'])) : '';
 
+        // Empty all fields + save => disconnect: clear the stored credentials.
+        if (!$client_id && !$client_secret && !$refresh_token) {
+            delete_option('bpgpb_auth_info');
+            delete_option('bpgpb-google-photos');
+            delete_transient('bpgpb_expireTime');
+            wp_send_json_success(['client_id' => '', 'client_secret' => '', 'refresh_token' => '']);
+        }
+
         if (!$client_id || !$client_secret || !$refresh_token) {
             wp_send_json_error('data missing');
         }
@@ -91,6 +99,23 @@ class GooglePhotosAPI
         }
 
         $token = json_decode(wp_remote_retrieve_body($response), true);
+
+        // Verify the credentials actually work before saving them, so the editor
+        // can show a clear message instead of silently storing bad values.
+        if (empty($token['access_token'])) {
+            $reason = '';
+            if (isset($token['error_description'])) {
+                $reason = $token['error_description'];
+            } elseif (isset($token['error'])) {
+                $reason = $token['error'];
+            }
+            $message = __('Invalid credentials. Please re-check your Client ID, Client Secret and Refresh Token.', 'embed-google-photos');
+            if ($reason) {
+                $message .= ' (' . $reason . ')';
+            }
+            wp_send_json_error($message);
+        }
+
         $token['refresh_token'] = $refresh_token;
 
         update_option('bpgpb_auth_info', $data);
@@ -229,22 +254,55 @@ class GooglePhotosAPI
             $page_token = isset($body['nextPageToken']) ? $body['nextPageToken'] : '';
         } while ($page_token && count($items) < 100);
 
-        // Download + sideload each photo into the Media Library.
+        // Download + sideload each picked item into the Media Library.
         $photos = [];
         foreach ($items as $item) {
-            $type = isset($item['type']) ? $item['type'] : '';
-            if ('PHOTO' !== $type) {
-                continue; // MVP: images only; video is a follow-up.
-            }
-
+            $type       = isset($item['type']) ? $item['type'] : '';
             $media_file = isset($item['mediaFile']) ? $item['mediaFile'] : [];
             $base_url   = isset($media_file['baseUrl']) ? $media_file['baseUrl'] : '';
             if (!$base_url) {
                 continue;
             }
-            $filename = isset($media_file['filename']) ? $media_file['filename'] : '';
+            $filename  = isset($media_file['filename']) ? $media_file['filename'] : '';
+            $mime_type = isset($media_file['mimeType']) ? $media_file['mimeType'] : '';
 
-            $attachment_id = $this->sideload_photo($base_url, $filename, $access_token);
+            // Caption data: title (from filename) + original creation date.
+            // The Picker API exposes the creation time on the media item itself
+            // (createTime), not inside mediaFileMetadata.
+            $created = isset($item['createTime']) ? $item['createTime'] : '';
+            $title   = pathinfo($filename, PATHINFO_FILENAME);
+
+            if ('VIDEO' === $type) {
+                // Picker API: append "=dv" to download the actual video bytes,
+                // and "=w2048" to grab a still frame we can use as a poster.
+                $video_ext = $this->ext_from_mime($mime_type, 'mp4');
+                $video_id  = $this->sideload_media($base_url . '=dv', $this->safe_name($filename, $base_url, $video_ext), $access_token, 120);
+                if (!$video_id) {
+                    continue;
+                }
+
+                $poster_id  = $this->sideload_media($base_url . '=w2048', $this->safe_name($filename, $base_url, 'jpg'), $access_token);
+                $video_url  = wp_get_attachment_url($video_id);
+                $poster_url = $poster_id ? wp_get_attachment_image_url($poster_id, 'large') : '';
+
+                $photos[] = [
+                    'id'     => $video_id,
+                    'type'   => 'video',
+                    'url'    => $video_url ? $video_url : '',
+                    'thumb'  => $poster_url ? $poster_url : '',
+                    'title'  => $title,
+                    'date'   => $created,
+                    'width'  => 0,
+                    'height' => 0,
+                ];
+                continue;
+            }
+
+            if ('PHOTO' !== $type) {
+                continue;
+            }
+
+            $attachment_id = $this->sideload_media($base_url . '=w2048', $this->safe_name($filename, $base_url, 'jpg'), $access_token);
             if (!$attachment_id) {
                 continue;
             }
@@ -255,8 +313,11 @@ class GooglePhotosAPI
 
             $photos[] = [
                 'id'     => $attachment_id,
+                'type'   => 'image',
                 'url'    => $full ? $full : '',
                 'thumb'  => $large ? $large : ($full ? $full : ''),
+                'title'  => $title,
+                'date'   => $created,
                 'width'  => isset($meta['width']) ? (int) $meta['width'] : 0,
                 'height' => isset($meta['height']) ? (int) $meta['height'] : 0,
             ];
@@ -273,18 +334,22 @@ class GooglePhotosAPI
     }
 
     /**
-     * Download a picked photo (a sized JPEG needs the Bearer token) and add it
-     * to the Media Library. Returns an attachment ID, or 0 on failure.
+     * Download an authenticated media file (photo or video) from the Picker API
+     * and add it to the Media Library. Returns an attachment ID, or 0 on failure.
+     *
+     * @param string $download_url Full baseUrl including the download param (=w2048 / =dv).
+     * @param string $safe_name    Target filename with the correct extension.
+     * @param string $access_token OAuth bearer token.
+     * @param int    $timeout      Request timeout in seconds (videos need more).
      */
-    private function sideload_photo($base_url, $filename, $access_token)
+    private function sideload_media($download_url, $safe_name, $access_token, $timeout = 30)
     {
         require_once ABSPATH . 'wp-admin/includes/file.php';
         require_once ABSPATH . 'wp-admin/includes/media.php';
         require_once ABSPATH . 'wp-admin/includes/image.php';
 
-        // Sized downloads come back as JPEG regardless of the original format.
-        $response = wp_remote_get($base_url . '=w2048', [
-            'timeout' => 30,
+        $response = wp_remote_get($download_url, [
+            'timeout' => $timeout,
             'headers' => ['Authorization' => 'Bearer ' . $access_token],
         ]);
         if (is_wp_error($response) || 200 !== (int) wp_remote_retrieve_response_code($response)) {
@@ -294,12 +359,6 @@ class GooglePhotosAPI
         if ('' === $bytes) {
             return 0;
         }
-
-        $base = pathinfo(sanitize_file_name($filename), PATHINFO_FILENAME);
-        if ('' === $base) {
-            $base = 'google-photo-' . substr(md5($base_url), 0, 8);
-        }
-        $safe_name = $base . '.jpg';
 
         $tmp = wp_tempnam($safe_name);
         if (!$tmp) {
@@ -320,6 +379,32 @@ class GooglePhotosAPI
             return 0;
         }
         return (int) $attachment_id;
+    }
+
+    /**
+     * Build a safe filename with the given extension, falling back to a unique
+     * name derived from the download URL when Google gives us no filename.
+     */
+    private function safe_name($filename, $base_url, $ext)
+    {
+        $base = pathinfo(sanitize_file_name($filename), PATHINFO_FILENAME);
+        if ('' === $base) {
+            $base = 'google-media-' . substr(md5($base_url), 0, 8);
+        }
+        return $base . '.' . $ext;
+    }
+
+    /** Map a Google video MIME type to a file extension. */
+    private function ext_from_mime($mime, $default = 'mp4')
+    {
+        $map = [
+            'video/mp4'       => 'mp4',
+            'video/quicktime' => 'mov',
+            'video/webm'      => 'webm',
+            'video/x-m4v'     => 'm4v',
+            'video/3gpp'      => '3gp',
+        ];
+        return isset($map[$mime]) ? $map[$mime] : $default;
     }
 }
 new GooglePhotosAPI();
