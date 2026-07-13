@@ -12,13 +12,15 @@
 		"i18n-mo": "wp i18n make-mo languages/",
 		"i18n": "npm run i18n-pot && npm run i18n-json && npm run i18n-mo",
 		"find-ds": "find . -name '.DS_Store' -delete",
-		"zip": "npm run build && npm run i18n && npm run find-ds && rm -f embed-google-photos.zip && zip -r embed-google-photos.zip embed-google-photos.php GoogleAPI assets build languages readme.txt -x '*.DS_Store'"
+		"zip": "npm run build && npm run i18n && npm run find-ds && rm -f embed-google-photos.zip && zip -r embed-google-photos.zip embed-google-photos.php uninstall.php includes vendor assets build languages readme.txt -x '*.DS_Store'"
 	},
 	"author": "bPlugins",
 	"license": "GPL-3.0-or-later",
 	"dependencies": {
+		"@fancyapps/ui": "^5.0.36",
 		"axios": "^1.6.0",
 		"immer": "^10.0.3",
+		"plyr": "^3.8.4",
 		"react-router-dom": "^7.18.1",
 		"swiper": "^11.2.10"
 	},

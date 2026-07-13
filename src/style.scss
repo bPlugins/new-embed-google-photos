@@ -187,6 +187,13 @@ html {
 		position: relative;
 		display: block;
 		border-radius: 4px;
+		// The item is an <a>, so themes underline it (and its caption). Kill it.
+		text-decoration: none;
+
+		&:hover,
+		&:focus {
+			text-decoration: none;
+		}
 
 		&__media {
 			position: relative;
@@ -194,12 +201,35 @@ html {
 			overflow: hidden;
 			border-radius: inherit;
 			aspect-ratio: var(--bpgpb-ratio, 1 / 1);
+			// Soft fill shown for the split-second before the placeholder paints.
+			background: #eef0f3;
 
 			img {
 				width: 100%;
 				height: 100%;
 				object-fit: cover;
 				display: block;
+			}
+
+			// Blurred low-res placeholder sitting behind the real image.
+			.bpgpb-item__lqip {
+				position: absolute;
+				inset: 0;
+				filter: blur(14px);
+				// Scale up so the blur's soft edges don't reveal the frame border.
+				transform: scale(1.08);
+			}
+
+			// Full image fades in once loaded (blur-up effect).
+			.bpgpb-item__img {
+				position: relative;
+				z-index: 1;
+				opacity: 0;
+				transition: opacity 0.45s ease;
+
+				&.is-loaded {
+					opacity: 1;
+				}
 			}
 		}
 
@@ -529,5 +559,113 @@ html {
 		font-size: 12px;
 		color: #8b8f98;
 		font-style: italic;
+	}
+}
+// Notice card shown when the chosen Media Type has no matching media.
+.bpgpb-empty-notice {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	padding: 40px 24px;
+	text-align: center;
+	background: #f6f7f7;
+	border: 1px dashed #d0d5dd;
+	border-radius: 8px;
+	color: #667085;
+
+	&__icon {
+		font-size: 34px;
+		line-height: 1;
+	}
+
+	&__text {
+		margin: 0;
+		font-size: 15px;
+		font-weight: 500;
+	}
+}
+
+// Video slide inside the Fancybox lightbox, powered by Plyr.
+// Default: width drives the player size (Plyr's normal behaviour).
+.bpgpb-plyr-wrap {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 90vw;
+	max-width: 1000px;
+
+	.plyr {
+		width: 100%;
+	}
+
+	// "Fit To Window Height" option: fit the player within the available
+	// lightbox area while preserving the video's aspect ratio. Plyr normally
+	// derives the height from the width via a padding-based aspect-ratio
+	// wrapper, which lets tall/portrait videos overflow — so we disable that
+	// and let the intrinsic video dimensions drive sizing, capped to the
+	// height of the carousel area (which Fancybox already sizes to exclude
+	// the thumbnails bar and toolbar).
+	&--fit {
+		width: 100%;
+		height: 100%;
+		max-height: 100%;
+
+		.plyr {
+			width: 100%;
+			height: 100%;
+			max-height: 100%;
+		}
+
+		.plyr__video-wrapper {
+			height: 100% !important;
+			padding-bottom: 0 !important;
+			aspect-ratio: auto !important;
+		}
+
+		.plyr video {
+			position: relative;
+			width: 100%;
+			height: 100%;
+			max-height: 100%;
+			// Keep the video's aspect ratio inside the full-height box;
+			// unused space shows the dark lightbox backdrop, not white.
+			object-fit: contain;
+		}
+	}
+}
+
+// The video slide is injected as Fancybox `type: 'html'` content, which
+// defaults to a white, padded content box. Make it transparent, unpadded,
+// and full-height so the "fit" player has the whole carousel area to size
+// against (no white background showing below the video).
+.fancybox__content:has(.bpgpb-plyr-wrap) {
+	padding: 0;
+	background: transparent;
+}
+
+.fancybox__content:has(.bpgpb-plyr-wrap--fit) {
+	height: 100%;
+}
+
+// Fancybox inserts the thumbnails bar inside the carousel, after the
+// viewport, while the viewport itself is `height: 100%` — so a fit-to-window
+// video fills the whole carousel and the thumbnails end up overlapping it.
+// When the lightbox contains a fit video, lay the carousel out as a flex
+// column: the viewport takes the remaining space and the thumbnails bar sits
+// below it at its natural height (works whether or not thumbnails are shown).
+.fancybox__carousel:has(.bpgpb-plyr-wrap--fit) {
+	display: flex;
+	flex-direction: column;
+
+	.f-carousel__viewport {
+		flex: 1 1 auto;
+		min-height: 0;
+		height: auto;
+	}
+
+	.fancybox__thumbs {
+		flex: 0 0 auto;
 	}
 }

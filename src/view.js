@@ -1,7 +1,7 @@
 import { createRoot } from 'react-dom/client';
 
-import Gallery from './Gallery';
-import Style from './Style';
+import Gallery from './Components/Frontend/Gallery';
+import Style from './Components/Common/Style';
 import './style.scss';
 
 // Each block wrapper carries its attributes as JSON. We rehydrate the same
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		createRoot(block).render(
 			<>
 				<Style attributes={attributes} cId={attributes.cId} />
-				<Gallery attributes={attributes} cId={attributes.cId} isBackend={false} />
+				<Gallery attributes={attributes} cId={attributes.cId} />
 			</>
 		);
 

@@ -8,10 +8,45 @@
  * License: GPLv3
  * License URI: https://www.gnu.org/licenses/gpl-3.0.txt
  * Text Domain: embed-google-photos
- */
+ */ 
 
 // ABS PATH
 if (!defined('ABSPATH')) {exit;}
+
+if (function_exists('bpgpb_fs')) {
+    bpgpb_fs()->set_basename( true, __FILE__ );
+} else {
+
+    if ( ! function_exists( 'bpgpb_fs' ) ) {
+        // Create a helper function for easy SDK access.
+        function bpgpb_fs() {
+            global $bpgpb_fs;
+
+            if ( ! isset( $bpgpb_fs ) ) {
+                // Include Freemius Lite SDK.
+                require_once dirname(__FILE__) . '/vendor/freemius-lite/start.php';
+
+                $bpgpbConfig = array(
+                    'id'         => '18779', // TODO: replace with the Freemius product ID.
+                    'slug'       => 'embed-google-photos',
+                    'type'       => 'plugin',
+                    'public_key' => 'pk_REPLACE_ME', // TODO: replace with the Freemius public key.
+                    'is_premium' => false,
+                    'menu'       => array(
+                        'slug'       => 'edit.php?post_type=bpgpb_gallery',
+                        'first-path' => 'edit.php?post_type=bpgpb_gallery&page=bpgpb-dashboard',
+                        'support'    => false,
+                    ),
+                );
+                $bpgpb_fs = fs_lite_dynamic_init( $bpgpbConfig );
+            }
+            return $bpgpb_fs;
+        }
+        // Init Freemius.
+        bpgpb_fs();
+        // Signal that SDK was initiated.
+        do_action( 'bpgpb_fs_loaded' );
+    }
 
 class bpgpb_Embed_Google_Photos {
     public static $instance;
@@ -21,8 +56,11 @@ class bpgpb_Embed_Google_Photos {
         $this->load_classes();
         $this->constants_defined();
 
-        add_action('enqueue_block_assets', [$this, 'enqueueBlockAssets']);
         add_action('init', [$this, 'onInit']);
+
+        // On activation, flag a one-time redirect to the Galleries (shortcode) screen.
+        register_activation_hook(__FILE__, [$this, 'onActivate']);
+        add_action('admin_init', [$this, 'activationRedirect']);
     }
 
     public static function get_instance() {
@@ -43,23 +81,37 @@ class bpgpb_Embed_Google_Photos {
     }
 
     public function load_classes () {
-        require_once plugin_dir_path(__FILE__) . '/GoogleAPI/google-api.php';
-        require_once plugin_dir_path(__FILE__) . '/GoogleAPI/GooglePhotos.php';
-        require_once plugin_dir_path(__FILE__) . '/includes/custom-post.php';
-        require_once plugin_dir_path(__FILE__) . '/includes/admin-menu.php';
+        require_once plugin_dir_path(__FILE__) . 'includes/google-api.php';
+        require_once plugin_dir_path(__FILE__) . 'includes/GooglePhotos.php';
+        require_once plugin_dir_path(__FILE__) . 'includes/custom-post.php';
+        require_once plugin_dir_path(__FILE__) . 'includes/admin-menu.php';
     }
 
-    public function enqueueBlockAssets()
-    {
-        // External Fancybox lightbox assets. Registered here so the block's
-        // block.json can list them as `style` / `viewScript` dependencies.
-        wp_register_style('fancyapps', BPGPB_ASSETS_DIR . 'css/fancyapps.min.css', [], '5.0');
-        wp_register_script('fancyapps', BPGPB_ASSETS_DIR . 'js/fancyapps.min.js', [], '5.0', true);
+    /**
+     * Runs once when the plugin is activated. Set a flag so the next admin page
+     * load redirects the user to the Galleries screen (where the shortcodes live).
+     */
+    public function onActivate() {
+        add_option('bpgpb_activation_redirect', true);
+    }
 
-        wp_localize_script('fancyapps', 'bpgpbSessionId', [
-            'ajaxUrl' => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce('wp_rest'),
-        ]);
+    /**
+     * Consume the activation flag and redirect to the Galleries (shortcode) list.
+     * Skipped during bulk plugin activation so we don't hijack that flow.
+     */
+    public function activationRedirect() {
+        if (!get_option('bpgpb_activation_redirect', false)) {
+            return;
+        }
+
+        delete_option('bpgpb_activation_redirect');
+
+        if (isset($_GET['activate-multi']) || wp_doing_ajax()) {
+            return;
+        }
+
+        wp_safe_redirect(admin_url('edit.php?post_type=bpgpb_gallery'));
+        exit;
     }
 
     public function onInit()
@@ -71,3 +123,5 @@ class bpgpb_Embed_Google_Photos {
     }
 }
 bpgpb_Embed_Google_Photos::get_instance();
+
+}

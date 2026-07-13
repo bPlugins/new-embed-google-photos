@@ -48,8 +48,8 @@ if (!class_exists('bpgpb_Admin_Menu')) {
         public function adminMenu() {
             $this->page_hook = add_submenu_page(
                 'edit.php?post_type=bpgpb_gallery',
-                __('Dashboard', 'embed-google-photos'),
-                __('Dashboard', 'embed-google-photos'),
+                __('Demo & Help', 'embed-google-photos'),
+                __('Demo & Help', 'embed-google-photos'),
                 'manage_options',
                 'bpgpb-dashboard',
                 [$this, 'dashboardPage']

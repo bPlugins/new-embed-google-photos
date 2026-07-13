@@ -284,16 +284,18 @@ class GooglePhotosAPI
                 $poster_id  = $this->sideload_media($base_url . '=w2048', $this->safe_name($filename, $base_url, 'jpg'), $access_token);
                 $video_url  = wp_get_attachment_url($video_id);
                 $poster_url = $poster_id ? wp_get_attachment_image_url($poster_id, 'large') : '';
+                $poster_sm  = $poster_id ? wp_get_attachment_image_url($poster_id, 'thumbnail') : '';
 
                 $photos[] = [
-                    'id'     => $video_id,
-                    'type'   => 'video',
-                    'url'    => $video_url ? $video_url : '',
-                    'thumb'  => $poster_url ? $poster_url : '',
-                    'title'  => $title,
-                    'date'   => $created,
-                    'width'  => 0,
-                    'height' => 0,
+                    'id'          => $video_id,
+                    'type'        => 'video',
+                    'url'         => $video_url ? $video_url : '',
+                    'thumb'       => $poster_url ? $poster_url : '',
+                    'placeholder' => $poster_sm ? $poster_sm : ($poster_url ? $poster_url : ''),
+                    'title'       => $title,
+                    'date'        => $created,
+                    'width'       => 0,
+                    'height'      => 0,
                 ];
                 continue;
             }
@@ -309,17 +311,20 @@ class GooglePhotosAPI
 
             $full  = wp_get_attachment_image_url($attachment_id, 'full');
             $large = wp_get_attachment_image_url($attachment_id, 'large');
+            $small = wp_get_attachment_image_url($attachment_id, 'thumbnail');
             $meta  = wp_get_attachment_metadata($attachment_id);
 
             $photos[] = [
-                'id'     => $attachment_id,
-                'type'   => 'image',
-                'url'    => $full ? $full : '',
-                'thumb'  => $large ? $large : ($full ? $full : ''),
-                'title'  => $title,
-                'date'   => $created,
-                'width'  => isset($meta['width']) ? (int) $meta['width'] : 0,
-                'height' => isset($meta['height']) ? (int) $meta['height'] : 0,
+                'id'          => $attachment_id,
+                'type'        => 'image',
+                'url'         => $full ? $full : '',
+                'thumb'       => $large ? $large : ($full ? $full : ''),
+                // Tiny image used as the blurred "blur-up" placeholder.
+                'placeholder' => $small ? $small : '',
+                'title'       => $title,
+                'date'        => $created,
+                'width'       => isset($meta['width']) ? (int) $meta['width'] : 0,
+                'height'      => isset($meta['height']) ? (int) $meta['height'] : 0,
             ];
         }
 

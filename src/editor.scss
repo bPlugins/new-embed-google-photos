@@ -11,7 +11,10 @@ $primaryColor: #4527a4;
 
 	&.is-compact {
 		display: flex;
+		align-items: center;
 		justify-content: center;
+		gap: 14px;
+		flex-wrap: wrap;
 		padding: 16px;
 		background: #f6f7f7;
 		border: 1px solid #e0e0e0;
@@ -251,9 +254,16 @@ $primaryColor: #4527a4;
 }
 
 .bpgpb-picker-note {
-	margin-top: 10px;
+	margin: 0;
 	text-align: center;
-	color: #d63503;
+	font-size: 13px;
+	line-height: 1.4;
+	color: #4b5563;
+
+	// Errors stand out; informational notices stay neutral.
+	&.is-error {
+		color: #d63503;
+	}
 }
 
 // Shortcode copy box shown when editing a Gallery (bpgpb_gallery) post.

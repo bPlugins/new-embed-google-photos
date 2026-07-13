@@ -45,7 +45,7 @@ export const captionPositionOpt = [
 ]
 
 export const paginationOpt = [
-	{ label: __('None', 'embed-google-photos'), value: 'none' },
+	{ label: __('Show All', 'embed-google-photos'), value: 'none' },
 	{ label: __('Load More', 'embed-google-photos'), value: 'load_more' },
 	{ label: __('Pagination', 'embed-google-photos'), value: 'pagination' }
 ]

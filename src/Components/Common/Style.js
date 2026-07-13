@@ -1,5 +1,5 @@
-import { getBoxValue } from '../../bpl-tools/utils/functions';
-import { getBorderCSS, getTypoCSS } from '../../bpl-tools/utils/getCSS';
+import { getBoxValue } from '../../../../bpl-tools/utils/functions';
+import { getBorderCSS, getTypoCSS } from '../../../../bpl-tools/utils/getCSS';
 
 /**
  * Per-instance CSS for the gallery, rendered in BOTH the editor and the

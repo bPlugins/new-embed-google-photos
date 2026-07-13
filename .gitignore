@@ -1,6 +1,10 @@
 # Dependencies
 node_modules/
 vendor/
+# ...but the bundled Freemius Lite SDK ships with the plugin.
+!vendor/
+!vendor/freemius-lite/
+!vendor/freemius-lite/**
 
 # Build output
 build/
@@ -15,8 +19,6 @@ yarn-error.log*
 # Environment / secrets
 .env
 .env.*
-GoogleAPI/credentials.json
-GoogleAPI/token.json
 
 # OS files
 .DS_Store

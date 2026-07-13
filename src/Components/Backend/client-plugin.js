@@ -3,8 +3,8 @@ import { __ } from '@wordpress/i18n';
 import { PanelBody, Button, Spinner, __experimentalInputControl as InputControl } from '@wordpress/components';
 import { registerPlugin } from '@wordpress/plugins';
 import { PluginSidebar, PluginSidebarMoreMenuItem } from '@wordpress/edit-post';
-import useWPAjax from './utils/useWPAjax';
-import { blockIcon, googleIcon } from './utils/icons';
+import useWPAjax from '../../utils/useWPAjax';
+import { blockIcon, googleIcon } from '../../utils/icons';
 
 const bpgpbEvent = new CustomEvent('bpgpbEventEdit');
 

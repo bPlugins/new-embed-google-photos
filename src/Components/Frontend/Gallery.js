@@ -1,11 +1,18 @@
 import { useEffect, useRef, useState } from 'react';
+import { __, sprintf } from '@wordpress/i18n';
+import { Fancybox } from '@fancyapps/ui';
+import Plyr from 'plyr';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 
+import '@fancyapps/ui/dist/fancybox/fancybox.css';
+import 'plyr/dist/plyr.css';
 import 'swiper/css';
 import 'swiper/css/autoplay';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+
+import BlurImage from './BlurImage';
 
 // Play triangle shown over video thumbnails.
 const playIcon = (
@@ -20,7 +27,7 @@ const playIcon = (
  *
  * @param {Object}  props.attributes Block attributes.
  * @param {string}  props.cId        Stable client id used to scope styles + group the lightbox.
- * @param {boolean} props.isBackend  true in the editor (no lightbox), false on the frontend.
+ * @param {boolean} props.isBackend  True when rendered inside the block editor iframe.
  */
 const Gallery = ({ attributes, cId, isBackend = false }) => {
 	const {
@@ -35,6 +42,7 @@ const Gallery = ({ attributes, cId, isBackend = false }) => {
 		carousel = {},
 		caption = {},
 		lightbox = {},
+		video = {},
 		paginationType = 'load_more',
 		perPage = 9,
 		loadMoreText = 'Load More',
@@ -43,6 +51,10 @@ const Gallery = ({ attributes, cId, isBackend = false }) => {
 	const prevRef = useRef();
 	const nextRef = useRef();
 	const isCarousel = 'carousel' === layout;
+
+	// Fancybox grouping key — scopes the lightbox to this block instance so
+	// multiple galleries on a page don't merge into one gallery.
+	const group = `bpgpb-${cId || ''}`;
 
 	// Filter the imported media by the chosen Media Type (items without an
 	// explicit type were imported before video support, so treat them as images).
@@ -66,19 +78,69 @@ const Gallery = ({ attributes, cId, isBackend = false }) => {
 		setPage(1);
 	}, [per, paginationType, mediaType, selectedPhotos.length]);
 
-	// Frontend only: attach the Fancybox lightbox (delegated on the wrapper, so
-	// items added by Load More / page changes work without re-binding). Carousel
-	// loop clones slides — exclude those so the lightbox has no duplicates.
+	// Attach the Fancybox lightbox with a capture-phase click handler on the
+	// wrapper, opening the lightbox imperatively from an explicit item list
+	// (same approach as the lightbox-block plugin). This works identically in
+	// the frontend and inside the editor iframe (where Fancybox's own click
+	// delegation is unreliable), handles items added by Load More / page
+	// changes without re-binding, and lets us render videos through Plyr —
+	// Google Photos video URLs have no .mp4 extension, so Fancybox can't
+	// auto-detect them as video.
 	useEffect(() => {
-		if (isBackend || typeof Fancybox === 'undefined' || !wrapRef.current) {
+		if (!wrapRef.current) {
 			return undefined;
 		}
 
-		const selector = isCarousel
-			? '.swiper-slide:not(.swiper-slide-duplicate) [data-fancybox]'
-			: '[data-fancybox]';
+		const root = wrapRef.current;
 
-		Fancybox.bind(wrapRef.current, selector, {
+		// Plyr instances created for the currently open lightbox, so we can
+		// pause on slide change and tear them down when the lightbox closes.
+		const players = [];
+		const destroyPlayers = () => {
+			players.forEach((p) => {
+				try {
+					p.destroy();
+				} catch (e) {
+					/* already gone */
+				}
+			});
+			players.length = 0;
+		};
+
+		// Markup for a video slide. Autoplay requires the video to be muted,
+		// so force muted whenever autoplay is on.
+		const videoHtml = (a) => {
+			const src = a.getAttribute('href');
+			const poster = a.getAttribute('data-poster') || '';
+			const muted = video.muted || video.autoplay ? ' muted' : '';
+			const loop = video.loop ? ' loop' : '';
+			const fit = false === video.fitToWindow ? '' : ' bpgpb-plyr-wrap--fit';
+			return (
+				`<div class="bpgpb-plyr-wrap${fit}"><video class="bpgpb-plyr" playsinline controls preload="metadata"${muted}${loop}` +
+				`${poster ? ` poster="${poster}"` : ''}>` +
+				`<source src="${src}" type="video/mp4" /></video></div>`
+			);
+		};
+
+		const buildItem = (a) => {
+			const caption = false === lightbox.caption ? '' : a.getAttribute('data-caption') || '';
+			if (a.classList.contains('is-video')) {
+				return { type: 'html', html: videoHtml(a), caption };
+			}
+			return { src: a.getAttribute('href'), caption };
+		};
+
+		const plyrOptions = {
+			autoplay: !!video.autoplay,
+			muted: !!video.muted || !!video.autoplay,
+			loop: { active: !!video.loop },
+			controls:
+				false === video.controls
+					? []
+					: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen'],
+		};
+
+		const options = {
 			contentClick: 'toggleZoom',
 			// Thumbnails bar along the bottom of the lightbox.
 			Thumbs: false === lightbox.thumbs ? false : { showOnStart: true },
@@ -86,16 +148,95 @@ const Gallery = ({ attributes, cId, isBackend = false }) => {
 			Slideshow: lightbox.slideshow
 				? { autoStart: true, timeout: lightbox.slideshowSpeed || 3000 }
 				: { autoStart: false },
-		});
-
-		return () => {
-			if (typeof Fancybox !== 'undefined' && wrapRef.current) {
-				Fancybox.unbind(wrapRef.current);
-			}
+			on: {
+				// Enhance each video slide with Plyr once it's in the DOM.
+				reveal: (fancybox, slide) => {
+					const el = slide?.el?.querySelector?.('video.bpgpb-plyr');
+					if (el) {
+						players.push(new Plyr(el, plyrOptions));
+					}
+				},
+				// Pause every player when the user navigates to another slide.
+				'Carousel.change': () => {
+					players.forEach((p) => {
+						try {
+							p.pause();
+						} catch (e) {
+							/* not ready */
+						}
+					});
+				},
+				destroy: destroyPlayers,
+			},
 		};
-	}, [selectedPhotos, mediaType, isCarousel, isBackend, lightbox.thumbs, lightbox.slideshow, lightbox.slideshowSpeed]);
+
+		const onClick = (e) => {
+			const anchor = e.target.closest(`[data-fancybox="${group}"]`);
+			if (!anchor || !root.contains(anchor) || anchor.closest('.swiper-slide-duplicate')) {
+				return;
+			}
+
+			e.preventDefault();
+			e.stopPropagation();
+
+			// Build the slide list from every gallery anchor (skipping carousel
+			// loop clones), then open the clicked one.
+			const anchors = Array.from(root.querySelectorAll(`[data-fancybox="${group}"]`)).filter(
+				(a) => !a.closest('.swiper-slide-duplicate')
+			);
+
+			const items = anchors.map(buildItem);
+			const index = anchors.indexOf(anchor);
+			Fancybox.show(items, { startIndex: index < 0 ? 0 : index, ...options });
+		};
+
+		root.addEventListener('click', onClick, true);
+		return () => {
+			root.removeEventListener('click', onClick, true);
+			destroyPlayers();
+		};
+	}, [
+		selectedPhotos,
+		mediaType,
+		isCarousel,
+		group,
+		lightbox.caption,
+		lightbox.thumbs,
+		lightbox.slideshow,
+		lightbox.slideshowSpeed,
+		video.autoplay,
+		video.muted,
+		video.loop,
+		video.controls,
+		video.fitToWindow,
+	]);
 
 	if (!visiblePhotos.length) {
+		// The user picked a specific Media Type but nothing in the gallery
+		// matches it — show a friendly notice card instead of an empty block.
+		if (selectedPhotos.length && 'all_media' !== mediaType) {
+			const typeLabel =
+				'video' === mediaType
+					? __('videos', 'embed-google-photos')
+					: __('photos', 'embed-google-photos');
+
+			return (
+				<div className="bpgpb-gallery-inner" id={`bpgpb-${cId}`}>
+					<div className="bpgpb-empty-notice">
+						<span className="bpgpb-empty-notice__icon" aria-hidden="true">
+							{'video' === mediaType ? '🎬' : '🖼️'}
+						</span>
+						<p className="bpgpb-empty-notice__text">
+							{
+								/* translators: %s: media type (photos / videos) */
+								sprintf(__('No %s found in this gallery.', 'embed-google-photos'), typeLabel)
+							}
+						</p>
+					</div>
+				</div>
+			);
+		}
+
 		return null;
 	}
 
@@ -110,8 +251,6 @@ const Gallery = ({ attributes, cId, isBackend = false }) => {
 		'--bpgpb-row-gap': rowGap || '40px',
 		'--bpgpb-ratio': ratio,
 	};
-
-	const group = `bpgpb-${cId || ''}`;
 
 	// Caption text for a photo, based on the chosen source.
 	const captionText = (photo) => {
@@ -147,7 +286,13 @@ const Gallery = ({ attributes, cId, isBackend = false }) => {
 		const inner = (
 			<>
 				<span className="bpgpb-item__media">
-					<img src={poster} alt={photo.alt || text || ''} loading="lazy" />
+					<BlurImage
+						src={poster}
+						alt={photo.alt || text || ''}
+						placeholder={photo.placeholder}
+						width={photo.width}
+						height={photo.height}
+					/>
 					{isVideo && <span className="bpgpb-play">{playIcon}</span>}
 					{text && overlay && (
 						<span className="bpgpb-caption bpgpb-caption--overlay">{text}</span>
@@ -159,19 +304,18 @@ const Gallery = ({ attributes, cId, isBackend = false }) => {
 			</>
 		);
 
-		if (isBackend) {
-			return (
-				<div className={itemClass} key={photo.id || index}>
-					{inner}
-				</div>
-			);
-		}
-
 		// Fancybox reads the trigger's data-caption for the lightbox caption.
 		const lbCaption = false === lightbox.caption ? undefined : (captionText(photo) || undefined);
 
 		return (
-			<a className={itemClass} key={photo.id || index} href={media} data-fancybox={group} data-caption={lbCaption}>
+			<a
+				className={itemClass}
+				key={photo.id || index}
+				href={media}
+				data-fancybox={group}
+				data-caption={lbCaption}
+				data-poster={isVideo ? poster : undefined}
+			>
 				{inner}
 			</a>
 		);

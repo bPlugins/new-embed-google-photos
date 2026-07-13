@@ -22,6 +22,12 @@ export const dashboardInfo = (info) => {
         pages: {
             org: `https://wordpress.org/plugins/${slug}/`,
             docs: `https://bplugins.com/docs/${slug}/`,
+            pricing: `https://bplugins.com/products/${slug}/pricing`,
+        },
+        freemius: {
+            product_id: 18779, // TODO: replace with the Freemius product ID.
+            plan_id: 0, // TODO: replace with the Freemius (pro) plan ID.
+            public_key: 'pk_REPLACE_ME', // TODO: replace with the Freemius public key.
         },
         adminUrl,
         startButton: {
@@ -39,6 +45,25 @@ export const demoInfo = {
         { icon: '', title: 'Masonry', type: 'iframe', url: `https://wordpress.org/plugins/${slug}/` },
         { icon: '', title: 'Carousel', type: 'iframe', url: `https://wordpress.org/plugins/${slug}/` },
     ],
+};
+
+export const settingsInfo = {};
+
+export const pricingInfo = {
+    logo: `https://ps.w.org/${slug}/assets/icon-256x256.png`, // Optional
+    pluginId: 18779, // TODO: replace with the Freemius product ID.
+    planId: 0, // TODO: replace with the Freemius (pro) plan ID.
+    licenses: [
+        1,
+        3,
+        null
+    ],
+    button: {
+        label: 'Buy Now ➜'
+    },
+    featured: {
+        selected: 3, // choose from licenses item
+    }
 };
 
 export const welcomeInfo = (adminUrl) => ({

@@ -4,13 +4,13 @@ import { useSelect } from '@wordpress/data';
 import { Button, Spinner } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
-import useWPAjax from './hooks/useWPAjax';
+import useWPAjax from '../../hooks/useWPAjax';
 import { runPicker } from './picker';
-import Settings from './Settings';
-import Gallery from './Gallery';
-import Style from './Style';
-import ClipBoard from './Components/ClipBoard';
-import { googleIcon } from './utils/icons';
+import Settings from './Settings/Settings';
+import Gallery from '../Frontend/Gallery';
+import Style from '../Common/Style';
+import ClipBoard from './ClipBoard';
+import { googleIcon } from '../../utils/icons';
 
 const Edit = (props) => {
 	const { attributes, setAttributes, clientId } = props;
@@ -50,18 +50,25 @@ const Edit = (props) => {
 
 	const [busy, setBusy] = useState(false);
 	const [status, setStatus] = useState('');
+	const [isError, setIsError] = useState(false);
 
 	const pickPhotos = async () => {
 		setBusy(true);
+		setIsError(false);
 		setStatus('');
 		try {
 			const photos = await runPicker(window.wpApiSettings?.nonce, setStatus);
 			if (photos.length) {
 				setAttributes({ selectedPhotos: photos });
+				// Clear the progress message; the gallery preview is the feedback.
+				setStatus('');
 			} else {
-				setStatus(__('No photos were selected.', 'embed-google-photos'));
+				// No new selection — keep the existing gallery if there is one,
+				// otherwise fall back to the current select screen. No error shown.
+				setStatus('');
 			}
 		} catch (e) {
+			setIsError(true);
 			setStatus(
 				(e && e.message) ||
 					__('Something went wrong. Please try again.', 'embed-google-photos')
@@ -112,7 +119,6 @@ const Edit = (props) => {
 				<Settings
 					attributes={attributes}
 					setAttributes={setAttributes}
-					token={token}
 				/>
 			)}
 
@@ -151,7 +157,7 @@ const Edit = (props) => {
 									? __('Change photos', 'embed-google-photos')
 									: __('Select from Google Photos', 'embed-google-photos')}
 							</Button>
-							{status && <p className="bpgpb-picker-note">{status}</p>}
+							{status && <p className={`bpgpb-picker-note${isError ? ' is-error' : ''}`}>{status}</p>}
 						</>
 					)}
 				</div>

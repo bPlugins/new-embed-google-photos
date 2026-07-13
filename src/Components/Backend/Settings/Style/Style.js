@@ -1,11 +1,11 @@
 import { __ } from '@wordpress/i18n';
 import { PanelBody, SelectControl, RangeControl, __experimentalBoxControl as BoxControl, } from '@wordpress/components';
 import { produce } from 'immer';
-import { Typography, ColorsControl, ColorControl } from '../../../../../bpl-tools/Components';
-import { BorderControl } from '../../../../../bpl-tools/Components/Deprecated';
+import { Typography, ColorsControl, ColorControl } from '../../../../../../bpl-tools/Components';
+import { BorderControl } from '../../../../../../bpl-tools/Components/Deprecated';
 
-import { emUnit, pxUnit } from '../../../../../bpl-tools/utils/options';
-import { hoverEffectOpt } from '../../../utils/options';
+import { emUnit, pxUnit } from '../../../../../../bpl-tools/utils/options';
+import { hoverEffectOpt } from '../../../../utils/options';
 
 const Style = ({ setAttributes, paginationType, imgBorder, hoverEffect, hover = {}, caption = {}, captionTypo, captionColor, loadMoreBtnTypo, loadMoreBtnColors, loadMoreBtnBorder, loadMoreBtnPadding }) => {
     const btnPanelTitle = 'pagination' === paginationType

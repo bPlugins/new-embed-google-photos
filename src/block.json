@@ -83,7 +83,7 @@
 			"default": {
 				"show": false,
 				"source": "title",
-				"position": "below"
+				"position": "overlay"
 			}
 		},
 		"lightbox": {
@@ -93,6 +93,16 @@
 				"thumbs": true,
 				"slideshow": false,
 				"slideshowSpeed": 3000
+			}
+		},
+		"video": {
+			"type": "object",
+			"default": {
+				"controls": true,
+				"autoplay": false,
+				"muted": false,
+				"loop": false,
+				"fitToWindow": true
 			}
 		},
 		"captionTypo": {
@@ -230,13 +240,7 @@
 		"wp-util"
 	],
 	"editorStyle": "file:./index.css",
-	"style": [
-		"file:./view.css",
-		"fancyapps"
-	],
+	"style": "file:./view.css",
 	"render": "file:./render.php",
-	"viewScript": [
-		"file:./view.js",
-		"fancyapps"
-	]
+	"viewScript": "file:./view.js"
 }
