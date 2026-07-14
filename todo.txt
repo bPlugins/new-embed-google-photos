@@ -24,9 +24,9 @@
 ==================================================================
 
 -- High priority (biggest visual impact) --
-[ ] Layouts: Grid (done) + MASONRY (Pinterest style, each image its own ratio)
-[ ] Layout: Carousel / Slider (one prominent layout users expect)
-[ ] Captions: show title / date under image or on hover (toggle on/off)
+[x] Layouts: Grid (done) + MASONRY (Pinterest style, each image its own ratio)
+[x] Layout: Carousel / Slider (one prominent layout users expect)
+[x] Captions: show title / date under image or on hover (toggle on/off)
 [x] Hover effects: zoom, overlay, caption slide-in
 [x] Lightbox extras: caption, keyboard nav, slideshow autoplay, thumbnails bar
 
