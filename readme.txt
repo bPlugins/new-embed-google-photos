@@ -4,7 +4,7 @@ Donate link: https://www.buymeacoffee.com/abuhayat
 Tags: block, photos, google photos, gallery, Gutenberg block
 Requires at least: 6.5+
 Tested up to: 7.0
-Stable tag: 1.1.0
+Stable tag: 1.2.0
 Requires PHP: 7.1
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -100,6 +100,35 @@ You can use unlimited times as you want.
 You can post your questions on the [support forum here](https://wordpress.org/support/plugin/embed-google-photos/)
 
 
+== External Services ==
+
+This plugin connects to the following external services. Understanding what is sent, and when, helps clarify how your data is handled.
+
+= Google Photos (Google OAuth 2.0 + Google Photos Picker API) =
+
+What it is and why it is used: This plugin is a Google Photos gallery. To let you pick photos and videos from your own Google Photos account and display them on your site, it connects to Google's APIs on your server. This connection only happens after you enter your own Google API credentials (Client ID, Client Secret, Refresh Token) in the plugin settings and use the "Select Photos" flow; it is required for the plugin to function.
+
+Which endpoints are contacted and what data is sent:
+* https://oauth2.googleapis.com/token — your Client ID, Client Secret and Refresh Token are sent to exchange them for a short-lived access token.
+* https://photospicker.googleapis.com/v1 — the access token is sent (as a Bearer token) to create a picker session, check its status, and list the media items you selected. The selected photos/videos are then downloaded to your own WordPress Media Library.
+
+When it happens: only in wp-admin, triggered by an authenticated administrator connecting an account or clicking "Select Photos". No data is sent from your visitors' browsers, and the OAuth credentials/tokens never reach the frontend.
+
+Your credentials and tokens are stored only on your own server (in your WordPress database) and are sent only to Google. This plugin does not transmit them to bPlugins or any other third party.
+
+Google's terms and privacy policy:
+* Terms of Service: https://policies.google.com/terms
+* Privacy Policy: https://policies.google.com/privacy
+* Google APIs Terms of Service: https://developers.google.com/terms
+
+= Schema.org vocabulary (https://schema.org) =
+
+What it is and why it is used: On the frontend the plugin outputs Schema.org "ImageObject" structured data (JSON-LD) for each gallery image so search engines such as Google can better understand and index your images (Google Images / rich results, improving SEO).
+
+What data is sent: None. The address "https://schema.org" appears only as the standard `@context` identifier inside the JSON-LD markup — it is a vocabulary name, not a network request. The plugin does not connect to, load anything from, or send any data to schema.org. All image data stays on your own server.
+
+Terms & privacy: https://schema.org/docs/terms.html
+
 == Screenshots ==
 
 1. Settings
@@ -116,7 +145,12 @@ You can post your questions on the [support forum here](https://wordpress.org/su
 
 == Changelog ==
 
-= 1.2.0 - 13 July, 2026 =
+= 1.2.0 - 14 July, 2026 =
+* New: Lazy-load with a blurred low-res placeholder — images fade in as you scroll and off-screen images don't download until needed (faster pages, less mobile data, better CLS).
+* New: Responsive images (srcset) — each device downloads the image size it actually needs instead of one large file for all (much less data on mobile, faster LCP).
+* New: Schema.org ImageObject structured data (JSON-LD) for gallery images, so search engines can index them for Google Images / rich results.
+* New: Per-image alt text editing in the block (Image Alt Text panel), seeded from the Media Library — improves accessibility and image SEO.
+* Doc: Documented external services (Google Photos API and the Schema.org vocabulary) in the readme.
 * New: Video support — pick images and videos together; videos show a poster with a play icon and open in the lightbox.
 * New: Media Type filter (All Media / Photos / Videos) applied to the selected media.
 * New: Layout options — Grid, Masonry, and Carousel (Swiper) with autoplay, loop, navigation arrows and pagination dots.
@@ -172,8 +206,8 @@ You can post your questions on the [support forum here](https://wordpress.org/su
 
 == Upgrade Notice ==
 
-= 1.2.0 - 13 July, 2026 =
-* Adds video support, Masonry & Carousel layouts, Load More/Pagination, captions, and a redesigned authorization flow.
+= 1.2.0 - 14 July, 2026 =
+* Adds lazy-load with blur placeholder, responsive images (srcset), Schema.org image markup, per-image alt text, video support, Masonry & Carousel layouts, Load More/Pagination, captions, and a redesigned authorization flow.
 
 = 1.1.0 - 5 July, 2026 =
 * Security release: update immediately. Fixes exposure of Google Photos OAuth credentials (including the refresh_token) to unauthenticated visitors.

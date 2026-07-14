@@ -309,10 +309,14 @@ class GooglePhotosAPI
                 continue;
             }
 
-            $full  = wp_get_attachment_image_url($attachment_id, 'full');
-            $large = wp_get_attachment_image_url($attachment_id, 'large');
-            $small = wp_get_attachment_image_url($attachment_id, 'thumbnail');
-            $meta  = wp_get_attachment_metadata($attachment_id);
+            $full   = wp_get_attachment_image_url($attachment_id, 'full');
+            $large  = wp_get_attachment_image_url($attachment_id, 'large');
+            $small  = wp_get_attachment_image_url($attachment_id, 'thumbnail');
+            $srcset = wp_get_attachment_image_srcset($attachment_id, 'full');
+            $meta   = wp_get_attachment_metadata($attachment_id);
+            // Seed the alt text from any alt already set on the Media Library
+            // attachment, so images that were described once carry it over.
+            $alt    = get_post_meta($attachment_id, '_wp_attachment_image_alt', true);
 
             $photos[] = [
                 'id'          => $attachment_id,
@@ -321,6 +325,10 @@ class GooglePhotosAPI
                 'thumb'       => $large ? $large : ($full ? $full : ''),
                 // Tiny image used as the blurred "blur-up" placeholder.
                 'placeholder' => $small ? $small : '',
+                // Responsive candidates so the browser picks the right size.
+                'srcset'      => $srcset ? $srcset : '',
+                // Alt text (editable per image in the block; SEO + accessibility).
+                'alt'         => $alt ? $alt : '',
                 'title'       => $title,
                 'date'        => $created,
                 'width'       => isset($meta['width']) ? (int) $meta['width'] : 0,

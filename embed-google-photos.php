@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Gallery For Google Photos
  * Description: Embed stunning Google Photos galleries directly into your WordPress site with the Google Photos Block plugin.
- * Version: 1.1.0
+ * Version: 1.2.0
  * Author: bPlugins
  * Author URI: http://bplugins.com
  * License: GPLv3
@@ -27,10 +27,10 @@ if (function_exists('bpgpb_fs')) {
                 require_once dirname(__FILE__) . '/vendor/freemius-lite/start.php';
 
                 $bpgpbConfig = array(
-                    'id'         => '18779', // TODO: replace with the Freemius product ID.
+                    'id'         => '34444',
                     'slug'       => 'embed-google-photos',
                     'type'       => 'plugin',
-                    'public_key' => 'pk_REPLACE_ME', // TODO: replace with the Freemius public key.
+                    'public_key' => 'pk_cdef836737c97094c8ea2d152212b',
                     'is_premium' => false,
                     'menu'       => array(
                         'slug'       => 'edit.php?post_type=bpgpb_gallery',
@@ -74,7 +74,7 @@ class bpgpb_Embed_Google_Photos {
 
     public function constants_defined() {
         // Constant
-        define( 'BPGPB_PLUGIN_VERSION', isset( $_SERVER['HTTP_HOST'] ) && 'localhost' === $_SERVER['HTTP_HOST'] ? time() : '1.1.0' );
+        define( 'BPGPB_PLUGIN_VERSION', isset( $_SERVER['HTTP_HOST'] ) && 'localhost' === $_SERVER['HTTP_HOST'] ? time() : '1.2.0' );
         define('BPGPB_ASSETS_DIR', plugin_dir_url(__FILE__) . 'assets/');
         define('BPGPB_DIR_URL', plugin_dir_url(__FILE__));
         define('BPGPB_DIR_PATH', plugin_dir_path(__FILE__));

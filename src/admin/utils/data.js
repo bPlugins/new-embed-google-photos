@@ -25,9 +25,9 @@ export const dashboardInfo = (info) => {
             pricing: `https://bplugins.com/products/${slug}/pricing`,
         },
         freemius: {
-            product_id: 18779, // TODO: replace with the Freemius product ID.
+            product_id: 34444,
             plan_id: 0, // TODO: replace with the Freemius (pro) plan ID.
-            public_key: 'pk_REPLACE_ME', // TODO: replace with the Freemius public key.
+            public_key: 'pk_cdef836737c97094c8ea2d152212b',
         },
         adminUrl,
         startButton: {
@@ -51,7 +51,7 @@ export const settingsInfo = {};
 
 export const pricingInfo = {
     logo: `https://ps.w.org/${slug}/assets/icon-256x256.png`, // Optional
-    pluginId: 18779, // TODO: replace with the Freemius product ID.
+    pluginId: 34444,
     planId: 0, // TODO: replace with the Freemius (pro) plan ID.
     licenses: [
         1,

@@ -14,10 +14,11 @@ import { emUnit, perUnit, pxUnit } from '../../../../../bpl-tools/utils/options'
 import { favoriteOpt, generalStyleTabs, layoutShowOpt, mediaTypeOpt, photosOpt, ratioOpt } from '../../../utils/options';
 import General from './General/General';
 import Style from './Style/Style';
+import AltText from './AltText';
 
 
 const Settings = ({ attributes, setAttributes }) => {
-	const { photosType, favorite, albumId, mediaType, layout, carousel, caption, lightbox, video, paginationType, perPage, loadMoreText, columns, columnGap, rowGap, coverImage, imgBorder, hoverEffect, hover, captionTypo, captionColor, loadMoreBtnTypo, loadMoreBtnColors, loadMoreBtnBorder, loadMoreBtnPadding, layoutShow, album } = attributes;
+	const { selectedPhotos, photosType, favorite, albumId, mediaType, layout, carousel, caption, lightbox, video, paginationType, perPage, loadMoreText, columns, columnGap, rowGap, coverImage, imgBorder, hoverEffect, hover, captionTypo, captionColor, loadMoreBtnTypo, loadMoreBtnColors, loadMoreBtnBorder, loadMoreBtnPadding, layoutShow, album } = attributes;
 	const [device, setDevice] = useState('desktop');
 	const { title, isTitle } = album;
 
@@ -30,6 +31,7 @@ const Settings = ({ attributes, setAttributes }) => {
 			<TabPanel className='bPlTabPanel' activeClass='activeTab' tabs={generalStyleTabs} onSelect={tabController}>{tab => <>
 				{'general' === tab.name && <>
 					<General {...generalProps} />
+					<AltText selectedPhotos={selectedPhotos} setAttributes={setAttributes} />
 				</>}
 
 				{'style' === tab.name && <>

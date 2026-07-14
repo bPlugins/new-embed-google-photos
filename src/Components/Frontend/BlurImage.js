@@ -11,13 +11,15 @@ import { useEffect, useRef, useState } from 'react';
  * with IntersectionObserver).
  *
  * @param {Object} props
- * @param {string} props.src           Full-size image URL.
+ * @param {string} props.src           Full-size image URL (fallback).
  * @param {string} props.alt           Alt text.
  * @param {string} [props.placeholder] Tiny image URL shown blurred while loading.
+ * @param {string} [props.srcSet]      Responsive candidate set (WordPress srcset).
+ * @param {string} [props.sizes]       Sizes hint describing the displayed width.
  * @param {number} [props.width]       Intrinsic width (reserves space / avoids layout shift).
  * @param {number} [props.height]      Intrinsic height (reserves space / avoids layout shift).
  */
-const BlurImage = ({ src, alt, placeholder, width, height }) => {
+const BlurImage = ({ src, alt, placeholder, srcSet, sizes, width, height }) => {
 	const [loaded, setLoaded] = useState(false);
 	const [inView, setInView] = useState(false);
 	const imgRef = useRef(null);
@@ -54,6 +56,8 @@ const BlurImage = ({ src, alt, placeholder, width, height }) => {
 				ref={imgRef}
 				className={`bpgpb-item__img${loaded ? ' is-loaded' : ''}`}
 				src={inView ? src : undefined}
+				srcSet={inView && srcSet ? srcSet : undefined}
+				sizes={inView && srcSet ? sizes : undefined}
 				alt={alt}
 				width={width || undefined}
 				height={height || undefined}

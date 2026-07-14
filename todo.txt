@@ -40,21 +40,21 @@
           বাইরের ছবি scroll না করা পর্যন্ত নামে না -> পেজ হালকা, মোবাইলে ডেটা বাঁচে
        -> সুবিধা: নির্দিষ্ট-অনুপাতের বক্সে লেআউট লাফায় না (CLS / Core Web Vitals ভালো)
        -> সুবিধা: bounce কমে, ভিজিটর বেশিক্ষণ থাকে (retention)
-[ ] Responsive srcset (multiple image sizes, not just =w2048)
+[x] Responsive srcset (multiple image sizes, not just =w2048)
        -> benefit: browser downloads the size it actually needs (small on phones,
           large on desktop/retina) -> much faster loads, less bandwidth
        -> benefit: faster LCP -> better Core Web Vitals & Google ranking signal
        -> সুবিধা: ব্রাউজার দরকার অনুযায়ী সাইজ নামায় (ফোনে ছোট, ডেস্কটপ/রেটিনায় বড়)
           -> অনেক দ্রুত লোড, কম bandwidth
        -> সুবিধা: দ্রুত LCP -> ভালো Core Web Vitals ও Google র‍্যাঙ্কিং সিগন্যাল
-[ ] Schema.org ImageObject markup (Google Image SEO)
+[x] Schema.org ImageObject markup (Google Image SEO)
        -> benefit: images become eligible for Google Images / rich results ->
           extra free search traffic from image search
        -> benefit: captions, titles and licence info understood by search engines
        -> সুবিধা: ছবি Google Images / rich results-এ দেখানোর যোগ্য হয় -> ইমেজ সার্চ
           থেকে বাড়তি ফ্রি ট্রাফিক
        -> সুবিধা: ক্যাপশন, টাইটেল ও লাইসেন্স তথ্য সার্চ ইঞ্জিন বুঝতে পারে
-[ ] Per-image alt text editing (accessibility + SEO)
+[x] Per-image alt text editing (accessibility + SEO)
        -> benefit: screen readers describe each image (accessibility / WCAG)
        -> benefit: alt text is a direct Google Images ranking factor -> more SEO reach
        -> benefit: shown as fallback text if an image ever fails to load

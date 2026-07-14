@@ -252,6 +252,17 @@ const Gallery = ({ attributes, cId, isBackend = false }) => {
 		'--bpgpb-ratio': ratio,
 	};
 
+	// Tell the browser roughly how wide each image renders so it can pick the
+	// right srcset candidate. Each image spans about (100% / column-count) of the
+	// viewport at each breakpoint (matches the CSS grid + carousel breakpoints).
+	const colsD = columns.desktop ?? 3;
+	const colsT = columns.tablet ?? 2;
+	const colsM = columns.mobile ?? 1;
+	const sizesAttr =
+		`(max-width: 576px) ${Math.round(100 / colsM)}vw, ` +
+		`(max-width: 768px) ${Math.round(100 / colsT)}vw, ` +
+		`${Math.round(100 / colsD)}vw`;
+
 	// Caption text for a photo, based on the chosen source.
 	const captionText = (photo) => {
 		if ('date' === caption.source && photo.date) {
@@ -290,6 +301,8 @@ const Gallery = ({ attributes, cId, isBackend = false }) => {
 						src={poster}
 						alt={photo.alt || text || ''}
 						placeholder={photo.placeholder}
+						srcSet={photo.srcset}
+						sizes={sizesAttr}
 						width={photo.width}
 						height={photo.height}
 					/>
