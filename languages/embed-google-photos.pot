@@ -1,22 +1,27 @@
 # Copyright (C) 2026 bPlugins
-# This file is distributed under the GPLv3.
+# This file is distributed under the GPLv3 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Gallery For Google Photos 1.1.0\n"
+"Project-Id-Version: Gallery for Google Photos – Import and Display Photo Albums 1.2.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/embed-google-photos\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-07-13T06:28:36+00:00\n"
+"POT-Creation-Date: 2026-07-14T08:46:32+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: embed-google-photos\n"
 
 #. Plugin Name of the plugin
 #: embed-google-photos.php
-msgid "Gallery For Google Photos"
+msgid "Gallery for Google Photos – Import and Display Photo Albums"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: embed-google-photos.php
+msgid "https://bplugins.com/plugins/gallery-for-google-photos/"
 msgstr ""
 
 #. Description of the plugin
@@ -36,7 +41,7 @@ msgstr ""
 
 #: includes/admin-menu.php:51
 #: includes/admin-menu.php:52
-msgid "Dashboard"
+msgid "Demo & Help"
 msgstr ""
 
 #: includes/custom-post.php:34
@@ -91,17 +96,38 @@ msgstr ""
 msgid "Date"
 msgstr ""
 
-#: includes/custom-post.php:126
+#: includes/custom-post.php:127
 #: assets/js/admin.js:9
 msgid "Copy To Clipboard"
 msgstr ""
 
-#: includes/google-api.php:112
+#: includes/google-api.php:105
+msgid "Please provide the Client ID, Client Secret and Refresh Token."
+msgstr ""
+
+#: includes/google-api.php:134
 msgid "Invalid credentials. Please re-check your Client ID, Client Secret and Refresh Token."
+msgstr ""
+
+#: includes/google-api.php:198
+msgid "Could not start a Google Photos picker session. Please reconnect your account and try again."
 msgstr ""
 
 #: assets/js/admin.js:7
 msgid "Copied Successfully!"
+msgstr ""
+
+#: build/view.js:1
+msgid "videos"
+msgstr ""
+
+#: build/view.js:1
+msgid "photos"
+msgstr ""
+
+#: build/view.js:1
+#, js-format
+msgid "No %s found in this gallery."
 msgstr ""
 
 #: build/block.json

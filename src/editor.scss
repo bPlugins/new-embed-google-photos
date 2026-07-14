@@ -111,6 +111,13 @@ $primaryColor: #4527a4;
 	justify-content: center;
 	color: #4b5563;
 	font-size: 14px;
+
+	.components-button.bpgpb-btn-cancel {
+		height: auto;
+		padding: 2px 8px;
+		color: #d63503;
+		text-decoration: underline;
+	}
 }
 
 .pbgpbPhotoType {

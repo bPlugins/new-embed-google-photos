@@ -107,11 +107,23 @@ const Gallery = ({ attributes, cId, isBackend = false }) => {
 			players.length = 0;
 		};
 
+		// Escape a value before it is interpolated into a raw HTML attribute.
+		// buildItem() feeds this markup to Fancybox as `type: 'html'`, so an
+		// unescaped src/poster (both derived from author-controlled block
+		// attributes) could break out of the attribute and inject markup —
+		// stored XSS. Encoding &, ", <, > closes that off.
+		const escAttr = (val) =>
+			String(val ?? '')
+				.replace(/&/g, '&amp;')
+				.replace(/"/g, '&quot;')
+				.replace(/</g, '&lt;')
+				.replace(/>/g, '&gt;');
+
 		// Markup for a video slide. Autoplay requires the video to be muted,
 		// so force muted whenever autoplay is on.
 		const videoHtml = (a) => {
-			const src = a.getAttribute('href');
-			const poster = a.getAttribute('data-poster') || '';
+			const src = escAttr(a.getAttribute('href'));
+			const poster = escAttr(a.getAttribute('data-poster') || '');
 			const muted = video.muted || video.autoplay ? ' muted' : '';
 			const loop = video.loop ? ' loop' : '';
 			const fit = false === video.fitToWindow ? '' : ' bpgpb-plyr-wrap--fit';
@@ -123,7 +135,9 @@ const Gallery = ({ attributes, cId, isBackend = false }) => {
 		};
 
 		const buildItem = (a) => {
-			const caption = false === lightbox.caption ? '' : a.getAttribute('data-caption') || '';
+			// Fancybox renders the caption via innerHTML, so escape it — the text
+			// originates from author-controlled block attributes (photo title/date).
+			const caption = false === lightbox.caption ? '' : escAttr(a.getAttribute('data-caption') || '');
 			if (a.classList.contains('is-video')) {
 				return { type: 'html', html: videoHtml(a), caption };
 			}
@@ -305,6 +319,7 @@ const Gallery = ({ attributes, cId, isBackend = false }) => {
 						sizes={sizesAttr}
 						width={photo.width}
 						height={photo.height}
+						isBackend={isBackend}
 					/>
 					{isVideo && <span className="bpgpb-play">{playIcon}</span>}
 					{text && overlay && (

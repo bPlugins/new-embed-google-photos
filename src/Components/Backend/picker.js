@@ -7,16 +7,33 @@ const ajax = (action, data = {}) =>
 		wp.ajax.post(action, data).done(resolve).fail(reject);
 	});
 
-const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+// Resolves after `ms`, or immediately if the abort signal fires — so a Cancel
+// click doesn't have to wait out the current poll interval.
+const wait = (ms, signal) =>
+	new Promise((resolve) => {
+		const timer = setTimeout(resolve, ms);
+		if (signal) {
+			signal.addEventListener(
+				'abort',
+				() => {
+					clearTimeout(timer);
+					resolve();
+				},
+				{ once: true }
+			);
+		}
+	});
 
 /**
  * Run the full pick -> poll -> import cycle.
  *
- * @param {string}   nonce    wp_rest nonce.
- * @param {Function} onStatus Optional progress callback (receives a string).
+ * @param {string}   nonce           wp_rest nonce.
+ * @param {Function} onStatus        Optional progress callback (receives a string).
+ * @param {Object}   [options]       Extra options.
+ * @param {AbortSignal} [options.signal] Abort the wait/poll loop (Cancel button).
  * @return {Promise<Array>} Imported photos: [{ id, url, thumb, width, height }].
  */
-export async function runPicker(nonce, onStatus = () => {}) {
+export async function runPicker(nonce, onStatus = () => {}, { signal } = {}) {
 	onStatus('Creating a Google Photos session…');
 	const session = await ajax('bpgpb_create_picker_session', { nonce });
 
@@ -35,33 +52,31 @@ export async function runPicker(nonce, onStatus = () => {}) {
 
 	onStatus('Waiting for you to pick photos in Google Photos…');
 	const startedAt = Date.now();
-	// Poll at most once a second so the picker's "Done" window closes about a
-	// second after the user finishes selecting.
-	const interval = Math.min(pollIntervalMs, 1000);
+	// Poll roughly once a second (never faster than Google's suggested interval).
+	const interval = Math.max(1000, Math.min(pollIntervalMs, 2000));
 	let picked = false;
 
+	// The only reliable signal that the user finished picking is the server-side
+	// `mediaItemsSet` flag. We deliberately do NOT treat `popup.closed` as a
+	// "cancelled" signal: on live HTTPS sites Google routes the picker through
+	// its login/consent screen, whose COOP policy severs our reference to the
+	// popup so `popup.closed` reads true even while the window is still open.
+	// Relying on it made the flow give up after a few seconds and import nothing.
+	// So we simply poll until the selection registers or the timeout elapses.
 	while (Date.now() - startedAt < timeoutMs) {
-		await wait(interval);
-
-		// Authoritative signal: the selection is registered server-side. Check
-		// this first, every iteration, regardless of the popup's state.
-		const status = await ajax('bpgpb_poll_picker_session', { nonce, sessionId });
-		if (status && status.mediaItemsSet) {
-			picked = true;
+		if (signal?.aborted) {
 			break;
 		}
 
-		// The user closed the picker window but nothing has registered yet. Give
-		// Google a short grace period (mediaItemsSet can lag a couple seconds
-		// after "Done") before concluding it was a cancel.
-		if (popup && popup.closed) {
-			for (let i = 0; i < 4 && !picked; i++) {
-				await wait(1000);
-				const late = await ajax('bpgpb_poll_picker_session', { nonce, sessionId });
-				if (late && late.mediaItemsSet) {
-					picked = true;
-				}
-			}
+		await wait(interval, signal);
+
+		if (signal?.aborted) {
+			break;
+		}
+
+		const status = await ajax('bpgpb_poll_picker_session', { nonce, sessionId });
+		if (status && status.mediaItemsSet) {
+			picked = true;
 			break;
 		}
 	}

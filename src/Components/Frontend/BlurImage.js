@@ -18,13 +18,21 @@ import { useEffect, useRef, useState } from 'react';
  * @param {string} [props.sizes]       Sizes hint describing the displayed width.
  * @param {number} [props.width]       Intrinsic width (reserves space / avoids layout shift).
  * @param {number} [props.height]      Intrinsic height (reserves space / avoids layout shift).
+ * @param {boolean} [props.isBackend]  True in the block editor — load immediately (see below).
  */
-const BlurImage = ({ src, alt, placeholder, srcSet, sizes, width, height }) => {
+const BlurImage = ({ src, alt, placeholder, srcSet, sizes, width, height, isBackend = false }) => {
 	const [loaded, setLoaded] = useState(false);
-	const [inView, setInView] = useState(false);
+	// In the block editor the canvas is an iframe, and an IntersectionObserver
+	// created in the main frame never reports the iframe's elements as
+	// intersecting — so the src would never be set and imported photos would
+	// show up blank. Skip lazy-loading there and load the image immediately.
+	const [inView, setInView] = useState(isBackend);
 	const imgRef = useRef(null);
 
 	useEffect(() => {
+		if (isBackend) {
+			return undefined;
+		}
 		const el = imgRef.current;
 		if (!el) {
 			return undefined;

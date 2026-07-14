@@ -26,6 +26,15 @@ const Style = ({ attributes, cId }) => {
 	const sl = `#bpgpb-${cId}`;
 	const btnColor = loadMoreBtnColors.color || '#fff';
 	const btnBg = loadMoreBtnColors.bg || '#2f5aae';
+
+	// Security: everything below is injected into a raw <style> via
+	// dangerouslySetInnerHTML. Block attributes are author-controlled, so a
+	// value like `red}</style><img src=x onerror=alert(1)>` would break out of
+	// the style element and execute script for every visitor (stored XSS).
+	// `<` and `>` are never valid anywhere inside CSS, so stripping them from
+	// the final string makes it impossible to close the <style> tag or open any
+	// element, neutralising the injection while leaving legitimate styling intact.
+	const hardenCSS = (css) => css.replace(/\s+/g, ' ').replace(/[<>]/g, '');
 	const typo = getTypoCSS(`${sl} .bpgpb-load-more`, loadMoreBtnTypo) || {};
 	const capTypo = getTypoCSS(`${sl} .bpgpb-caption`, captionTypo) || {};
 
@@ -37,7 +46,7 @@ const Style = ({ attributes, cId }) => {
 	return (
 		<style
 			dangerouslySetInnerHTML={{
-				__html: `
+				__html: hardenCSS(`
 					${typo.googleFontLink || ''}
 					${typo.styles || ''}
 					${capTypo.googleFontLink || ''}
@@ -75,7 +84,7 @@ const Style = ({ attributes, cId }) => {
 						background: ${btnBg};
 						border-color: ${btnBg};
 					}
-				`.replace(/\s+/g, ' '),
+				`),
 			}}
 		/>
 	);

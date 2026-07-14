@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useBlockProps } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
 import { Button, Spinner } from '@wordpress/components';
@@ -9,7 +9,7 @@ import { runPicker } from './picker';
 import Settings from './Settings/Settings';
 import Gallery from '../Frontend/Gallery';
 import Style from '../Common/Style';
-import ClipBoard from './ClipBoard';
+import ClipBoard from './ShortcodeCopy';
 import { googleIcon } from '../../utils/icons';
 
 const Edit = (props) => {
@@ -34,8 +34,8 @@ const Edit = (props) => {
 
 	const blockProps = useBlockProps({ id: `BPGPBBlockDirectory-${clientId}` });
 
-	// Connection check (admin-only handler). Presence of an access token means
-	// the site owner has connected their Google credentials.
+	// Connection check (admin-only handler). The handler returns only a boolean;
+	// the access token itself never leaves the server.
 	const { isLoading, data: token, refetch } = useWPAjax('bpgpb_retrieve_access_token', {
 		nonce: window.wpApiSettings?.nonce,
 	});
@@ -51,13 +51,19 @@ const Edit = (props) => {
 	const [busy, setBusy] = useState(false);
 	const [status, setStatus] = useState('');
 	const [isError, setIsError] = useState(false);
+	// Lets the Cancel button stop an in-flight picker session.
+	const abortRef = useRef(null);
 
 	const pickPhotos = async () => {
 		setBusy(true);
 		setIsError(false);
 		setStatus('');
+		const controller = new AbortController();
+		abortRef.current = controller;
 		try {
-			const photos = await runPicker(window.wpApiSettings?.nonce, setStatus);
+			const photos = await runPicker(window.wpApiSettings?.nonce, setStatus, {
+				signal: controller.signal,
+			});
 			if (photos.length) {
 				setAttributes({ selectedPhotos: photos });
 				// Clear the progress message; the gallery preview is the feedback.
@@ -74,7 +80,13 @@ const Edit = (props) => {
 					__('Something went wrong. Please try again.', 'embed-google-photos')
 			);
 		}
+		abortRef.current = null;
 		setBusy(false);
+	};
+
+	const cancelPicker = () => {
+		abortRef.current?.abort();
+		setStatus(__('Cancelling…', 'embed-google-photos'));
 	};
 
 	const openAuthSidebar = () =>
@@ -94,7 +106,7 @@ const Edit = (props) => {
 	}
 
 	// Not connected yet — send the admin to the authorization sidebar.
-	if (!token?.access_token) {
+	if (!token?.connected) {
 		return (
 			<div {...blockProps}>
 				<div className="bpgpbSelectArea bpgpb-card">
@@ -138,6 +150,13 @@ const Edit = (props) => {
 						<div className="bpgpb-picker-status">
 							<Spinner />
 							<span>{status || __('Working…', 'embed-google-photos')}</span>
+							<Button
+								variant="tertiary"
+								className="bpgpb-btn-cancel"
+								onClick={cancelPicker}
+							>
+								{__('Cancel', 'embed-google-photos')}
+							</Button>
 						</div>
 					) : (
 						<>

@@ -27,6 +27,42 @@ $bpgpb_id  = 'bpgpbGooglePhotos-' . $bpgpb_cid;
 $bpgpb_schema_items = array();
 if ( ! empty( $attributes['selectedPhotos'] ) && is_array( $attributes['selectedPhotos'] ) ) {
 	foreach ( $attributes['selectedPhotos'] as &$bpgpb_photo ) {
+		if ( ! is_array( $bpgpb_photo ) ) {
+			continue;
+		}
+
+		// SECURITY: block attributes are author-controlled and are re-emitted to
+		// the frontend (as JSON in data-attributes, then rehydrated by view.js).
+		// A crafted title/url would otherwise reach the Fancybox lightbox caption
+		// and video markup — both rendered via innerHTML — as stored XSS. Treat
+		// every field as untrusted and normalise it here, before it is output.
+		if ( isset( $bpgpb_photo['id'] ) ) {
+			$bpgpb_photo['id'] = absint( $bpgpb_photo['id'] );
+		}
+		foreach ( array( 'url', 'thumb', 'placeholder' ) as $bpgpb_url_key ) {
+			if ( isset( $bpgpb_photo[ $bpgpb_url_key ] ) ) {
+				$bpgpb_photo[ $bpgpb_url_key ] = esc_url_raw( (string) $bpgpb_photo[ $bpgpb_url_key ] );
+			}
+		}
+		foreach ( array( 'title', 'date', 'alt' ) as $bpgpb_text_key ) {
+			if ( isset( $bpgpb_photo[ $bpgpb_text_key ] ) ) {
+				$bpgpb_photo[ $bpgpb_text_key ] = sanitize_text_field( (string) $bpgpb_photo[ $bpgpb_text_key ] );
+			}
+		}
+		if ( isset( $bpgpb_photo['type'] ) ) {
+			$bpgpb_photo['type'] = in_array( $bpgpb_photo['type'], array( 'image', 'video' ), true ) ? $bpgpb_photo['type'] : 'image';
+		}
+		foreach ( array( 'width', 'height' ) as $bpgpb_int_key ) {
+			if ( isset( $bpgpb_photo[ $bpgpb_int_key ] ) ) {
+				$bpgpb_photo[ $bpgpb_int_key ] = (int) $bpgpb_photo[ $bpgpb_int_key ];
+			}
+		}
+		if ( isset( $bpgpb_photo['srcset'] ) ) {
+			// srcset is only ever used as a DOM attribute (React srcSet), but strip
+			// any angle brackets/quotes as defence in depth.
+			$bpgpb_photo['srcset'] = preg_replace( '/[<>"\']/', '', (string) $bpgpb_photo['srcset'] );
+		}
+
 		$bpgpb_att_id = isset( $bpgpb_photo['id'] ) ? absint( $bpgpb_photo['id'] ) : 0;
 		if ( ! $bpgpb_att_id ) {
 			continue;
@@ -122,6 +158,6 @@ if ( ! empty( $bpgpb_schema_items ) ) {
 		'@type'           => 'ItemList',
 		'itemListElement' => $bpgpb_schema_items,
 	);
-	echo '<script type="application/ld+json">' . wp_json_encode( $bpgpb_schema ) . '</script>';
+	echo '<script type="application/ld+json">' . wp_json_encode( $bpgpb_schema, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT ) . '</script>';
 }
 ?>
