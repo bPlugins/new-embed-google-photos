@@ -4,7 +4,6 @@ import Welcome from '../../../../bpl-tools/Admin/Welcome';
 import Demos from '../../../../bpl-tools/Admin/Demos';
 import Pricing from '../../../../bpl-tools/Admin/Pricing';
 import FeatureCompare from '../../../../bpl-tools/Admin/FeatureCompare';
-import Activation from '../../../../bpl-tools/Admin/Activation';
 import OurPlugins from '../../../../bpl-tools/Admin/OurPlugins';
 import { Settings } from '../../../../bpl-tools/Admin';
 
@@ -12,7 +11,7 @@ import Layout from './Layout';
 import { demoInfo, pricingInfo, settingsInfo, welcomeInfo } from '../utils/data';
 
 const App = (props) => {
-    const { isPremium, adminUrl } = props;
+    const { adminUrl } = props;
 
     return <Router>
         <Routes>
@@ -22,13 +21,12 @@ const App = (props) => {
 
                 <Route path='demos' element={<Demos {...props} demoInfo={demoInfo} />} />
 
-                {!isPremium && <Route path='pricing'
-                    element={<Pricing pricingInfo={pricingInfo} options={{}} {...props} />} />}
+                <Route path='pricing'
+                    element={<Pricing pricingInfo={pricingInfo} options={{}} {...props} />} />
 
-                {!isPremium && <Route path='feature-comparison'
-                    element={<FeatureCompare plans={['free', 'pro']} {...props} />} />}
+                <Route path='feature-comparison'
+                    element={<FeatureCompare plans={['free', 'pro']} {...props} />} />
 
-                <Route path='activation' element={<Activation {...props} />} />
                 <Route path='settings' element={<Settings {...props} {...settingsInfo} />} />
                 <Route path='our-plugins' element={<OurPlugins {...props} />} />
 

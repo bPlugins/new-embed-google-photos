@@ -26,7 +26,7 @@ export const dashboardInfo = (info) => {
         },
         freemius: {
             product_id: 34444,
-            plan_id: 0, // TODO: replace with the Freemius (pro) plan ID.
+            plan_id: 56638, // Freemius "pro" plan ID for product 34444.
             public_key: 'pk_cdef836737c97094c8ea2d152212b',
         },
         adminUrl,
@@ -52,7 +52,7 @@ export const settingsInfo = {};
 export const pricingInfo = {
     logo: `https://ps.w.org/${slug}/assets/icon-256x256.png`, // Optional
     pluginId: 34444,
-    planId: 0, // TODO: replace with the Freemius (pro) plan ID.
+    planId: 56638, // Freemius "pro" plan ID for product 34444.
     licenses: [
         1,
         3,

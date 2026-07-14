@@ -28,8 +28,10 @@ const playIcon = (
  * @param {Object}  props.attributes Block attributes.
  * @param {string}  props.cId        Stable client id used to scope styles + group the lightbox.
  * @param {boolean} props.isBackend  True when rendered inside the block editor iframe.
+ * @param {Function} [props.setAttributes] Block attribute setter (editor only) — lets
+ *                                         empty states offer a recovery action.
  */
-const Gallery = ({ attributes, cId, isBackend = false }) => {
+const Gallery = ({ attributes, cId, isBackend = false, setAttributes }) => {
 	const {
 		selectedPhotos = [],
 		columns = {},
@@ -246,6 +248,15 @@ const Gallery = ({ attributes, cId, isBackend = false }) => {
 								sprintf(__('No %s found in this gallery.', 'embed-google-photos'), typeLabel)
 							}
 						</p>
+						{isBackend && setAttributes && (
+							<button
+								type="button"
+								className="bpgpb-empty-notice__reset"
+								onClick={() => setAttributes({ mediaType: 'all_media' })}
+							>
+								{__('Show all media', 'embed-google-photos')}
+							</button>
+						)}
 					</div>
 				</div>
 			);

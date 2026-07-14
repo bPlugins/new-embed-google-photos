@@ -31,7 +31,7 @@ if (function_exists('bpgpb_fs')) {
 
                 $bpgpbConfig = array(
                     'id'         => '34444',
-                    'slug'       => 'embed-google-photos',
+                    'slug'       => 'wp-google-photos',
                     'type'       => 'plugin',
                     'public_key' => 'pk_cdef836737c97094c8ea2d152212b',
                     'is_premium' => false,
@@ -92,14 +92,14 @@ class bpgpb_Embed_Google_Photos {
 
     /**
      * Runs once when the plugin is activated. Set a flag so the next admin page
-     * load redirects the user to the Galleries screen (where the shortcodes live).
+     * load redirects the user to the dashboard Pricing page.
      */
     public function onActivate() {
         add_option('bpgpb_activation_redirect', true);
     }
 
     /**
-     * Consume the activation flag and redirect to the Galleries (shortcode) list.
+     * Consume the activation flag and redirect to the dashboard Pricing page.
      * Skipped during bulk plugin activation so we don't hijack that flow.
      */
     public function activationRedirect() {
@@ -115,7 +115,9 @@ class bpgpb_Embed_Google_Photos {
             return;
         }
 
-        wp_safe_redirect(admin_url('edit.php?post_type=bpgpb_gallery'));
+        // The dashboard is a React (HashRouter) app; "#/pricing" opens its
+        // Pricing route. The hash fragment is preserved by the browser.
+        wp_safe_redirect(admin_url('edit.php?post_type=bpgpb_gallery&page=bpgpb-dashboard#/pricing'));
         exit;
     }
 

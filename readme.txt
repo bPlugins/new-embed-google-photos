@@ -18,13 +18,52 @@ The Embed Google Photos plugin offers a seamless solution for integrating beauti
 **[Demos](https://bplugins.com/products/embed-google-photos/#demos)** | **[Documentation](https://bplugins.com/docs/embed-google-photos/)**  
 
 = Features =
-- Display all photos from Google Photos.
-- Show all albums contained within Google Photos.
-- Display photos from specific albums.
-- Customize the layout columns with various options.
-- Set image aspect ratios.
+
+**Import & Connection**
+- Import photos **and** videos directly from Google Photos using the official Google Photos Picker.
+- Imported media is saved to your WordPress Media Library.
+- Self-hosted OAuth — your own Google credentials stay on your server and are never sent to us.
+- Authorization sidebar with field validation, loading state, and connect/disconnect.
+- Media Type filter — show All Media, Photos only, or Videos only.
+
+**Layouts**
+- Grid layout (fully responsive).
+- Masonry layout (Pinterest style — each image keeps its own ratio).
+- Carousel / Slider with autoplay, loop, navigation arrows, and pagination dots.
+- Responsive columns — separate column counts for desktop, tablet, and mobile.
+- Adjustable column gap and row gap.
+- Image aspect ratio control (16:9, 4:3, 1:1, 3:4, 9:16).
+- Image border — width, style, color, and radius.
+
+**Captions & Hover**
+- Captions from the image title or date.
+- Caption position — below the image or as an overlay on hover.
+- Caption typography and color controls.
+- Hover effects — zoom, overlay, and caption slide-in.
+
+**Lightbox**
+- Fancybox lightbox with photo and video playback.
+- Lightbox caption, keyboard navigation, slideshow autoplay, and thumbnails bar.
+- Video options — controls, autoplay, muted, loop, and fit-to-window.
+
+**Pagination**
+- Show All, Load More, or numbered Pagination.
+- Configurable items per page.
+- Custom "Load More" button text.
 - Customize the "Load More" button's color, typography, border, and padding.
-- Add borders to images.
+
+**Performance & SEO**
+- Lazy-load images with a blur / low-res placeholder for an instant-feeling page.
+- Responsive srcset so the browser downloads the right image size (faster loads, less bandwidth).
+- Schema.org ImageObject markup for Google Images and rich results.
+- Per-image alt text editing for accessibility and SEO.
+
+**Usability**
+- Drag-to-reorder selected photos in the editor.
+- Shortcode support — [google_photos id=..] to embed outside Gutenberg.
+- Polished empty / not-connected states with guided actions.
+- Modern React admin dashboard.
+- Works with any WordPress theme and supports wide / full alignment.
 
 = How to use =
 - First, install the Embed Google Photos plugin.

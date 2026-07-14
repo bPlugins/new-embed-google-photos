@@ -97,7 +97,7 @@ const Edit = (props) => {
 	if (isLoading) {
 		return (
 			<div {...blockProps}>
-				<div className="bpgpb-loading">
+				<div className="bpgpb-loading" role="status" aria-live="polite">
 					<Spinner />
 					<span>{__('Checking connection…', 'embed-google-photos')}</span>
 				</div>
@@ -142,12 +142,13 @@ const Edit = (props) => {
 						attributes={attributes}
 						cId={attributes.cId || clientId}
 						isBackend={true}
+						setAttributes={setAttributes}
 					/>
 				</div>
 
 				<div className={`bpgpbSelectArea${selectedPhotos.length ? ' is-compact' : ' bpgpb-card'}`}>
 					{busy ? (
-						<div className="bpgpb-picker-status">
+						<div className="bpgpb-picker-status" role="status" aria-live="polite">
 							<Spinner />
 							<span>{status || __('Working…', 'embed-google-photos')}</span>
 							<Button
