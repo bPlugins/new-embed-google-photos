@@ -63,7 +63,7 @@
        -> সুবিধা: ছবি লোড না হলে fallback টেক্সট হিসেবে দেখায়
 
 -- Usability --
-[ ] Drag-to-reorder selected photos in the editor
+[x] Drag-to-reorder selected photos in the editor
 [x] Shortcode support: [google_photos id=..] (use outside Gutenberg)
 [ ] Empty / not-connected states polish (mostly done)
 

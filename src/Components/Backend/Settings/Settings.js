@@ -15,6 +15,7 @@ import { favoriteOpt, generalStyleTabs, layoutShowOpt, mediaTypeOpt, photosOpt, 
 import General from './General/General';
 import Style from './Style/Style';
 import AltText from './AltText';
+import ReorderPhotos from './ReorderPhotos';
 
 
 const Settings = ({ attributes, setAttributes }) => {
@@ -31,6 +32,7 @@ const Settings = ({ attributes, setAttributes }) => {
 			<TabPanel className='bPlTabPanel' activeClass='activeTab' tabs={generalStyleTabs} onSelect={tabController}>{tab => <>
 				{'general' === tab.name && <>
 					<General {...generalProps} />
+					<ReorderPhotos selectedPhotos={selectedPhotos} setAttributes={setAttributes} />
 					<AltText selectedPhotos={selectedPhotos} setAttributes={setAttributes} />
 				</>}
 
