@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { __ } from '@wordpress/i18n';
 import { Notice, PanelBody, PanelRow, SelectControl, RangeControl, TextControl, ToggleControl, __experimentalUnitControl as UnitControl } from '@wordpress/components';
 
-import { Label } from '../../../../../../bpl-tools/Components';
+import { Label, Notice as ProNotice } from '../../../../../../bpl-tools/Components';
 import { BDevice } from '../../../../../../bpl-tools/Components/Deprecated';
 import { emUnit, perUnit, pxUnit } from '../../../../../../bpl-tools/utils/options';
 import { captionPositionOpt, captionSourceOpt, layoutOpt, mediaTypeOpt, paginationOpt, ratioOpt } from '../../../../utils/options';
@@ -17,6 +17,22 @@ const General = ({ setAttributes, mediaType, layout, carousel = {}, caption = {}
     return <>
         <PanelBody className='bPlPanelBody' title={__('Media Type', 'embed-google-photos')} initialOpen={true}>
             <SelectControl label={__('Media Type', 'embed-google-photos')} labelPosition='side' value={mediaType} options={mediaTypeOpt} onChange={val => setAttributes({ mediaType: val })} />
+
+            <ProNotice status='premium' isIcon={true} className='mt10'>
+                {__('Add More Photos — keep adding to a gallery over multiple picks to build large, unlimited galleries — is available in the Pro version.', 'embed-google-photos')}
+            </ProNotice>
+
+            <ProNotice status='premium' isIcon={true} className='mt10'>
+                {__('Album Auto-Sync — link a shared Google Photos album and new photos appear automatically — is available in the Pro version.', 'embed-google-photos')}
+            </ProNotice>
+
+            <ProNotice status='premium' isIcon={true} className='mt10'>
+                {__('Convert imported images to WebP (smaller, faster-loading) with the Pro version.', 'embed-google-photos')}
+            </ProNotice>
+
+            <ProNotice status='premium' isIcon={true} className='mt10'>
+                {__('Stamp your logo as a watermark on imported photos with the Pro version.', 'embed-google-photos')}
+            </ProNotice>
         </PanelBody>
 
         <PanelBody className='bPlPanelBody' title={__('Caption', 'embed-google-photos')} initialOpen={false}>
@@ -41,6 +57,10 @@ const General = ({ setAttributes, mediaType, layout, carousel = {}, caption = {}
             <ToggleControl className='mt10' label={__('Slideshow Autoplay', 'embed-google-photos')} checked={!!lightbox.slideshow} onChange={val => setLightbox('slideshow', val)} />
 
             {lightbox.slideshow && <RangeControl className='mt10' label={__('Slideshow Speed (ms)', 'embed-google-photos')} value={lightbox.slideshowSpeed || 3000} onChange={val => setLightbox('slideshowSpeed', val)} min={1000} max={10000} step={500} />}
+
+            <ProNotice status='premium' isIcon={true} className='mt10'>
+                {__('Premium lightbox skins (Dark, Light, Glass, Minimal) are available in the Pro version.', 'embed-google-photos')}
+            </ProNotice>
         </PanelBody>
 
         <PanelBody className='bPlPanelBody' title={__('Video', 'embed-google-photos')} initialOpen={false}>
@@ -53,6 +73,10 @@ const General = ({ setAttributes, mediaType, layout, carousel = {}, caption = {}
             <ToggleControl className='mt10' label={__('Loop', 'embed-google-photos')} checked={!!video.loop} onChange={val => setVideo('loop', val)} />
 
             <ToggleControl className='mt10' label={__('Fit To Window Height', 'embed-google-photos')} help={__('Fit the video player to the window height (keeping aspect ratio). Turn off to use the default width-based height.', 'embed-google-photos')} checked={false !== video.fitToWindow} onChange={val => setVideo('fitToWindow', val)} />
+
+            <ProNotice status='premium' isIcon={true} className='mt10'>
+                {__('Autoplay videos right in the gallery grid as live previews with the Pro version.', 'embed-google-photos')}
+            </ProNotice>
         </PanelBody>
 
         <PanelBody className='bPlPanelBody' title={__('Pagination', 'embed-google-photos')} initialOpen={false}>
@@ -63,6 +87,12 @@ const General = ({ setAttributes, mediaType, layout, carousel = {}, caption = {}
             {paginationType === 'load_more' && <TextControl className='mt10' label={__('Button Text', 'embed-google-photos')} value={loadMoreText} onChange={val => setAttributes({ loadMoreText: val })} />}
         </PanelBody>
 
+        {'carousel' !== layout && <PanelBody className='bPlPanelBody' title={__('Frontend Filter', 'embed-google-photos')} initialOpen={false}>
+            <ProNotice status='premium' isIcon={true}>
+                {__('Let visitors filter the gallery by Photos / Videos on the frontend (isotope-style) with the Pro version.', 'embed-google-photos')}
+            </ProNotice>
+        </PanelBody>}
+
         {'masonry' !== layout && <PanelBody className='bPlPanelBody' title={__('Image Aspect Ratio', 'embed-google-photos')} initialOpen={false}>
             <SelectControl className="mt15" label={__('Ratio', 'embed-google-photos')} labelPosition="side" value={coverImage?.ratio} options={ratioOpt} onChange={(val) => {
                 setAttributes({ coverImage: { ...coverImage, ratio: val } })
@@ -71,6 +101,10 @@ const General = ({ setAttributes, mediaType, layout, carousel = {}, caption = {}
 
         <PanelBody className='bPlPanelBody' title={__('Layout', 'embed-google-photos')} initialOpen={false}>
             <SelectControl label={__('Layout', 'embed-google-photos')} labelPosition='side' value={layout} options={layoutOpt} onChange={val => setAttributes({ layout: val })} />
+
+            <ProNotice status='premium' isIcon={true} className='mt10'>
+                {__('Justified and Mosaic layouts are available in the Premium version.', 'embed-google-photos')}
+            </ProNotice>
 
             <PanelRow className='mt15'>
                 <Label mt='0'>{__('Columns:', 'embed-google-photos')}</Label>
@@ -94,6 +128,10 @@ const General = ({ setAttributes, mediaType, layout, carousel = {}, caption = {}
             <ToggleControl className='mt10' label={__('Navigation Arrows', 'embed-google-photos')} checked={!!carousel.arrows} onChange={val => setCarousel('arrows', val)} />
 
             <ToggleControl className='mt10' label={__('Pagination Dots', 'embed-google-photos')} checked={!!carousel.dots} onChange={val => setCarousel('dots', val)} />
+
+            <ProNotice status='premium' isIcon={true} className='mt10'>
+                {__('Advanced carousel options (effects, transition speed, centered slides, free mode…) are available in the Pro version.', 'embed-google-photos')}
+            </ProNotice>
         </PanelBody>}
     </>
 }

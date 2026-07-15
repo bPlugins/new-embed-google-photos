@@ -1,7 +1,7 @@
 import { __ } from '@wordpress/i18n';
 import { PanelBody, SelectControl, RangeControl, __experimentalBoxControl as BoxControl, } from '@wordpress/components';
 import { produce } from 'immer';
-import { Typography, ColorsControl, ColorControl } from '../../../../../../bpl-tools/Components';
+import { Typography, ColorsControl, ColorControl, Notice as ProNotice } from '../../../../../../bpl-tools/Components';
 import { BorderControl } from '../../../../../../bpl-tools/Components/Deprecated';
 
 import { emUnit, pxUnit } from '../../../../../../bpl-tools/utils/options';
@@ -27,6 +27,10 @@ const Style = ({ setAttributes, paginationType, imgBorder, hoverEffect, hover = 
             {'overlay' === effect && <ColorControl className='mt10' label={__('Overlay Color', 'embed-google-photos')} value={hover.overlayColor || 'rgba(0,0,0,0.4)'} defaultColor='rgba(0,0,0,0.4)' onChange={val => setHover('overlayColor', val)} />}
 
             {'none' !== effect && <RangeControl className='mt10' label={__('Animation Speed (ms)', 'embed-google-photos')} value={hover.duration ?? 450} onChange={val => setHover('duration', val)} min={0} max={2000} step={50} />}
+
+            <ProNotice status='premium' isIcon={true} className='mt10'>
+                {__('Pro unlocks advanced image styling — box shadow, advanced (per-corner) radius, gradient overlays, grayscale-to-color, hover icon — plus per-image custom links, right-click / download protection and password-protected galleries.', 'embed-google-photos')}
+            </ProNotice>
         </PanelBody>
 
         {caption.show && <PanelBody className='bPlPanelBody' title={__('Caption', 'embed-google-photos')} initialOpen={false}>

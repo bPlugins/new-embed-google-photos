@@ -4,6 +4,7 @@ import { useSelect } from '@wordpress/data';
 import { Button, Spinner } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
+import { Notice as ProNotice } from '../../../../bpl-tools/Components';
 import useWPAjax from '../../hooks/useWPAjax';
 import { runPicker } from './picker';
 import Settings from './Settings/Settings';
@@ -177,6 +178,9 @@ const Edit = (props) => {
 									? __('Change photos', 'embed-google-photos')
 									: __('Select from Google Photos', 'embed-google-photos')}
 							</Button>
+							<ProNotice status="premium" isIcon={true} className="mt10">
+								{__('Auto-sync a shared Google Photos album — new photos appear automatically — with the Pro version.', 'embed-google-photos')}
+							</ProNotice>
 							{status && <p className={`bpgpb-picker-note${isError ? ' is-error' : ''}`}>{status}</p>}
 						</>
 					)}
