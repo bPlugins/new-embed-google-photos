@@ -21,7 +21,7 @@ export const dashboardInfo = (info) => {
         },
         pages: {
             org: `https://wordpress.org/plugins/${slug}/`,
-            docs: `https://bplugins.com/docs/${slug}/`,
+            docs: `https://bplugins.github.io/new-embed-google-photos/`,
             pricing: `https://bplugins.com/products/${slug}/pricing`,
         },
         freemius: {

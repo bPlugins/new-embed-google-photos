@@ -149,7 +149,7 @@ const RenderPlugin = () => {
 							<p className="bpgpb-auth-head__text">
 								{__('Enter your Google API credentials to connect your account.', 'embed-google-photos')}
 								{' '}
-								<a target="_blank" rel="noreferrer" href="https://bplugins.com/docs/embed-google-photos/guides/">
+								<a target="_blank" rel="noreferrer" href="https://bplugins.github.io/new-embed-google-photos/">
 									{__('Need help?', 'embed-google-photos')}
 								</a>
 							</p>

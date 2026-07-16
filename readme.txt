@@ -4,7 +4,7 @@ Donate link: https://www.buymeacoffee.com/abuhayat
 Tags: block, photos, google photos, gallery, album
 Requires at least: 6.5
 Tested up to: 7.0
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 Requires PHP: 7.1
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -197,6 +197,9 @@ You can post your questions on the [support forum here](https://wordpress.org/su
 
 == Changelog ==
 
+= 1.2.2 - 16 July, 2026 =
+* Minor bug fix.
+
 = 1.2.1 - 14 July, 2026 =
 * Important: Google retired the old Photos Library API, so older galleries may stop showing images. Now uses Google's new Photos Picker — reconnect your account and re-select your photos (they import into your Media Library and keep working).
 * New: video support, Grid/Masonry/Carousel layouts, Load More & Pagination, captions, and image aspect-ratio & border controls.
@@ -276,7 +279,7 @@ Important: Google shut down the old Google Photos API this plugin used, so galle
 == Source Code ==
 
 You can find the source code, report bugs, and contribute to the development of this plugin on our GitHub repository:
-[**Embed Google Photos on GitHub**](https://github.com/bPlugins/embed-google-photos) 
+[**Embed Google Photos on GitHub**](https://github.com/bPlugins/new-embed-google-photos)
 
 
 == External Services ==
