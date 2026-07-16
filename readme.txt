@@ -177,6 +177,10 @@ Yes. In the free version you can filter by media type (All, Photos, Videos) in t
 
 Unlimited. You can create as many galleries as you need.
 
+= Why do my Google Photos credentials/refresh token expire after 7 days? =
+
+If your Google Cloud OAuth app is set to "Testing" mode, Google automatically expires refresh tokens after 7 days, requiring you to reconnect your account. To prevent this, go to your Google Cloud Console under APIs & Services > OAuth consent screen, and change the Publishing status of your app from "Testing" to "In Production" (no verification is needed).
+
 = Where can I get support? =
 
 You can post your questions on the [support forum here](https://wordpress.org/support/plugin/embed-google-photos/)

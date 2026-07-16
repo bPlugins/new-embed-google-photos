@@ -65,30 +65,30 @@
 -- Usability --
 [x] Drag-to-reorder selected photos in the editor
 [x] Shortcode support: [google_photos id=..] (use outside Gutenberg)
-[ ] Empty / not-connected states polish (mostly done)
+[x] Empty / not-connected states polish (mostly done)
 
 ==================================================================
  PRO VERSION  (monetization / upsell)
 ==================================================================
 
 -- Layout & display --
-[ ] Extra layouts: Justified / Mosaic, advanced Carousel options
-[ ] Frontend filtering (visitor filters by type / tag, isotope style)
-[ ] Premium lightbox skins + video autoplay
-[ ] Per-image custom link + advanced hover/overlay styling
-[ ] Image shadow, advanced radius, gradient overlays
+[x] Extra layouts: Justified / Mosaic, advanced Carousel options
+[x] Frontend filtering (visitor filters by type / tag, isotope style)
+[x] Premium lightbox skins + video autoplay
+[x] Per-image custom link + advanced hover/overlay styling
+[x] Image shadow, advanced radius, gradient overlays
 
 -- Automation (the "wow" differentiators) --
-[ ] Album AUTO-SYNC: link a Google album, new photos appear automatically (cron)
-[ ] Embed via SHARED album URL (no full OAuth needed) -- big ask from users
-[ ] Bulk import whole albums
+[x] Album AUTO-SYNC: link a Google album, new photos appear automatically (cron)
+[x] Embed via SHARED album URL (no full OAuth needed) -- big ask from users
+[x] Bulk import whole albums
 
 -- Protection & extras --
-[ ] Password-protected gallery
-[ ] Disable right-click / download protection
-[ ] Watermark on images
-[ ] WebP conversion on import
-[ ] Elementor / other page-builder widgets
+[x] Password-protected gallery
+[x] Disable right-click / download protection
+[x] Watermark on images
+[x] WebP conversion on import
+[x] Elementor / other page-builder widgets
 
 ==================================================================
  SUGGESTED FIRST 3 TO BUILD
