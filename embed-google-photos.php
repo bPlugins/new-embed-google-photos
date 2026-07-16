@@ -37,7 +37,7 @@ if (function_exists('bpgpb_fs')) {
                     'is_premium' => false,
                     'menu'       => array(
                         'slug'       => 'edit.php?post_type=bpgpb_gallery',
-                        'first-path' => 'edit.php?post_type=bpgpb_gallery&page=bpgpb-dashboard',
+                        'first-path' => 'edit.php?post_type=bpgpb_gallery&page=bpgpb-dashboard#/pricing',
                         'support'    => false,
                     ),
                 );
@@ -60,10 +60,6 @@ class bpgpb_Embed_Google_Photos {
         $this->constants_defined();
 
         add_action('init', [$this, 'onInit']);
-
-        // On activation, flag a one-time redirect to the Galleries (shortcode) screen.
-        register_activation_hook(__FILE__, [$this, 'onActivate']);
-        add_action('admin_init', [$this, 'activationRedirect']);
     }
 
     public static function get_instance() {
@@ -88,37 +84,6 @@ class bpgpb_Embed_Google_Photos {
         require_once plugin_dir_path(__FILE__) . 'includes/GooglePhotos.php';
         require_once plugin_dir_path(__FILE__) . 'includes/custom-post.php';
         require_once plugin_dir_path(__FILE__) . 'includes/admin-menu.php';
-    }
-
-    /**
-     * Runs once when the plugin is activated. Set a flag so the next admin page
-     * load redirects the user to the dashboard Pricing page.
-     */
-    public function onActivate() {
-        add_option('bpgpb_activation_redirect', true);
-    }
-
-    /**
-     * Consume the activation flag and redirect to the dashboard Pricing page.
-     * Skipped during bulk plugin activation so we don't hijack that flow.
-     */
-    public function activationRedirect() {
-        if (!get_option('bpgpb_activation_redirect', false)) {
-            return;
-        }
-
-        delete_option('bpgpb_activation_redirect');
-
-        // Presence-only check on a WordPress-core-set flag; no request data is
-        // used, and the redirect is gated by the one-time option above.
-        if (isset($_GET['activate-multi']) || wp_doing_ajax()) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-            return;
-        }
-
-        // The dashboard is a React (HashRouter) app; "#/pricing" opens its
-        // Pricing route. The hash fragment is preserved by the browser.
-        wp_safe_redirect(admin_url('edit.php?post_type=bpgpb_gallery&page=bpgpb-dashboard#/pricing'));
-        exit;
     }
 
     public function onInit()

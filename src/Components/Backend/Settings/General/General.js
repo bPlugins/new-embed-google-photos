@@ -19,19 +19,7 @@ const General = ({ setAttributes, mediaType, layout, carousel = {}, caption = {}
             <SelectControl label={__('Media Type', 'embed-google-photos')} labelPosition='side' value={mediaType} options={mediaTypeOpt} onChange={val => setAttributes({ mediaType: val })} />
 
             <ProNotice status='premium' isIcon={true} className='mt10'>
-                {__('Add More Photos — keep adding to a gallery over multiple picks to build large, unlimited galleries — is available in the Pro version.', 'embed-google-photos')}
-            </ProNotice>
-
-            <ProNotice status='premium' isIcon={true} className='mt10'>
-                {__('Album Auto-Sync — link a shared Google Photos album and new photos appear automatically — is available in the Pro version.', 'embed-google-photos')}
-            </ProNotice>
-
-            <ProNotice status='premium' isIcon={true} className='mt10'>
-                {__('Convert imported images to WebP (smaller, faster-loading) with the Pro version.', 'embed-google-photos')}
-            </ProNotice>
-
-            <ProNotice status='premium' isIcon={true} className='mt10'>
-                {__('Stamp your logo as a watermark on imported photos with the Pro version.', 'embed-google-photos')}
+                {__('Pro features: Add More Photos (unlimited galleries), Album Auto-Sync, WebP conversion, and Watermark stamping.', 'embed-google-photos')}
             </ProNotice>
         </PanelBody>
 
