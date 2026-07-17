@@ -105,22 +105,22 @@
 
 
 -- More Unique Free Ideas (Claude, 16 July 2026) --
-[ ] Lightbox social share buttons (Facebook / X / Pinterest / Copy link)
+[x] Lightbox social share buttons (Facebook / X / Pinterest / Copy link)
        -> benefit: Visitors share photos straight from the lightbox; each share is a free backlink + traffic to the site
        -> benefit: লাইটবক্স থেকেই ছবি শেয়ার করা যায়; প্রতিটি শেয়ার সাইটে ফ্রি backlink ও ট্রাফিক আনে
-[ ] Deep-link to a specific photo via URL hash (?photo=3)
+[x] Deep-link to a specific photo via URL hash (?photo=3)
        -> benefit: Share a direct link that opens straight to one photo's lightbox; better UX and SEO-friendly URLs
        -> benefit: নির্দিষ্ট একটি ছবির লাইটবক্সে সরাসরি খোলার লিংক শেয়ার করা যায়; ভালো UX ও SEO-বান্ধব URL
-[ ] Auto slideshow with Ken Burns (slow zoom/pan) mode
+[x] Auto slideshow with Ken Burns (slow zoom/pan) mode
        -> benefit: Gallery auto-plays with a subtle zoom-pan effect; unique for hero backgrounds, kiosks and screensavers
        -> benefit: গ্যালারি নিজে থেকে চলে সূক্ষ্ম zoom-pan এফেক্টসহ; hero background, kiosk বা screensaver হিসেবে ইউনিক ব্যবহার
-[ ] Photo meta overlay (date / dimensions from Picker metadata) on hover
+[x] Photo meta overlay (date / dimensions from Picker metadata) on hover
        -> benefit: Shows the capture date and size Picker already provides; a professional touch for photography portfolios
        -> benefit: Picker যে তারিখ ও সাইজ দেয় তা hover-এ দেখায়; ফটোগ্রাফি পোর্টফোলিওতে প্রফেশনাল লুক দেয়
-[ ] Frontend sort/order dropdown (Newest / Oldest / Random)
+[x] Frontend sort/order dropdown (Newest / Oldest / Random)
        -> benefit: Visitors reorder the gallery instantly; a natural, low-effort extension of Live Search
        -> benefit: ভিজিটর গ্যালারি সাথে সাথে সাজাতে পারে; Live Search-এর স্বাভাবিক ও কম-effort extension
-[ ] "View all" preview limit + gallery count badge ("125 photos")
+[x] "View all" preview limit + gallery count badge ("125 photos")
        -> benefit: Show a limited preview grid with a count badge and a "View all" button; keeps long pages tidy
        -> benefit: গণনা ব্যাজসহ সীমিত preview grid ও "View all" বাটন দেখায়; বড় পেজ পরিপাটি রাখে
 

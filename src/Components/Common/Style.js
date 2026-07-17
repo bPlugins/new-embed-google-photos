@@ -16,6 +16,11 @@ const Style = ({ attributes, cId }) => {
 		imgBorder,
 		imageFilter = 'none',
 		imageFilterHover = false,
+		sortColors = {},
+		sortBorderColor,
+		sortTypo,
+		countColors = {},
+		countTypo,
 		hover = {},
 		captionTypo,
 		captionColor,
@@ -52,6 +57,8 @@ const Style = ({ attributes, cId }) => {
 	const typo = getTypoCSS(`${sl} .bpgpb-load-more`, loadMoreBtnTypo) || {};
 	const capTypo = getTypoCSS(`${sl} .bpgpb-caption`, captionTypo) || {};
 	const searchTypoCSS = getTypoCSS(`${sl} .bpgpb-search-input`, searchTypo) || {};
+	const sortTypoCSS = getTypoCSS(`${sl} .bpgpb-sort`, sortTypo) || {};
+	const countTypoCSS = getTypoCSS(`${sl} .bpgpb-count-badge`, countTypo) || {};
 
 	// Hover-effect tuning (all scoped per instance).
 	const zoomScale = 1 + (Number(hover.zoom ?? 8) / 100);
@@ -82,6 +89,20 @@ const Style = ({ attributes, cId }) => {
 					${capTypo.styles || ''}
 					${searchTypoCSS.googleFontLink || ''}
 					${searchTypoCSS.styles || ''}
+					${sortTypoCSS.googleFontLink || ''}
+					${sortTypoCSS.styles || ''}
+					${countTypoCSS.googleFontLink || ''}
+					${countTypoCSS.styles || ''}
+
+					${sl} .bpgpb-sort {
+						${sortColors.color ? `color: ${sortColors.color};` : ''}
+						${sortColors.bg ? `background: ${sortColors.bg};` : ''}
+						${sortBorderColor ? `border-color: ${sortBorderColor};` : ''}
+					}
+					${sl} .bpgpb-count-badge {
+						${countColors.color ? `color: ${countColors.color};` : ''}
+						${countColors.bg ? `background: ${countColors.bg};` : ''}
+					}
 
 					${sl} .bpgpb-item.bpgpb-hover--zoom .bpgpb-item__media img {
 						transition: transform ${dur}ms ease, filter ${dur}ms ease;

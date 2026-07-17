@@ -8,7 +8,7 @@ import { emUnit, perUnit, pxUnit } from '../../../../../../bpl-tools/utils/optio
 import { captionPositionOpt, captionSourceOpt, layoutOpt, mediaTypeOpt, paginationOpt, ratioOpt } from '../../../../utils/options';
 import IconPicker from './IconPicker';
 
-const General = ({ setAttributes, mediaType, layout, carousel = {}, caption = {}, lightbox = {}, video = {}, paginationType, perPage, loadMoreText, columns, columnGap, rowGap, coverImage, showSearch, searchPlaceholder, searchAlign, searchWidth, searchIcon, searchStyle, showVoiceSearch, searchAutocomplete, searchHighlight, searchResultCount, searchChips }) => {
+const General = ({ setAttributes, mediaType, layout, carousel = {}, caption = {}, lightbox = {}, video = {}, paginationType, perPage, loadMoreText, columns, columnGap, rowGap, coverImage, showSearch, searchPlaceholder, searchAlign, searchWidth, searchIcon, searchStyle, showVoiceSearch, searchAutocomplete, searchHighlight, searchResultCount, searchChips, showSort, previewLimit, showCountBadge, deepLink, lightboxShare }) => {
 
     const [device, setDevice] = useState('desktop');
     const setCarousel = (key, val) => setAttributes({ carousel: { ...carousel, [key]: val } });
@@ -86,6 +86,14 @@ const General = ({ setAttributes, mediaType, layout, carousel = {}, caption = {}
             </>}
         </PanelBody>
 
+        <PanelBody className='bPlPanelBody' title={__('Gallery Extras', 'embed-google-photos')} initialOpen={false}>
+            <ToggleControl label={__('Sort Dropdown', 'embed-google-photos')} help={__('Let visitors reorder the gallery — Newest, Oldest, or Random.', 'embed-google-photos')} checked={!!showSort} onChange={val => setAttributes({ showSort: val })} />
+
+            <ToggleControl className='mt10' label={__('Photo Count Badge', 'embed-google-photos')} help={__('Show a "125 photos" badge above the gallery.', 'embed-google-photos')} checked={!!showCountBadge} onChange={val => setAttributes({ showCountBadge: val })} />
+
+            {('carousel' !== layout && 'memories' !== layout) && <RangeControl className='mt10' label={__('Preview Limit', 'embed-google-photos')} help={__('Show only the first N photos with a "View all" button. 0 = show all.', 'embed-google-photos')} value={previewLimit || 0} onChange={val => setAttributes({ previewLimit: val })} min={0} max={60} step={1} />}
+        </PanelBody>
+
         <PanelBody className='bPlPanelBody' title={__('Lightbox', 'embed-google-photos')} initialOpen={false}>
             <Notice status='info' isDismissible={false} className='mb10'>
                 {__('To see how the lightbox actually looks, view it on the frontend.', 'embed-google-photos')}
@@ -97,6 +105,10 @@ const General = ({ setAttributes, mediaType, layout, carousel = {}, caption = {}
 
             <ToggleControl className='mt10' label={__('Download Button', 'embed-google-photos')} help={__('Add a download button to the lightbox toolbar so visitors can save the original image.', 'embed-google-photos')} checked={!!lightbox.download} onChange={val => setLightbox('download', val)} />
 
+            <ToggleControl className='mt10' label={__('Social Share Buttons', 'embed-google-photos')} help={__('Add Facebook, X, Pinterest and Copy-link buttons to the lightbox toolbar.', 'embed-google-photos')} checked={!!lightboxShare} onChange={val => setAttributes({ lightboxShare: val })} />
+
+            <ToggleControl className='mt10' label={__('Deep-link to Photo', 'embed-google-photos')} help={__('Update the page URL when a photo opens (?photo=N) so a direct link reopens it.', 'embed-google-photos')} checked={!!deepLink} onChange={val => setAttributes({ deepLink: val })} />
+
             <ToggleControl className='mt10' label={__('Slideshow Autoplay', 'embed-google-photos')} checked={!!lightbox.slideshow} onChange={val => setLightbox('slideshow', val)} />
 
             {lightbox.slideshow && <RangeControl className='mt10' label={__('Slideshow Speed (ms)', 'embed-google-photos')} value={lightbox.slideshowSpeed || 3000} onChange={val => setLightbox('slideshowSpeed', val)} min={1000} max={10000} step={500} />}
@@ -106,7 +118,7 @@ const General = ({ setAttributes, mediaType, layout, carousel = {}, caption = {}
             </ProNotice>
         </PanelBody>
 
-        <PanelBody className='bPlPanelBody' title={__('Video', 'embed-google-photos')} initialOpen={false}>
+        {'photo' !== mediaType && <PanelBody className='bPlPanelBody' title={__('Video', 'embed-google-photos')} initialOpen={false}>
             <ToggleControl label={__('Show Controls', 'embed-google-photos')} checked={false !== video.controls} onChange={val => setVideo('controls', val)} />
 
             <ToggleControl className='mt10' label={__('Autoplay', 'embed-google-photos')} help={__('Videos are muted automatically when autoplay is on (required by browsers).', 'embed-google-photos')} checked={!!video.autoplay} onChange={val => setVideo('autoplay', val)} />
@@ -120,7 +132,7 @@ const General = ({ setAttributes, mediaType, layout, carousel = {}, caption = {}
             <ProNotice status='premium' isIcon={true} className='mt10'>
                 {__('Autoplay videos right in the gallery grid as live previews with the Pro version.', 'embed-google-photos')}
             </ProNotice>
-        </PanelBody>
+        </PanelBody>}
 
         {layout !== 'memories' && <PanelBody className='bPlPanelBody' title={__('Pagination', 'embed-google-photos')} initialOpen={false}>
             <SelectControl label={__('Type', 'embed-google-photos')} labelPosition='side' value={paginationType} options={paginationOpt} onChange={val => setAttributes({ paginationType: val })} />

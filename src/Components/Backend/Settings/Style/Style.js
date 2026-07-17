@@ -1,5 +1,5 @@
 import { __ } from '@wordpress/i18n';
-import { PanelBody, SelectControl, RangeControl, ToggleControl, __experimentalBoxControl as BoxControl, } from '@wordpress/components';
+import { PanelBody, SelectControl, RangeControl, ToggleControl, Button, __experimentalBoxControl as BoxControl, } from '@wordpress/components';
 import { produce } from 'immer';
 import { Typography, ColorsControl, ColorControl, Notice as ProNotice } from '../../../../../../bpl-tools/Components';
 import { BorderControl } from '../../../../../../bpl-tools/Components/Deprecated';
@@ -7,7 +7,7 @@ import { BorderControl } from '../../../../../../bpl-tools/Components/Deprecated
 import { emUnit, pxUnit } from '../../../../../../bpl-tools/utils/options';
 import { hoverEffectOpt, imageFilterOpt } from '../../../../utils/options';
 
-const Style = ({ setAttributes, layout, paginationType, imgBorder, hoverEffect, imageFilter = 'none', imageFilterHover = false, hover = {}, caption = {}, captionTypo, captionColor, loadMoreBtnTypo, loadMoreBtnColors, loadMoreBtnBorder, loadMoreBtnPadding, showSearch, searchBgColor, searchTextColor, searchBorderColor, searchBorderRadius, searchBorderWidth, searchTypo, searchIconColor, searchIconSize, searchHeight }) => {
+const Style = ({ setAttributes, layout, paginationType, imgBorder, hoverEffect, imageFilter = 'none', imageFilterHover = false, kenBurns = false, kenBurnsSpeed = 12, metaOverlay = false, hover = {}, caption = {}, captionTypo, captionColor, loadMoreBtnTypo, loadMoreBtnColors, loadMoreBtnBorder, loadMoreBtnPadding, showSearch, searchBgColor, searchTextColor, searchBorderColor, searchBorderRadius, searchBorderWidth, searchTypo, searchIconColor, searchIconSize, searchHeight, showSort, showCountBadge, sortColors, sortBorderColor, sortTypo, countColors, countTypo }) => {
     const btnPanelTitle = 'pagination' === paginationType
         ? __('Pagination', 'embed-google-photos')
         : __('Load More Button', 'embed-google-photos');
@@ -31,6 +31,15 @@ const Style = ({ setAttributes, layout, paginationType, imgBorder, hoverEffect, 
             {'overlay' === effect && <ColorControl className='mt10' label={__('Overlay Color', 'embed-google-photos')} value={hover.overlayColor || 'rgba(0,0,0,0.4)'} defaultColor='rgba(0,0,0,0.4)' onChange={val => setHover('overlayColor', val)} />}
 
             {'none' !== effect && <RangeControl className='mt10' label={__('Animation Speed (ms)', 'embed-google-photos')} value={hover.duration ?? 450} onChange={val => setHover('duration', val)} min={0} max={2000} step={50} />}
+
+            <ToggleControl className='mt10' label={__('Ken Burns Motion', 'embed-google-photos')} help={__('Slow, continuous zoom / pan on gallery images — great for hero backgrounds and kiosks.', 'embed-google-photos')} checked={!!kenBurns} onChange={(val) => setAttributes({ kenBurns: val })} />
+
+            {kenBurns && <>
+                <RangeControl className='mt10' label={__('Motion Speed (seconds per cycle)', 'embed-google-photos')} help={__('Lower = faster motion, higher = slower.', 'embed-google-photos')} value={kenBurnsSpeed ?? 12} onChange={(val) => setAttributes({ kenBurnsSpeed: val })} min={4} max={30} step={1} />
+                <Button variant='link' className='mt5' onClick={() => setAttributes({ kenBurnsSpeed: 12 })}>{__('Reset to default', 'embed-google-photos')}</Button>
+            </>}
+
+            <ToggleControl className='mt10' label={__('Meta Overlay on Hover', 'embed-google-photos')} help={__('Show each photo\'s date and dimensions on hover.', 'embed-google-photos')} checked={!!metaOverlay} onChange={(val) => setAttributes({ metaOverlay: val })} />
 
             <ProNotice status='premium' isIcon={true} className='mt10'>
                 {__('Pro unlocks advanced image styling — box shadow, advanced (per-corner) radius, gradient overlays, hover icon — plus per-image custom links, right-click / download protection and password-protected galleries.', 'embed-google-photos')}
@@ -72,6 +81,21 @@ const Style = ({ setAttributes, layout, paginationType, imgBorder, hoverEffect, 
 
             <BorderControl className='' label={__('Border', 'embed-google-photos')} value={loadMoreBtnBorder}
                 onChange={(val) => setAttributes({ loadMoreBtnBorder: val })} />
+        </PanelBody>}
+
+        {(showSort || showCountBadge) && <PanelBody className='bPlPanelBody' title={__('Sort & Count Badge', 'embed-google-photos')} initialOpen={false}>
+            {showSort && <>
+                <p className='bpgpb-style-subhead'>{__('Sort Dropdown', 'embed-google-photos')}</p>
+                <Typography className='mt10' label={__('Typography', 'embed-google-photos')} value={sortTypo} onChange={val => setAttributes({ sortTypo: val })} produce={produce} />
+                <ColorsControl className='mt10 mb10' label={__('Colors', 'embed-google-photos')} value={sortColors} onChange={val => setAttributes({ sortColors: val })} defaults={{ color: '#3c4043', bg: '#ffffff' }} />
+                <ColorControl className='mt10' label={__('Border Color', 'embed-google-photos')} value={sortBorderColor} onChange={val => setAttributes({ sortBorderColor: val })} />
+            </>}
+
+            {showCountBadge && <>
+                <p className='bpgpb-style-subhead mt20'>{__('Photo Count Badge', 'embed-google-photos')}</p>
+                <Typography className='mt10' label={__('Typography', 'embed-google-photos')} value={countTypo} onChange={val => setAttributes({ countTypo: val })} produce={produce} />
+                <ColorsControl className='mt10 mb10' label={__('Colors', 'embed-google-photos')} value={countColors} onChange={val => setAttributes({ countColors: val })} defaults={{ color: '#3c4043', bg: '#f1f3f4' }} />
+            </>}
         </PanelBody>}
     </>
 }

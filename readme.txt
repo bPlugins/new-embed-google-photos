@@ -41,6 +41,7 @@ The Embed Google Photos plugin offers a seamless solution for integrating beauti
 - Caption position — below the image or as an overlay on hover.
 - Caption typography and color controls.
 - Hover effects — zoom, overlay, and caption slide-in.
+- Meta overlay — show each photo's date and dimensions on hover.
 
 **Search & Filtering**
 - Live search bar (always-visible or expandable) — filter the gallery by photo title or date as visitors type.
@@ -54,11 +55,14 @@ The Embed Google Photos plugin offers a seamless solution for integrating beauti
 **Photo Filters & Cropping**
 - Visual filter presets — Grayscale, Sepia, Vintage, Warm, and Cool, with an optional "reveal original on hover" transition.
 - Focal point crop control — set one crop focus for all images with a live preview, or fine-tune individual photos so faces and subjects are never cut off in cropped layouts.
+- Ken Burns motion — slow, continuous zoom / pan on images with an adjustable speed; great for hero backgrounds and kiosks.
 
 **Lightbox**
 - Fancybox lightbox with photo and video playback.
 - Lightbox caption, keyboard navigation, slideshow autoplay, and thumbnails bar.
 - Optional download button in the lightbox toolbar so visitors can save the original image.
+- Social share buttons — Facebook, X, Pinterest and Copy-link in the lightbox toolbar.
+- Deep-link to a photo — the open photo is reflected in the URL (?photo=N) so a shared link reopens it.
 - Video options — controls, autoplay, muted, loop, and fit-to-window.
 
 **Pagination**
@@ -75,6 +79,9 @@ The Embed Google Photos plugin offers a seamless solution for integrating beauti
 
 **Usability**
 - Drag-to-reorder selected photos in the editor.
+- Frontend sort dropdown — let visitors reorder the gallery (Newest, Oldest, or Random).
+- Photo count badge — show a "125 photos" badge above the gallery.
+- Preview limit + "View all" — show only the first N photos with a button to reveal the rest.
 - Import / Export — copy a gallery's styling and layout as JSON to reuse on another gallery or site.
 - Shortcode support — [google_photos id=..] to embed outside Gutenberg.
 - Polished empty / not-connected states with guided actions.
@@ -221,6 +228,10 @@ You can post your questions on the [support forum here](https://wordpress.org/su
 * New: Live search bar with voice search, autocomplete (titles + dates), highlighted matches, live result count, and year filter chips — each toggleable.
 * New: Visual filter presets (Grayscale, Sepia, Vintage, Warm, Cool) with an optional reveal-original-on-hover transition.
 * New: Focal point crop control — set one focal point for all images with a live crop preview, plus an optional per-image override.
+* New: Ken Burns motion — adjustable continuous zoom / pan on images.
+* New: Meta overlay — show each photo's date and dimensions on hover.
+* New: Frontend sort dropdown (Newest / Oldest / Random), photo count badge, and preview limit with a "View all" button.
+* New: Lightbox social share buttons (Facebook / X / Pinterest / Copy link) and deep-link to a photo via the URL.
 * New: Optional download button in the lightbox toolbar.
 * New: Import / Export gallery configuration as JSON.
 * New: Memories / Stories layout.

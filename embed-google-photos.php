@@ -3,7 +3,7 @@
  * Plugin Name: Gallery for Google Photos – Import and Display Photo Albums
  * Plugin URI: https://bplugins.com/plugins/gallery-for-google-photos/
  * Description: Embed stunning Google Photos galleries directly into your WordPress site with the Google Photos Block plugin.
- * Version: 1.2.2
+ * Version: 1.3.0
  * Author: bPlugins
  * Author URI: http://bplugins.com
  * License: GPLv3 or later
@@ -73,7 +73,7 @@ class bpgpb_Embed_Google_Photos {
 
     public function constants_defined() {
         // Constant
-        define( 'BPGPB_PLUGIN_VERSION', '1.2.2' );
+        define( 'BPGPB_PLUGIN_VERSION', '1.3.0' );
         define('BPGPB_ASSETS_DIR', plugin_dir_url(__FILE__) . 'assets/');
         define('BPGPB_DIR_URL', plugin_dir_url(__FILE__));
         define('BPGPB_DIR_PATH', plugin_dir_path(__FILE__));

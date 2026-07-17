@@ -67,7 +67,17 @@ const Gallery = ({ attributes, cId, isBackend = false, setAttributes }) => {
 		searchHighlight = false,
 		searchResultCount = false,
 		searchChips = false,
+		kenBurns = false,
+		kenBurnsSpeed = 12,
+		metaOverlay = false,
+		showSort = false,
+		previewLimit = 0,
+		showCountBadge = false,
+		deepLink = false,
+		lightboxShare = false,
 	} = attributes;
+	const [sortOrder, setSortOrder] = useState('default');
+	const [showAll, setShowAll] = useState(false);
 	const [searchQuery, setSearchQuery] = useState('');
 	const [isSearchExpanded, setIsSearchExpanded] = useState(false);
 	const [isListening, setIsListening] = useState(false);
@@ -207,6 +217,26 @@ const Gallery = ({ attributes, cId, isBackend = false, setAttributes }) => {
 		});
 	})();
 
+	// Frontend sort dropdown (Newest / Oldest / Random). 'default' keeps the
+	// author's order. Random is reshuffled only when the order changes.
+	const sortedPhotos = (() => {
+		if (!showSort || 'default' === sortOrder) {
+			return searchedPhotos;
+		}
+		const arr = [...searchedPhotos];
+		if ('newest' === sortOrder) {
+			arr.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+		} else if ('oldest' === sortOrder) {
+			arr.sort((a, b) => new Date(a.date || 0) - new Date(b.date || 0));
+		} else if ('random' === sortOrder) {
+			for (let i = arr.length - 1; i > 0; i--) {
+				const j = Math.floor(Math.random() * (i + 1));
+				[arr[i], arr[j]] = [arr[j], arr[i]];
+			}
+		}
+		return arr;
+	})();
+
 	const per = Math.max(1, parseInt(perPage, 10) || 9);
 	const [visibleCount, setVisibleCount] = useState(per);
 	const [page, setPage] = useState(1);
@@ -310,6 +340,70 @@ const Gallery = ({ attributes, cId, isBackend = false, setAttributes }) => {
 					: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen'],
 		};
 
+		// Deep-link: reflect the open photo in the URL (?photo=N) so the link can
+		// be shared and reopens that photo. No-op unless the option is on.
+		const setPhotoParam = (n) => {
+			if (!deepLink) return;
+			try {
+				const url = new URL(window.location.href);
+				url.searchParams.set('photo', String(n));
+				window.history.replaceState(null, '', url);
+			} catch (e) {
+				/* ignore */
+			}
+		};
+		const clearPhotoParam = () => {
+			if (!deepLink) return;
+			try {
+				const url = new URL(window.location.href);
+				url.searchParams.delete('photo');
+				window.history.replaceState(null, '', url);
+			} catch (e) {
+				/* ignore */
+			}
+		};
+
+		// Current slide index (0-based), kept in sync so the share buttons can
+		// target the exact open photo even when deep-link URL sync is off.
+		let currentSlideIndex = 0;
+
+		// Build the shareable URL for the current photo — always carries ?photo=N
+		// so a shared/copied link reopens that photo.
+		const shareUrl = () => {
+			try {
+				const url = new URL(window.location.href);
+				url.searchParams.set('photo', String(currentSlideIndex + 1));
+				return url.href;
+			} catch (e) {
+				return window.location.href;
+			}
+		};
+
+		// Copy to clipboard with a fallback for non-secure contexts — the async
+		// Clipboard API is unavailable on plain http:// sites (e.g. *.local).
+		const execCopy = (text) => {
+			try {
+				const ta = document.createElement('textarea');
+				ta.value = text;
+				ta.setAttribute('readonly', '');
+				ta.style.position = 'fixed';
+				ta.style.top = '-9999px';
+				document.body.appendChild(ta);
+				ta.select();
+				document.execCommand('copy');
+				document.body.removeChild(ta);
+			} catch (e) {
+				/* ignore */
+			}
+		};
+		const copyLink = (text) => {
+			if (navigator.clipboard?.writeText) {
+				navigator.clipboard.writeText(text).catch(() => execCopy(text));
+			} else {
+				execCopy(text);
+			}
+		};
+
 		const options = {
 			contentClick: 'toggleZoom',
 			// Thumbnails bar along the bottom of the lightbox.
@@ -319,12 +413,15 @@ const Gallery = ({ attributes, cId, isBackend = false, setAttributes }) => {
 				? { autoStart: true, timeout: lightbox.slideshowSpeed || 3000 }
 				: { autoStart: false },
 			on: {
-				// Enhance each video slide with Plyr once it's in the DOM.
+				// Enhance each video slide with Plyr once it's in the DOM, and keep
+				// the deep-link URL in sync with the revealed slide.
 				reveal: (fancybox, slide) => {
 					const el = slide?.el?.querySelector?.('video.bpgpb-plyr');
 					if (el) {
 						players.push(new Plyr(el, plyrOptions));
 					}
+					currentSlideIndex = slide?.index ?? 0;
+					setPhotoParam(currentSlideIndex + 1);
 				},
 				// Pause every player when the user navigates to another slide.
 				'Carousel.change': () => {
@@ -336,18 +433,49 @@ const Gallery = ({ attributes, cId, isBackend = false, setAttributes }) => {
 						}
 					});
 				},
-				destroy: destroyPlayers,
+				destroy: () => {
+					destroyPlayers();
+					clearPhotoParam();
+				},
 			},
 		};
 
-		// Add a download button to the toolbar when enabled.
-		if (lightbox.download) {
+		// Social share toolbar buttons (share the current page URL, which carries
+		// the ?photo=N deep-link when that option is enabled).
+		const shareIcon = (path) =>
+			`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">${path}</svg>`;
+		const shareItems = {
+			bpgpbFb: {
+				tpl: `<button class="f-button" title="Facebook">${shareIcon('<path d="M13 22v-8h2.7l.4-3H13V9c0-.9.2-1.5 1.5-1.5H16V4.9c-.3 0-1.2-.1-2.2-.1-2.2 0-3.8 1.4-3.8 3.9V11H7.5v3H10v8h3z"/>')}</button>`,
+				click: () => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl())}`, '_blank', 'noopener,noreferrer'),
+			},
+			bpgpbX: {
+				tpl: `<button class="f-button" title="X">${shareIcon('<path d="M17.5 3h2.9l-6.4 7.3L21.7 21h-5.9l-4.6-6-5.3 6H3l6.8-7.8L2.6 3h6l4.2 5.5L17.5 3zm-1 16h1.6L8.1 4.7H6.4L16.5 19z"/>')}</button>`,
+				click: () => window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl())}`, '_blank', 'noopener,noreferrer'),
+			},
+			bpgpbPin: {
+				tpl: `<button class="f-button" title="Pinterest">${shareIcon('<path d="M12 2C6.5 2 3 5.6 3 9.9c0 2.6 1 4.9 3.2 5.8.3.1.6 0 .7-.4l.3-1c.1-.3 0-.5-.2-.7-.5-.6-.8-1.4-.8-2.5 0-3 2.3-5.7 5.9-5.7 3.2 0 5 2 5 4.6 0 3.5-1.5 6.4-3.8 6.4-1.3 0-2.2-1-1.9-2.3.3-1.5 1-3 1-4.1 0-.9-.5-1.7-1.6-1.7-1.3 0-2.3 1.3-2.3 3.1 0 1.1.4 1.9.4 1.9l-1.5 6.3c-.4 1.8-.1 4.1 0 4.3 0 .1.2.2.3.1.1-.1 1.7-2.1 2.2-4.1l.8-3.2c.4.8 1.6 1.5 2.9 1.5 3.8 0 6.4-3.5 6.4-8.1C21 5.2 17.3 2 12 2z"/>')}</button>`,
+				click: () => window.open(`https://pinterest.com/pin/create/button/?url=${encodeURIComponent(shareUrl())}`, '_blank', 'noopener,noreferrer'),
+			},
+			bpgpbCopy: {
+				tpl: `<button class="f-button" title="Copy link">${shareIcon('<path d="M10.6 13.4a1 1 0 0 0 1.4 0l4-4a2.8 2.8 0 0 0-4-4l-1 1a1 1 0 0 0 1.4 1.4l1-1a.8.8 0 1 1 1.2 1.2l-4 4a1 1 0 0 0 0 1.4zM13.4 10.6a1 1 0 0 0-1.4 0l-4 4a2.8 2.8 0 0 0 4 4l1-1a1 1 0 1 0-1.4-1.4l-1 1a.8.8 0 0 1-1.2-1.2l4-4a1 1 0 0 0 0-1.4z"/>')}</button>`,
+				click: () => copyLink(shareUrl()),
+			},
+		};
+
+		// Build the toolbar only when share and/or download add buttons to it.
+		if (lightboxShare || lightbox.download) {
+			const right = [];
+			if (lightboxShare) {
+				right.push('bpgpbFb', 'bpgpbX', 'bpgpbPin', 'bpgpbCopy');
+			}
+			if (lightbox.download) {
+				right.push('download');
+			}
+			right.push('slideshow', 'fullscreen', 'thumbs', 'close');
 			options.Toolbar = {
-				display: {
-					left: ['infobar'],
-					middle: [],
-					right: ['download', 'slideshow', 'fullscreen', 'thumbs', 'close'],
-				},
+				display: { left: ['infobar'], middle: [], right },
+				items: lightboxShare ? shareItems : undefined,
 			};
 		}
 
@@ -407,7 +535,32 @@ const Gallery = ({ attributes, cId, isBackend = false, setAttributes }) => {
 		video.loop,
 		video.controls,
 		video.fitToWindow,
+		deepLink,
+		lightboxShare,
 	]);
+
+	// Deep-link opener: if the URL carries ?photo=N, open that photo once the
+	// gallery has rendered (reuses the click handler bound above). Active when
+	// deep-linking OR social share is on, since shared links carry ?photo=N.
+	useEffect(() => {
+		if ((!deepLink && !lightboxShare) || isBackend || !wrapRef.current) {
+			return undefined;
+		}
+		const p = parseInt(new URLSearchParams(window.location.search).get('photo'), 10);
+		if (!p || p < 1) {
+			return undefined;
+		}
+		const timer = setTimeout(() => {
+			if (!wrapRef.current) return;
+			const anchors = Array.from(wrapRef.current.querySelectorAll(`[data-fancybox="${group}"]`))
+				.filter((a) => !a.closest('.swiper-slide-duplicate'));
+			const target = anchors[p - 1];
+			if (target) {
+				target.click();
+			}
+		}, 400);
+		return () => clearTimeout(timer);
+	}, [deepLink, lightboxShare, group, isBackend]);
 
 	if (!visiblePhotos.length) {
 		// The user picked a specific Media Type but nothing in the gallery
@@ -457,6 +610,7 @@ const Gallery = ({ attributes, cId, isBackend = false, setAttributes }) => {
 		'--bpgpb-col-gap': columnGap || '30px',
 		'--bpgpb-row-gap': rowGap || '40px',
 		'--bpgpb-ratio': ratio,
+		'--bpgpb-kb-speed': `${Math.max(2, parseInt(kenBurnsSpeed, 10) || 12)}s`,
 	};
 
 	// Tell the browser roughly how wide each image renders so it can pick the
@@ -502,6 +656,23 @@ const Gallery = ({ attributes, cId, isBackend = false, setAttributes }) => {
 		);
 	};
 
+	// Date + dimensions string for the optional hover meta overlay. Skip the date
+	// when the caption is already showing it, so it never appears twice.
+	const metaText = (photo) => {
+		const parts = [];
+		const captionShowsDate = caption.show && 'date' === caption.source;
+		if (photo.date && !captionShowsDate) {
+			const d = new Date(photo.date);
+			if (!Number.isNaN(d.getTime())) {
+				parts.push(d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }));
+			}
+		}
+		if (photo.width && photo.height) {
+			parts.push(`${photo.width} × ${photo.height}`);
+		}
+		return parts.join('  •  ');
+	};
+
 	// A single gallery item (used by every layout).
 	const renderItem = (photo, index) => {
 		const isVideo = photo.type === 'video';
@@ -515,11 +686,14 @@ const Gallery = ({ attributes, cId, isBackend = false, setAttributes }) => {
 		const text = caption.show ? captionText(photo) : '';
 		const overlay = 'overlay' === caption.position;
 
+		const meta = metaOverlay ? metaText(photo) : '';
+
 		const itemClass = [
 			'bpgpb-item',
 			isVideo ? 'is-video' : '',
 			text && !overlay ? 'has-caption-below' : '',
 			hoverEffect && 'none' !== hoverEffect ? `bpgpb-hover--${hoverEffect}` : '',
+			meta ? 'bpgpb-has-meta' : '',
 		].filter(Boolean).join(' ');
 
 		const inner = (
@@ -537,6 +711,7 @@ const Gallery = ({ attributes, cId, isBackend = false, setAttributes }) => {
 						focalPoint={photo.focalPoint || globalFocalPoint}
 					/>
 					{isVideo && <span className="bpgpb-play">{playIcon}</span>}
+					{meta && <span className="bpgpb-meta">{meta}</span>}
 					{text && overlay && (
 						<span className="bpgpb-caption bpgpb-caption--overlay">{highlight(text)}</span>
 					)}
@@ -821,6 +996,39 @@ const Gallery = ({ attributes, cId, isBackend = false, setAttributes }) => {
 		);
 	};
 
+	// Count badge + sort dropdown shown above the gallery in every layout.
+	const renderControls = () => {
+		if (!showCountBadge && !showSort) {
+			return null;
+		}
+		return (
+			<div className="bpgpb-controls">
+				{showCountBadge && (
+					<span className="bpgpb-count-badge">
+						{sprintf(
+							/* translators: %d: number of photos */
+							__('%d photos', 'embed-google-photos'),
+							visiblePhotos.length
+						)}
+					</span>
+				)}
+				{showSort && (
+					<select
+						className="bpgpb-sort"
+						value={sortOrder}
+						onChange={(e) => setSortOrder(e.target.value)}
+						aria-label={__('Sort photos', 'embed-google-photos')}
+					>
+						<option value="default">{__('Default order', 'embed-google-photos')}</option>
+						<option value="newest">{__('Newest first', 'embed-google-photos')}</option>
+						<option value="oldest">{__('Oldest first', 'embed-google-photos')}</option>
+						<option value="random">{__('Random', 'embed-google-photos')}</option>
+					</select>
+				)}
+			</div>
+		);
+	};
+
 	// ---- Carousel (Swiper) — same component in editor + frontend ----
 	if (isCarousel) {
 		const spaceBetween = parseInt(columnGap, 10) || 0;
@@ -855,13 +1063,14 @@ const Gallery = ({ attributes, cId, isBackend = false, setAttributes }) => {
 		return (
 			<div className="bpgpb-gallery-container" id={`bpgpb-${cId}`}>
 				{renderSearchBar()}
+				{renderControls()}
 				{!hasResults ? (
 					<div className="bpgpb-search-empty">
 						<span className="bpgpb-search-empty-icon">{searchIconRender}</span>
 						<p className="bpgpb-search-empty-text">{__('No matching photos found.', 'embed-google-photos')}</p>
 					</div>
 				) : (
-					<div className="bpgpb-gallery-inner bpgpb-gallery-inner--carousel" style={wrapStyle} ref={wrapRef}>
+					<div className={`bpgpb-gallery-inner bpgpb-gallery-inner--carousel${kenBurns ? ' bpgpb-kenburns' : ''}`} style={wrapStyle} ref={wrapRef}>
 						{carousel.arrows && (
 							<>
 								<button type="button" ref={prevRef} className="bpgpb-swiper-arrow bpgpb-swiper-arrow--prev" aria-label="Previous">‹</button>
@@ -879,7 +1088,7 @@ const Gallery = ({ attributes, cId, isBackend = false, setAttributes }) => {
 								}
 							}}
 						>
-							{searchedPhotos.map((photo, index) => (
+							{sortedPhotos.map((photo, index) => (
 								<SwiperSlide key={photo.id || index}>{renderItem(photo, index)}</SwiperSlide>
 							))}
 						</Swiper>
@@ -915,6 +1124,7 @@ const Gallery = ({ attributes, cId, isBackend = false, setAttributes }) => {
 		return (
 			<div className="bpgpb-gallery-container" id={`bpgpb-${cId}`}>
 				{renderSearchBar()}
+				{renderControls()}
 				{!hasResults ? (
 					<div className="bpgpb-search-empty">
 						<span className="bpgpb-search-empty-icon">{searchIconRender}</span>
@@ -939,7 +1149,7 @@ const Gallery = ({ attributes, cId, isBackend = false, setAttributes }) => {
 								}
 							}}
 						>
-							{searchedPhotos.map((photo, index) => (
+							{sortedPhotos.map((photo, index) => (
 								<SwiperSlide key={photo.id || index} style={{ width: '90px' }}>
 									{renderMemoryItem(photo, index)}
 								</SwiperSlide>
@@ -952,19 +1162,28 @@ const Gallery = ({ attributes, cId, isBackend = false, setAttributes }) => {
 	}
 
 	// ---- Grid / Masonry (with Load More / Pagination) ----
-	let pagePhotos = searchedPhotos;
+	// A "preview limit" caps the grid to the first N photos with a "View all"
+	// button; until the visitor expands it, Load More / Pagination are hidden.
+	const limit = Math.max(0, parseInt(previewLimit, 10) || 0);
+	const previewActive = limit > 0 && !showAll;
+
+	let pagePhotos = sortedPhotos;
 	let showLoadMore = false;
 	let totalPages = 1;
 	let activePage = 1;
+	let showViewAll = false;
 
-	if ('load_more' === paginationType) {
-		pagePhotos = searchedPhotos.slice(0, visibleCount);
-		showLoadMore = visibleCount < searchedPhotos.length;
+	if (previewActive) {
+		pagePhotos = sortedPhotos.slice(0, limit);
+		showViewAll = sortedPhotos.length > limit;
+	} else if ('load_more' === paginationType) {
+		pagePhotos = sortedPhotos.slice(0, visibleCount);
+		showLoadMore = visibleCount < sortedPhotos.length;
 	} else if ('pagination' === paginationType) {
-		totalPages = Math.ceil(searchedPhotos.length / per);
+		totalPages = Math.ceil(sortedPhotos.length / per);
 		activePage = Math.min(page, totalPages);
 		const start = (activePage - 1) * per;
-		pagePhotos = searchedPhotos.slice(start, start + per);
+		pagePhotos = sortedPhotos.slice(start, start + per);
 	}
 
 	const hasResults = !showSearch || !searchQuery.trim() || searchedPhotos.length > 0;
@@ -972,18 +1191,35 @@ const Gallery = ({ attributes, cId, isBackend = false, setAttributes }) => {
 	return (
 		<div className="bpgpb-gallery-container" id={`bpgpb-${cId}`}>
 			{renderSearchBar()}
+			{renderControls()}
 			{!hasResults ? (
 				<div className="bpgpb-search-empty">
 					<span className="bpgpb-search-empty-icon">{searchIconRender}</span>
 					<p className="bpgpb-search-empty-text">{__('No matching photos found.', 'embed-google-photos')}</p>
 				</div>
 			) : (
-				<div className="bpgpb-gallery-inner" style={wrapStyle} ref={wrapRef}>
+				<div className={`bpgpb-gallery-inner${kenBurns ? ' bpgpb-kenburns' : ''}`} style={wrapStyle} ref={wrapRef}>
 					<div className={`bpgpb-grid bpgpb-grid--${layout}`}>
 						{pagePhotos.map(renderItem)}
 					</div>
 
-					{'load_more' === paginationType && showLoadMore && (
+					{showViewAll && (
+						<div className="bpgpb-load-more-wrap">
+							<button
+								type="button"
+								className="bpgpb-load-more"
+								onClick={() => setShowAll(true)}
+							>
+								{sprintf(
+									/* translators: %d: total number of photos */
+									__('View all %d photos', 'embed-google-photos'),
+									sortedPhotos.length
+								)}
+							</button>
+						</div>
+					)}
+
+					{!previewActive && 'load_more' === paginationType && showLoadMore && (
 						<div className="bpgpb-load-more-wrap">
 							<button
 								type="button"
@@ -995,7 +1231,7 @@ const Gallery = ({ attributes, cId, isBackend = false, setAttributes }) => {
 						</div>
 					)}
 
-					{'pagination' === paginationType && totalPages > 1 && (
+					{!previewActive && 'pagination' === paginationType && totalPages > 1 && (
 						<div className="bpgpb-pagination">
 							{Array.from({ length: totalPages }, (unused, i) => (
 								<button
