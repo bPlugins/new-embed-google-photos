@@ -19,8 +19,9 @@ import { useEffect, useRef, useState } from 'react';
  * @param {number} [props.width]       Intrinsic width (reserves space / avoids layout shift).
  * @param {number} [props.height]      Intrinsic height (reserves space / avoids layout shift).
  * @param {boolean} [props.isBackend]  True in the block editor — load immediately (see below).
+ * @param {Object}  [props.focalPoint] {x,y} (0–1) crop focus; maps to object-position.
  */
-const BlurImage = ({ src, alt, placeholder, srcSet, sizes, width, height, isBackend = false }) => {
+const BlurImage = ({ src, alt, placeholder, srcSet, sizes, width, height, isBackend = false, focalPoint }) => {
 	const [loaded, setLoaded] = useState(false);
 	// In the block editor the canvas is an iframe, and an IntersectionObserver
 	// created in the main frame never reports the iframe's elements as
@@ -28,6 +29,12 @@ const BlurImage = ({ src, alt, placeholder, srcSet, sizes, width, height, isBack
 	// show up blank. Skip lazy-loading there and load the image immediately.
 	const [inView, setInView] = useState(isBackend);
 	const imgRef = useRef(null);
+
+	// Map a {x,y} focal point (0–1) to a CSS object-position so cropping layouts
+	// keep the chosen subject in frame. Undefined leaves the CSS default (center).
+	const objectPosition = focalPoint
+		? `${Math.round((focalPoint.x ?? 0.5) * 100)}% ${Math.round((focalPoint.y ?? 0.5) * 100)}%`
+		: undefined;
 
 	useEffect(() => {
 		if (isBackend) {
@@ -58,7 +65,13 @@ const BlurImage = ({ src, alt, placeholder, srcSet, sizes, width, height, isBack
 	return (
 		<>
 			{inView && placeholder && !loaded && (
-				<img className="bpgpb-item__lqip" src={placeholder} alt="" aria-hidden="true" />
+				<img
+					className="bpgpb-item__lqip"
+					src={placeholder}
+					alt=""
+					aria-hidden="true"
+					style={objectPosition ? { objectPosition } : undefined}
+				/>
 			)}
 			<img
 				ref={imgRef}
@@ -71,6 +84,7 @@ const BlurImage = ({ src, alt, placeholder, srcSet, sizes, width, height, isBack
 				height={height || undefined}
 				loading="lazy"
 				onLoad={() => setLoaded(true)}
+				style={objectPosition ? { objectPosition } : undefined}
 			/>
 		</>
 	);

@@ -67,6 +67,64 @@
 [x] Shortcode support: [google_photos id=..] (use outside Gutenberg)
 [x] Empty / not-connected states polish (mostly done)
 
+-- Free Unique Features (Roadmap) --
+[x] Layouts: Google Photos Style "Memories" (Stories) Layout (round bubbles with names/dates)
+       -> benefit: Mimics Google Photos' rounded stories bubbles on mobile/desktop; increases site visitor interaction and provides a modern social UX
+       -> benefit: মোবাইল ও ডেস্কটপে গুগল ফটোজের মতো গোল গোল স্টোরি বাবল তৈরি করে; ভিজিটরদের আকর্ষণ বাড়ায় এবং মডার্ন লুক দেয়
+[x] Live Search: Real-Time Client-Side Search & Filter above the gallery
+       -> benefit: Instant, real-time client-side search by title/date; helps visitors quickly find specific photos in large galleries
+       -> benefit: টাইটেল ও ডেট দিয়ে ইনস্ট্যান্ট গ্যালারি সার্চ করার সুবিধা; বড় গ্যালারিতে নির্দিষ্ট ছবি খুব দ্রুত খুঁজে পেতে সাহায্য করে
+       -- Search enhancements (extend the Live Search feature) --
+       [x] Voice Search (Web Speech API): mic icon, speak to search
+              -> benefit: Browser-native voice search; hands-free and unique, no competitor offers it free
+              -> benefit: ব্রাউজারের নিজস্ব ভয়েস সার্চ; মাইকে বলে হাত না লাগিয়ে খোঁজা যায়, ইউনিক ফিচার যা কেউ ফ্রিতে দেয় না
+       [x] Autocomplete suggestions dropdown while typing
+              -> benefit: Shows matching titles as a dropdown while typing; faster discovery in large galleries
+              -> benefit: টাইপ করার সময় মিলে যাওয়া টাইটেল dropdown-এ দেখায়; বড় গ্যালারিতে দ্রুত খুঁজে পাওয়া যায়
+       [x] Highlight matched text in results
+              -> benefit: Highlights the matched part of each result so visitors instantly see why it matched
+              -> benefit: প্রতিটি result-এ মিলে যাওয়া অংশ highlight করে; কেন মিলেছে তা সাথে সাথে বোঝা যায়
+       [x] Live result count + clear (x) button
+              -> benefit: Shows "3 / 125" live count and a one-click clear button for a polished search UX
+              -> benefit: লাইভ "৩ / ১২৫" গণনা ও এক ক্লিকে clear বাটন; সার্চ UX আরও পরিপাটি হয়
+       [x] Filter chips (year) beside search
+              -> benefit: One-click year/month chips to filter alongside text search; quick browsing by date
+              -> benefit: সার্চের পাশে বছর/মাস chips; এক ক্লিকে তারিখ ধরে দ্রুত ব্রাউজ করা যায়
+[x] Image Cropping: Focal Point Selector in Gutenberg to avoid bad cropping
+       -> benefit: Select the key subject area of an image in Gutenberg; prevents faces or products from being cut off in cropped layouts
+       -> benefit: গুটেনবার্গে ছবির মূল বিষয়বস্তু সিলেক্ট করার সুবিধা; ক্রপ করা গ্রিডে মানুষের মুখ বা প্রোডাক্ট কেটে যাওয়া থেকে বাঁচায়
+[x] Styling: Visual presets (Grayscale, Vintage Sepia, warm color presets with hover transition)
+       -> benefit: Apply pre-made filters (Grayscale, Vintage Sepia) with smooth hover transitions directly from Gutenberg settings
+       -> benefit: গুটেনবার্গ সেটিংস থেকে ওয়ান-ক্লিক কাস্টম ফিল্টার (যেমন গ্রে-স্কেল, সেপিয়া) ও হোভার অ্যানিমেশন দেওয়ার সুবিধা
+[x] Usability: "Download Photo" button inside the Fancybox lightbox
+       -> benefit: Adds an optional download button in the lightbox toolbar; lets visitors save the original images instantly
+       -> benefit: লাইটবক্স টুলবারে একটি ডাউনলোড বাটন যুক্ত করে; যার সাহায্যে ভিজিটররা গ্যালারির মূল ছবি সেভ করতে পারেন
+[x] Workflow: Import/Export block configuration JSON
+       -> benefit: Export and import block styling and layout attributes as JSON; easily duplicate gallery styles across different sites
+       -> benefit: ব্লক স্টাইল ও লেআউট কনফিগারেশন JSON ফরম্যাটে ইমপোর্ট-এক্সপোর্ট করার সুবিধা; এক সাইট থেকে অন্য সাইটে ডিজাইন হুবহু কপি করা যায়
+
+
+-- More Unique Free Ideas (Claude, 16 July 2026) --
+[ ] Lightbox social share buttons (Facebook / X / Pinterest / Copy link)
+       -> benefit: Visitors share photos straight from the lightbox; each share is a free backlink + traffic to the site
+       -> benefit: লাইটবক্স থেকেই ছবি শেয়ার করা যায়; প্রতিটি শেয়ার সাইটে ফ্রি backlink ও ট্রাফিক আনে
+[ ] Deep-link to a specific photo via URL hash (?photo=3)
+       -> benefit: Share a direct link that opens straight to one photo's lightbox; better UX and SEO-friendly URLs
+       -> benefit: নির্দিষ্ট একটি ছবির লাইটবক্সে সরাসরি খোলার লিংক শেয়ার করা যায়; ভালো UX ও SEO-বান্ধব URL
+[ ] Auto slideshow with Ken Burns (slow zoom/pan) mode
+       -> benefit: Gallery auto-plays with a subtle zoom-pan effect; unique for hero backgrounds, kiosks and screensavers
+       -> benefit: গ্যালারি নিজে থেকে চলে সূক্ষ্ম zoom-pan এফেক্টসহ; hero background, kiosk বা screensaver হিসেবে ইউনিক ব্যবহার
+[ ] Photo meta overlay (date / dimensions from Picker metadata) on hover
+       -> benefit: Shows the capture date and size Picker already provides; a professional touch for photography portfolios
+       -> benefit: Picker যে তারিখ ও সাইজ দেয় তা hover-এ দেখায়; ফটোগ্রাফি পোর্টফোলিওতে প্রফেশনাল লুক দেয়
+[ ] Frontend sort/order dropdown (Newest / Oldest / Random)
+       -> benefit: Visitors reorder the gallery instantly; a natural, low-effort extension of Live Search
+       -> benefit: ভিজিটর গ্যালারি সাথে সাথে সাজাতে পারে; Live Search-এর স্বাভাবিক ও কম-effort extension
+[ ] "View all" preview limit + gallery count badge ("125 photos")
+       -> benefit: Show a limited preview grid with a count badge and a "View all" button; keeps long pages tidy
+       -> benefit: গণনা ব্যাজসহ সীমিত preview grid ও "View all" বাটন দেখায়; বড় পেজ পরিপাটি রাখে
+
+
 ==================================================================
  PRO VERSION  (monetization / upsell)
 ==================================================================

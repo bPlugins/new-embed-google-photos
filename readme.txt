@@ -4,7 +4,7 @@ Donate link: https://www.buymeacoffee.com/abuhayat
 Tags: block, photos, google photos, gallery, album
 Requires at least: 6.5
 Tested up to: 7.0
-Stable tag: 1.2.2
+Stable tag: 1.3.0
 Requires PHP: 7.1
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -30,6 +30,7 @@ The Embed Google Photos plugin offers a seamless solution for integrating beauti
 - Grid layout (fully responsive).
 - Masonry layout (Pinterest style — each image keeps its own ratio).
 - Carousel / Slider with autoplay, loop, navigation arrows, and pagination dots.
+- Memories / Stories layout — Google Photos–style round story bubbles.
 - Responsive columns — separate column counts for desktop, tablet, and mobile.
 - Adjustable column gap and row gap.
 - Image aspect ratio control (16:9, 4:3, 1:1, 3:4, 9:16).
@@ -41,9 +42,23 @@ The Embed Google Photos plugin offers a seamless solution for integrating beauti
 - Caption typography and color controls.
 - Hover effects — zoom, overlay, and caption slide-in.
 
+**Search & Filtering**
+- Live search bar (always-visible or expandable) — filter the gallery by photo title or date as visitors type.
+- Voice search — search by speaking, using the browser's built-in speech recognition (hidden automatically where unsupported).
+- Autocomplete suggestions — matching titles and dates drop down as visitors type.
+- Highlighted matches — the matched text is highlighted in results and suggestions.
+- Live result count — a "3 of 125 photos" indicator while filtering.
+- Year filter chips — one-click chips to filter the gallery by year.
+- Each search feature can be toggled on or off individually.
+
+**Photo Filters & Cropping**
+- Visual filter presets — Grayscale, Sepia, Vintage, Warm, and Cool, with an optional "reveal original on hover" transition.
+- Focal point crop control — set one crop focus for all images with a live preview, or fine-tune individual photos so faces and subjects are never cut off in cropped layouts.
+
 **Lightbox**
 - Fancybox lightbox with photo and video playback.
 - Lightbox caption, keyboard navigation, slideshow autoplay, and thumbnails bar.
+- Optional download button in the lightbox toolbar so visitors can save the original image.
 - Video options — controls, autoplay, muted, loop, and fit-to-window.
 
 **Pagination**
@@ -60,6 +75,7 @@ The Embed Google Photos plugin offers a seamless solution for integrating beauti
 
 **Usability**
 - Drag-to-reorder selected photos in the editor.
+- Import / Export — copy a gallery's styling and layout as JSON to reuse on another gallery or site.
 - Shortcode support — [google_photos id=..] to embed outside Gutenberg.
 - Polished empty / not-connected states with guided actions.
 - Modern React admin dashboard.
@@ -200,6 +216,14 @@ You can post your questions on the [support forum here](https://wordpress.org/su
 
 
 == Changelog ==
+
+= 1.3.0 - 17 July, 2026 =
+* New: Live search bar with voice search, autocomplete (titles + dates), highlighted matches, live result count, and year filter chips — each toggleable.
+* New: Visual filter presets (Grayscale, Sepia, Vintage, Warm, Cool) with an optional reveal-original-on-hover transition.
+* New: Focal point crop control — set one focal point for all images with a live crop preview, plus an optional per-image override.
+* New: Optional download button in the lightbox toolbar.
+* New: Import / Export gallery configuration as JSON.
+* New: Memories / Stories layout.
 
 = 1.2.2 - 16 July, 2026 =
 * Minor bug fix.

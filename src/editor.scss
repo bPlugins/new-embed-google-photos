@@ -385,6 +385,144 @@ $primaryColor: #4527a4;
 	}
 }
 
+// Focal Point inspector panel — one picker per image.
+.bpgpb-focal-list {
+	display: flex;
+	flex-direction: column;
+	gap: 18px;
+	max-height: 520px;
+	overflow-y: auto;
+	padding-right: 4px;
+}
+
+.bpgpb-focal-row {
+	.bpgpb-focal-reset {
+		margin-top: 4px;
+	}
+}
+
+// Global focal point: picker + live cropped preview side by side.
+.bpgpb-focal-global {
+	display: flex;
+	align-items: flex-start;
+	gap: 12px;
+
+	.components-focal-point-picker-control {
+		flex: 1 1 auto;
+		min-width: 0;
+		margin-bottom: 0;
+	}
+}
+
+.bpgpb-focal-preview-wrap {
+	flex: 0 0 auto;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.bpgpb-focal-preview-label {
+	font-size: 10px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	color: #757575;
+}
+
+.bpgpb-focal-preview {
+	width: 96px;
+	overflow: hidden;
+	border-radius: 6px;
+	border: 1px solid #e0e0e0;
+	background: #f0f0f0;
+
+	img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
+	}
+}
+
+// Search Features — compact grouped toggles inside the Search Bar panel.
+.bpgpb-search-features {
+	margin-top: 14px;
+	padding: 12px 14px;
+	background: #f6f7f7;
+	border: 1px solid #e0e0e0;
+	border-radius: 8px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+
+	&__title {
+		margin: 0 0 2px;
+		font-size: 11px;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		color: #757575;
+	}
+
+	// Tighten the WP ToggleControl rows so the group stays compact.
+	.components-toggle-control .components-base-control__field {
+		margin-bottom: 0;
+	}
+}
+
+// Contextual footer note for the Search Features group.
+.bpgpb-feature-row {
+	border-radius: 6px;
+	padding: 2px 6px;
+	margin: 0 -6px;
+	transition: background-color 0.12s ease;
+
+	&:hover,
+	&:focus-within {
+		background: #eef1f6;
+	}
+}
+
+.bpgpb-search-features__hint {
+	display: flex;
+	align-items: flex-start;
+	gap: 6px;
+	margin: 6px 0 0;
+	padding-top: 8px;
+	border-top: 1px solid #e4e4e4;
+	min-height: 32px;
+	font-size: 12px;
+	line-height: 1.5;
+	color: #757575;
+
+	&-icon {
+		flex: 0 0 auto;
+		color: #2f5aae;
+		font-size: 13px;
+		line-height: 1.4;
+	}
+}
+
+// Import / Export inspector panel.
+.bpgpb-ie-textarea textarea {
+	font-family: Menlo, Consolas, monospace;
+	font-size: 11px;
+	line-height: 1.5;
+}
+
+.bpgpb-ie-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-top: 8px;
+}
+
+.bpgpb-ie-sep {
+	margin: 16px 0;
+	border: 0;
+	border-top: 1px solid #e0e0e0;
+}
+
 // Reorder Photos inspector panel — drag thumbnails to change gallery order.
 .bpgpb-reorder-hint {
 	margin: 0 0 12px;
@@ -485,3 +623,111 @@ $primaryColor: #4527a4;
 		border-color: #2271b1;
 	}
 }
+
+// Icon Picker Control Styles
+.bpgpb-icon-picker-control {
+	margin-top: 20px;
+
+	.bpgpb-icon-picker-label {
+		font-weight: 500;
+		margin-bottom: 8px;
+		color: #1e1e1e;
+	}
+
+	.bpgpb-icon-picker-preview-wrap {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		background: #f6f7f7;
+		padding: 8px 12px;
+		border-radius: 8px;
+		border: 1px solid #e0e0e0;
+	}
+
+	.bpgpb-icon-picker-preview-box {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 40px;
+		height: 40px;
+		background: #fff;
+		border: 1px solid #ccd0d4;
+		border-radius: 6px;
+		color: #1e1e1e;
+
+		svg {
+			width: 24px;
+			height: 24px;
+		}
+	}
+
+	.bpgpb-icon-picker-trigger-btn {
+		height: 32px !important;
+	}
+
+	.bpgpb-icon-picker-btn {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 10px 4px;
+		background: #fff;
+		border: 1px solid #ccd0d4;
+		border-radius: 6px;
+		cursor: pointer;
+		color: #555d66;
+		transition: all 0.15s ease-in-out;
+		outline: none;
+
+		&:hover {
+			background: #f0f0f1;
+			border-color: #8c8f94;
+			color: #1e1e1e;
+		}
+
+		&.is-active {
+			background: #eef7ff;
+			border-color: #3858e9;
+			color: #3858e9;
+			box-shadow: 0 0 0 1px #3858e9;
+		}
+
+		.bpgpb-icon-picker-icon-wrapper {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			width: 24px;
+			height: 24px;
+
+			svg {
+				width: 20px;
+				height: 20px;
+			}
+		}
+	}
+}
+
+// Modal Custom Style
+.components-modal__frame.bpgpb-icon-picker-modal {
+	max-width: 360px;
+	border-radius: 12px;
+	overflow: hidden;
+
+	.components-modal__header {
+		border-bottom: 1px solid #e0e0e0;
+		margin-bottom: 16px;
+		padding: 16px 24px;
+	}
+
+	.components-modal__content {
+		padding: 0 24px 24px;
+	}
+	.bpgpb-icon-picker-grid {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		gap: 10px;
+		background: transparent;
+		padding: 10px 0 0 0;
+		border: none;
+	}
+}
+

@@ -24,7 +24,8 @@ export const mediaTypeOpt = [
 export const layoutOpt = [
 	{ label: __('Grid', 'embed-google-photos'), value: 'grid' },
 	{ label: __('Masonry', 'embed-google-photos'), value: 'masonry' },
-	{ label: __('Carousel', 'embed-google-photos'), value: 'carousel' }
+	{ label: __('Carousel', 'embed-google-photos'), value: 'carousel' },
+	{ label: __('Memories (Stories)', 'embed-google-photos'), value: 'memories' }
 ]
 
 export const hoverEffectOpt = [
@@ -32,6 +33,15 @@ export const hoverEffectOpt = [
 	{ label: __('Zoom', 'embed-google-photos'), value: 'zoom' },
 	{ label: __('Overlay', 'embed-google-photos'), value: 'overlay' },
 	{ label: __('Caption Slide-in', 'embed-google-photos'), value: 'slide' }
+]
+
+export const imageFilterOpt = [
+	{ label: __('None', 'embed-google-photos'), value: 'none' },
+	{ label: __('Grayscale', 'embed-google-photos'), value: 'grayscale' },
+	{ label: __('Sepia', 'embed-google-photos'), value: 'sepia' },
+	{ label: __('Vintage', 'embed-google-photos'), value: 'vintage' },
+	{ label: __('Warm', 'embed-google-photos'), value: 'warm' },
+	{ label: __('Cool', 'embed-google-photos'), value: 'cool' }
 ]
 
 export const captionSourceOpt = [

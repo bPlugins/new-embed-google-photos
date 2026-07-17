@@ -15,17 +15,19 @@ import { favoriteOpt, generalStyleTabs, layoutShowOpt, mediaTypeOpt, photosOpt, 
 import General from './General/General';
 import Style from './Style/Style';
 import AltText from './AltText';
+import FocalPoint from './FocalPoint';
 import ReorderPhotos from './ReorderPhotos';
+import ImportExport from './ImportExport';
 
 
 const Settings = ({ attributes, setAttributes }) => {
-	const { selectedPhotos, photosType, favorite, albumId, mediaType, layout, carousel, caption, lightbox, video, paginationType, perPage, loadMoreText, columns, columnGap, rowGap, coverImage, imgBorder, hoverEffect, hover, captionTypo, captionColor, loadMoreBtnTypo, loadMoreBtnColors, loadMoreBtnBorder, loadMoreBtnPadding, layoutShow, album } = attributes;
+	const { selectedPhotos, photosType, favorite, albumId, mediaType, layout, carousel, caption, lightbox, video, paginationType, perPage, loadMoreText, columns, columnGap, rowGap, coverImage, focalPoint, imgBorder, hoverEffect, imageFilter, imageFilterHover, hover, captionTypo, captionColor, loadMoreBtnTypo, loadMoreBtnColors, loadMoreBtnBorder, loadMoreBtnPadding, layoutShow, album, showSearch, searchIcon, searchPlaceholder, searchAlign, searchWidth, searchBgColor, searchTextColor, searchBorderColor, searchBorderRadius, searchBorderWidth, searchTypo, searchIconColor, searchIconSize, searchStyle, searchHeight, showVoiceSearch, searchAutocomplete, searchHighlight, searchResultCount, searchChips } = attributes;
 	const [device, setDevice] = useState('desktop');
 	const { title, isTitle } = album;
 
-	const generalProps = { setAttributes, photosType, favorite, albumId, mediaType, layout, carousel, caption, lightbox, video, paginationType, perPage, loadMoreText, columns, columnGap, rowGap, coverImage, layoutShow, album };
+	const generalProps = { setAttributes, photosType, favorite, albumId, mediaType, layout, carousel, caption, lightbox, video, paginationType, perPage, loadMoreText, columns, columnGap, rowGap, coverImage, layoutShow, album, showSearch, searchIcon, searchPlaceholder, searchAlign, searchWidth, searchStyle, showVoiceSearch, searchAutocomplete, searchHighlight, searchResultCount, searchChips };
 
-	const styleProps = { setAttributes, paginationType, imgBorder, hoverEffect, hover, captionTypo, captionColor, caption, loadMoreBtnTypo, loadMoreBtnColors, loadMoreBtnBorder, loadMoreBtnPadding };
+	const styleProps = { setAttributes, layout, paginationType, imgBorder, hoverEffect, imageFilter, imageFilterHover, hover, captionTypo, captionColor, caption, loadMoreBtnTypo, loadMoreBtnColors, loadMoreBtnBorder, loadMoreBtnPadding, showSearch, searchBgColor, searchTextColor, searchBorderColor, searchBorderRadius, searchBorderWidth, searchTypo, searchIconColor, searchIconSize, searchHeight };
 
 	return <>
 		<InspectorControls>
@@ -33,11 +35,13 @@ const Settings = ({ attributes, setAttributes }) => {
 				{'general' === tab.name && <>
 					<General {...generalProps} />
 					<ReorderPhotos selectedPhotos={selectedPhotos} setAttributes={setAttributes} />
+					<FocalPoint selectedPhotos={selectedPhotos} focalPoint={focalPoint} coverImage={coverImage} setAttributes={setAttributes} />
 					<AltText selectedPhotos={selectedPhotos} setAttributes={setAttributes} />
 				</>}
 
 				{'style' === tab.name && <>
 					<Style {...styleProps} />
+					<ImportExport attributes={attributes} setAttributes={setAttributes} />
 				</>}
 			</>}</TabPanel>
 		</InspectorControls>
