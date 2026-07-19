@@ -143,6 +143,10 @@ const Gallery = ({ attributes, cId, isBackend = false, setAttributes }) => {
 	const wrapRef = useRef();
 	const prevRef = useRef();
 	const nextRef = useRef();
+	// Caches the "random" sort order so it is reshuffled only when the photo set
+	// changes — never on unrelated re-renders (e.g. changing a setting in the
+	// editor), which otherwise reshuffled the gallery on every render.
+	const randomOrderRef = useRef({ sig: '', order: [] });
 	const isCarousel = 'carousel' === layout;
 	const isMemories = 'memories' === layout;
 
@@ -229,10 +233,19 @@ const Gallery = ({ attributes, cId, isBackend = false, setAttributes }) => {
 		} else if ('oldest' === sortOrder) {
 			arr.sort((a, b) => new Date(a.date || 0) - new Date(b.date || 0));
 		} else if ('random' === sortOrder) {
-			for (let i = arr.length - 1; i > 0; i--) {
-				const j = Math.floor(Math.random() * (i + 1));
-				[arr[i], arr[j]] = [arr[j], arr[i]];
+			// Reshuffle only when the photo set actually changes (its id list) — not
+			// on every render — so unrelated setting changes don't reorder the grid.
+			const sig = searchedPhotos.map((p) => p.id).join(',');
+			if (randomOrderRef.current.sig !== sig) {
+				const ids = searchedPhotos.map((p) => p.id);
+				for (let i = ids.length - 1; i > 0; i--) {
+					const j = Math.floor(Math.random() * (i + 1));
+					[ids[i], ids[j]] = [ids[j], ids[i]];
+				}
+				randomOrderRef.current = { sig, order: ids };
 			}
+			const byId = new Map(searchedPhotos.map((p) => [p.id, p]));
+			return randomOrderRef.current.order.map((id) => byId.get(id)).filter(Boolean);
 		}
 		return arr;
 	})();
@@ -410,8 +423,8 @@ const Gallery = ({ attributes, cId, isBackend = false, setAttributes }) => {
 			Thumbs: false === lightbox.thumbs ? false : { showOnStart: true },
 			// Slideshow autoplay (off by default; timeout in ms between slides).
 			Slideshow: lightbox.slideshow
-				? { autoStart: true, timeout: lightbox.slideshowSpeed || 3000 }
-				: { autoStart: false },
+				? { playOnStart: true, timeout: lightbox.slideshowSpeed || 3000 }
+				: { playOnStart: false },
 			on: {
 				// Enhance each video slide with Plyr once it's in the DOM, and keep
 				// the deep-link URL in sync with the revealed slide.
@@ -500,7 +513,7 @@ const Gallery = ({ attributes, cId, isBackend = false, setAttributes }) => {
 			// Overrides for Memories layout to look and behave like Google Photos Stories
 			const activeOptions = { ...options };
 			if (isMemories) {
-				activeOptions.Slideshow = { autoStart: true, timeout: 4000 };
+				activeOptions.Slideshow = { playOnStart: true, timeout: 4000 };
 				activeOptions.Thumbs = false; // Hide thumbnails for story view
 				activeOptions.Toolbar = {
 					display: {
@@ -1188,6 +1201,14 @@ const Gallery = ({ attributes, cId, isBackend = false, setAttributes }) => {
 
 	const hasResults = !showSearch || !searchQuery.trim() || searchedPhotos.length > 0;
 
+	// Numbered pagination: change the page
+	const goToPage = (nextPage) => {
+		if (nextPage === activePage) {
+			return;
+		}
+		setPage(nextPage);
+	};
+
 	return (
 		<div className="bpgpb-gallery-container" id={`bpgpb-${cId}`}>
 			{renderSearchBar()}
@@ -1238,7 +1259,7 @@ const Gallery = ({ attributes, cId, isBackend = false, setAttributes }) => {
 									type="button"
 									key={i}
 									className={`bpgpb-page${activePage === i + 1 ? ' is-active' : ''}`}
-									onClick={() => setPage(i + 1)}
+									onClick={() => goToPage(i + 1)}
 								>
 									{i + 1}
 								</button>

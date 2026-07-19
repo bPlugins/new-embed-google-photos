@@ -36,7 +36,7 @@ const General = ({ setAttributes, mediaType, layout, carousel = {}, caption = {}
             <SelectControl label={__('Media Type', 'embed-google-photos')} labelPosition='side' value={mediaType} options={mediaTypeOpt} onChange={val => setAttributes({ mediaType: val })} />
 
             <ProNotice status='premium' isIcon={true} className='mt10'>
-                {__('Pro features: Add More Photos (unlimited galleries), Album Auto-Sync, WebP conversion, and Watermark stamping.', 'embed-google-photos')}
+                {__('Pro features: Add More Photos (unlimited galleries), Album Auto-Sync (every 15 min / hourly / daily), Live Event / Wedding Mode (the gallery updates itself with no reload), Multi-album galleries with tabs, WebP conversion, and Watermark stamping.', 'embed-google-photos')}
             </ProNotice>
         </PanelBody>
 
@@ -84,6 +84,10 @@ const General = ({ setAttributes, mediaType, layout, carousel = {}, caption = {}
 
                 <IconPicker label={__('Search Icon', 'embed-google-photos')} value={searchIcon} onChange={val => setAttributes({ searchIcon: val })} />
             </>}
+
+            <ProNotice status='premium' isIcon={true} className='mt10'>
+                {__('Advanced Search (Pro): fuzzy / typo-tolerant matching ("beech" finds "beach"), a "/" focus shortcut, recent searches, "Did you mean…" suggestions, and a sticky search bar.', 'embed-google-photos')}
+            </ProNotice>
         </PanelBody>
 
         <PanelBody className='bPlPanelBody' title={__('Gallery Extras', 'embed-google-photos')} initialOpen={false}>
@@ -92,6 +96,16 @@ const General = ({ setAttributes, mediaType, layout, carousel = {}, caption = {}
             <ToggleControl className='mt10' label={__('Photo Count Badge', 'embed-google-photos')} help={__('Show a "125 photos" badge above the gallery.', 'embed-google-photos')} checked={!!showCountBadge} onChange={val => setAttributes({ showCountBadge: val })} />
 
             {('carousel' !== layout && 'memories' !== layout) && <RangeControl className='mt10' label={__('Preview Limit', 'embed-google-photos')} help={__('Show only the first N photos with a "View all" button. 0 = show all.', 'embed-google-photos')} value={previewLimit || 0} onChange={val => setAttributes({ previewLimit: val })} min={0} max={60} step={1} />}
+
+            <ProNotice status='premium' isIcon={true} className='mt10'>
+                {__('Pro adds Download-all-as-ZIP (visitors save the whole gallery) and Gallery Analytics (views + lightbox opens with a "most viewed" dashboard).', 'embed-google-photos')}
+            </ProNotice>
+        </PanelBody>
+
+        <PanelBody className='bPlPanelBody' title={__('Client Delivery (Pro)', 'embed-google-photos')} initialOpen={false}>
+            <ProNotice status='premium' isIcon={true}>
+                {__('Turn any gallery into a client-delivery tool with the Pro version: password-protect the gallery, Client Proofing (visitors heart/select photos and submit them to you by email, with per-photo comments — a Pixieset-style workflow), Media Cleanup Manager, and a Gallery Expiry date that auto-hides the gallery after a set time.', 'embed-google-photos')}
+            </ProNotice>
         </PanelBody>
 
         <PanelBody className='bPlPanelBody' title={__('Lightbox', 'embed-google-photos')} initialOpen={false}>
@@ -114,7 +128,7 @@ const General = ({ setAttributes, mediaType, layout, carousel = {}, caption = {}
             {lightbox.slideshow && <RangeControl className='mt10' label={__('Slideshow Speed (ms)', 'embed-google-photos')} value={lightbox.slideshowSpeed || 3000} onChange={val => setLightbox('slideshowSpeed', val)} min={1000} max={10000} step={500} />}
 
             <ProNotice status='premium' isIcon={true} className='mt10'>
-                {__('Premium lightbox skins (Dark, Light, Glass, Minimal) are available in the Pro version.', 'embed-google-photos')}
+                {__('Pro adds premium lightbox skins (Dark, Light, Glass, Minimal) and EXIF display — camera, lens, aperture, shutter and ISO under each photo.', 'embed-google-photos')}
             </ProNotice>
         </PanelBody>
 
@@ -158,7 +172,7 @@ const General = ({ setAttributes, mediaType, layout, carousel = {}, caption = {}
             <SelectControl label={__('Layout', 'embed-google-photos')} labelPosition='side' value={layout} options={layoutOpt} onChange={val => setAttributes({ layout: val })} />
 
             <ProNotice status='premium' isIcon={true} className='mt10'>
-                {__('Justified and Mosaic layouts are available in the Premium version.', 'embed-google-photos')}
+                {__('Justified, Mosaic and Timeline (date-grouped) layouts — plus one-click Design Presets — are available in the Premium version.', 'embed-google-photos')}
             </ProNotice>
 
             {layout !== 'memories' && <>

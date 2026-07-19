@@ -78,7 +78,10 @@ const FocalPoint = ({ selectedPhotos = [], focalPoint = { x: 0.5, y: 0.5 }, cove
 	return (
 		<PanelBody title={__('Focal Point (Crop)', 'embed-google-photos')} initialOpen={false}>
 			<p className="bpgpb-alt-hint">
-				{__('Drag the point to choose which part of the image stays in view when cropped. This applies to every image in the gallery.', 'embed-google-photos')}
+				{__('Drag the point to choose which part of each image stays in view when it is cropped. This applies to cropping layouts — Grid and Mosaic with a fixed aspect ratio.', 'embed-google-photos')}
+			</p>
+			<p className="bpgpb-alt-hint">
+				{__('Each image only shifts along the axis where it is actually cropped: wide (landscape) photos move left/right, tall (portrait) photos move up/down, and photos that already match the chosen ratio will not move.', 'embed-google-photos')}
 			</p>
 
 			<div className="bpgpb-focal-global">

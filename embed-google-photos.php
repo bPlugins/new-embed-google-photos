@@ -37,7 +37,7 @@ if (function_exists('bpgpb_fs')) {
                     'is_premium' => false,
                     'menu'       => array(
                         'slug'       => 'edit.php?post_type=bpgpb_gallery',
-                        'first-path' => 'edit.php?post_type=bpgpb_gallery&page=bpgpb-dashboard#/pricing',
+                        'first-path' => 'edit.php?post_type=bpgpb_gallery&page=wp-google-photos#/pricing',
                         'support'    => false,
                     ),
                 );

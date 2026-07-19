@@ -15,3 +15,11 @@ export const phpTabIcon = <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2
     <polyline points='14 2 14 8 20 8' />
     <line x1='9' y1='15' x2='15' y2='15' />
 </svg>;
+
+// Elementor "E" mark (simplified) for the Getting Started Elementor tab.
+export const elementorTabIcon = <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width={16} height={16} fill='currentColor'>
+    <rect x='5' y='4' width='3' height='16' rx='0.5' />
+    <rect x='10' y='4' width='9' height='3' rx='0.5' />
+    <rect x='10' y='10.5' width='9' height='3' rx='0.5' />
+    <rect x='10' y='17' width='9' height='3' rx='0.5' />
+</svg>;

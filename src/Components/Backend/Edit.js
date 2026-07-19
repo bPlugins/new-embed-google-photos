@@ -5,6 +5,7 @@ import { Button, Spinner } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
 import { Notice as ProNotice } from '../../../../bpl-tools/Components';
+import useIframeAssetSync from '../../../../bpl-tools/hooks/useIframeAssetSync';
 import useWPAjax from '../../hooks/useWPAjax';
 import { runPicker } from './picker';
 import Settings from './Settings/Settings';
@@ -34,6 +35,12 @@ const Edit = (props) => {
 	}, [clientId]);
 
 	const blockProps = useBlockProps({ id: `BPGPBBlockDirectory-${clientId}` });
+
+	// Clone the block's frontend + editor stylesheets into the editor canvas
+	// iframe so the in-editor gallery preview matches the frontend render.
+	// The gallery preview is a React component, so no view scripts are needed.
+	useIframeAssetSync(['bpgpb-google-photos-style-css', 'bpgpb-google-photos-editor-style-css']);
+
 
 	// Connection check (admin-only handler). The handler returns only a boolean;
 	// the access token itself never leaves the server.
@@ -78,7 +85,7 @@ const Edit = (props) => {
 			setIsError(true);
 			setStatus(
 				(e && e.message) ||
-					__('Something went wrong. Please try again.', 'embed-google-photos')
+				__('Something went wrong. Please try again.', 'embed-google-photos')
 			);
 		}
 		abortRef.current = null;

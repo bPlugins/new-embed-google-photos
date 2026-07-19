@@ -1,4 +1,4 @@
-import { gutenbergTabIcon, phpTabIcon, shortcodeTabIcon } from './icons';
+import { elementorTabIcon, gutenbergTabIcon, phpTabIcon, shortcodeTabIcon } from './icons';
 
 const slug = 'embed-google-photos';
 
@@ -115,6 +115,30 @@ export const welcomeInfo = (adminUrl) => ({
                         num: 3,
                         title: 'Paste anywhere',
                         body: 'Paste the shortcode (e.g. <code>[google_photos id=123]</code>) into any post, page, widget or Shortcode block.',
+                    },
+                ],
+            },
+            {
+                key: 'elementor',
+                label: 'Elementor',
+                icon: elementorTabIcon,
+                steps: [
+                    {
+                        num: 1,
+                        title: 'Create a Gallery',
+                        body: 'Go to <strong>Google Photos &rsaquo; Add New Gallery</strong>, pick your photos, style the gallery and publish it.',
+                        link: { url: `${adminUrl}post-new.php?post_type=bpgpb_gallery`, label: 'Add New Gallery' },
+                    },
+                    {
+                        num: 2,
+                        title: 'Copy the shortcode',
+                        body: 'In <strong>Google Photos &rsaquo; All Galleries</strong>, copy the shortcode (e.g. <code>[google_photos id=123]</code>) from the <strong>ShortCode</strong> column.',
+                        link: { url: `${adminUrl}edit.php?post_type=bpgpb_gallery`, label: 'All Galleries' },
+                    },
+                    {
+                        num: 3,
+                        title: 'Paste into a Shortcode widget',
+                        body: 'Edit your page with Elementor, search for the <strong>Shortcode</strong> widget, drag it in and paste the shortcode. The full gallery renders with all your settings — edit the gallery any time and every page updates automatically.',
                     },
                 ],
             },

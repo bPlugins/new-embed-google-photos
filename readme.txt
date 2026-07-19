@@ -92,22 +92,44 @@ The Embed Google Photos plugin offers a seamless solution for integrating beauti
 
 **Advanced Layouts & Display**
 - Justified / Mosaic layout — images fill every row edge-to-edge with varying widths.
+- Timeline layout — group photos by day, month, or year with date headers and sticky headers; perfect for travel blogs and event recaps.
 - Advanced Carousel options — slide effect, speed, slides-per-group, centered slides, grab cursor, pause-on-hover, and free-mode.
 - Frontend media filter bar — let visitors filter by Photos, Videos, or All with customizable button labels.
+- Design Presets — apply a complete look in one click (Clean Grid, Dark Portfolio, Polaroid, Magazine, and more) and save your own settings as reusable presets.
 
 **Premium Lightbox & Hover**
 - Premium lightbox skins — choose from multiple visual themes for the lightbox viewer.
 - Video autoplay in lightbox — videos start playing automatically when opened.
+- EXIF display in lightbox — show each photo's camera, lens, aperture, shutter speed, and ISO (read from the image's embedded data).
 - Per-image custom link — link any image to an external URL (opens in a new tab).
 - Advanced hover / overlay styling — grayscale effect, hover icon, and gradient overlay on hover.
+
+**Advanced Search (Pro)**
+- Fuzzy / typo-tolerant search — "beech" still finds "beach".
+- "/" keyboard shortcut — focus the search box from anywhere on the page.
+- Recent searches — remembered per gallery in a dropdown.
+- "Did you mean…" suggestion when a search returns no results.
+- Sticky search bar that follows scroll on long galleries.
+
+**Client Delivery (Photographers)**
+- Client Picks (Proofing) — visitors heart/select their favorite photos and submit them; the selection is emailed to you AND saved in the admin (Google Photos → Client Picks), with optional per-photo comments. Pairs with password protection for private client galleries.
+- Download as ZIP — let visitors download the whole gallery as a single ZIP of the original files (only possible because photos are stored locally).
+- Gallery expiry — automatically hide a gallery after a chosen date, with a custom message (great for time-limited client delivery).
+
+**Analytics & Maintenance**
+- Gallery Analytics — count gallery views and lightbox opens, with an admin dashboard showing totals, a "most viewed" table, and a bar chart.
+- Media Cleanup Manager — see the Media Library storage used per gallery, delete orphaned imported photos in one click, and optionally delete a gallery's photos when the gallery is deleted.
 
 **Image Styling**
 - Image box shadow — add depth with customizable shadow settings.
 - Advanced border radius — per-corner radius control for unique shapes.
 - Gradient overlays — apply gradient effects over gallery images.
 
-**Album Sync & Import**
-- Album auto-sync — paste a shared Google Photos album URL and new photos appear automatically via WP-Cron (hourly).
+**Album Sync & Automation**
+- Album auto-sync — paste a shared Google Photos album URL and new photos appear automatically via WP-Cron.
+- Sync interval choice — check the album every 15 minutes, hourly, or daily.
+- Live Event / Wedding Mode — visitors' open pages refresh on their own and show newly synced photos with no reload (a pulsing "Live · N new" badge). Guests drop photos into the shared album and the gallery wall updates itself.
+- Multi-album per gallery — pull photos from several shared albums into one gallery, with an optional album-tab switcher on the frontend.
 - Shared album embed — display any public shared Google Photos album without full OAuth setup.
 - Bulk album import — import all photos from a shared album in a single sync operation.
 
@@ -158,7 +180,7 @@ Yes, Embed Google Photos block is a free Gutenberg block plugin. The free versio
 
 = What extra features does the Pro version add? =
 
-Pro adds Justified/Mosaic layout, advanced carousel options, premium lightbox skins, album auto-sync from shared URLs, password-protected galleries, right-click protection, automatic watermark, WebP conversion, per-image custom links, frontend media filtering, image shadows, gradient overlays, and advanced hover styling.
+Pro adds Justified/Mosaic and Timeline layouts, one-click Design Presets, advanced carousel options, premium lightbox skins with EXIF display, album auto-sync (with 15-min/hourly/daily interval), Live Event / Wedding Mode (self-updating gallery), multi-album galleries with tabs, Client Proofing (visitors select photos and submit them to you), Download as ZIP, gallery expiry, Advanced Search (fuzzy + shortcuts + recent searches), Gallery Analytics, Media Cleanup Manager, password-protected galleries, right-click protection, automatic watermark, WebP conversion, per-image custom links, frontend media filtering, image shadows, gradient overlays, and advanced hover styling.
 
 = Do my Google credentials stay on my server? =
 
@@ -224,10 +246,23 @@ You can post your questions on the [support forum here](https://wordpress.org/su
 
 == Changelog ==
 
-= 1.3.0 - 17 July, 2026 =
+= 1.3.0 - 18 July, 2026 =
+* New (Pro): Timeline layout — group photos by day / month / year with sticky date headers.
+* New (Pro): Live Event / Wedding Mode — the gallery refreshes on its own and shows newly synced photos with no reload; choose a sync interval of 15 minutes, hourly, or daily.
+* New (Pro): Multi-album per gallery — pull from several shared albums with an optional frontend album-tab switcher.
+* New (Pro): Client Picks (Proofing) — visitors select photos and submit them; the selection is emailed to you and saved under Google Photos → Client Picks, with optional per-photo comments.
+* New (Pro): Download as ZIP — visitors download the whole gallery as one ZIP of the local originals.
+* New (Pro): Gallery expiry — auto-hide a gallery after a chosen date with a custom message.
+* New (Pro): Design Presets — one-click looks (Clean Grid, Dark Portfolio, Polaroid, Magazine, and more) plus save your own.
+* New (Pro): Advanced Search — fuzzy / typo-tolerant matching, "/" focus shortcut, recent searches, "Did you mean…", and a sticky search bar.
+* New (Pro): EXIF display in the lightbox — camera, lens, aperture, shutter, and ISO.
+* New (Pro): Gallery Analytics — views and lightbox opens with a "most viewed" dashboard.
+* New (Pro): Media Cleanup Manager — per-gallery storage, orphaned-photo cleanup, and "delete photos with gallery".
+* Security: sanitized the per-image link (blocks javascript: URIs) and hardened album-URL fetching against SSRF.
+* Improved: added uninstall cleanup for stored credentials/tokens; removed retired Library-API dead code.
 * New: Live search bar with voice search, autocomplete (titles + dates), highlighted matches, live result count, and year filter chips — each toggleable.
 * New: Visual filter presets (Grayscale, Sepia, Vintage, Warm, Cool) with an optional reveal-original-on-hover transition.
-* New: Focal point crop control — set one focal point for all images with a live crop preview, plus an optional per-image override.
+* New: Focal point crop control — set one crop focus for all images with a live preview, plus an optional per-image override.
 * New: Ken Burns motion — adjustable continuous zoom / pan on images.
 * New: Meta overlay — show each photo's date and dimensions on hover.
 * New: Frontend sort dropdown (Newest / Oldest / Random), photo count badge, and preview limit with a "View all" button.
@@ -397,7 +432,7 @@ This plugin bundles the following third-party JavaScript/PHP libraries.
 * **Purpose:** Provides scalable vector icons used in the block and editor interface.
 
 = bpl-tools =
-* **Source / GitHub:** https://github.com/bPlugins/bpl-tools
+* **Source:** https://github.com/bPlugins/bpl-tools
 * **License:** GPL-2.0-or-later – https://www.gnu.org/licenses/gpl-2.0.html
 * **Purpose:** Shared utility library providing admin dashboard components and common Gutenberg editor controls.
 * **External Services:** The library may connect to bPlugins, WordPress.org, and Freemius services for product data and checkout functionality. See full details: https://github.com/bPlugins/bpl-tools#external-requests--why-they-are-made

@@ -125,6 +125,38 @@
        -> benefit: গণনা ব্যাজসহ সীমিত preview grid ও "View all" বাটন দেখায়; বড় পেজ পরিপাটি রাখে
 
 
+-- More Unique Free Ideas — Round 2 (Claude, 18 July 2026) --
+[ ] Entrance animations: photos fade/slide/zoom in one-by-one on scroll (stagger)
+       -> benefit: Eye-catching AOS-style reveal using only CSS + IntersectionObserver; no extra library needed
+       -> benefit: স্ক্রল করে গ্যালারিতে এলে ছবিগুলো একে একে সুন্দরভাবে ঢোকে; কোনো বাড়তি লাইব্রেরি ছাড়াই আধুনিক লুক
+[ ] 3D tilt hover: image tilts in perspective following the mouse
+       -> benefit: Very modern micro-interaction almost no gallery plugin offers free
+       -> benefit: মাউস নাড়ালে ছবি হালকা 3D কাত হয়; খুবই মডার্ন এফেক্ট যা প্রায় কেউ ফ্রিতে দেয় না
+[ ] Frame styles: Polaroid / film-strip / shadow-card preset frames
+       -> benefit: One dropdown dramatically changes the whole gallery look (Polaroid white border + caption etc.)
+       -> benefit: এক dropdown-এ পুরো গ্যালারির চেহারা বদলে যায় (পোলারয়েড সাদা বর্ডার + ক্যাপশন ইত্যাদি)
+[ ] Featured-first grid: first photo spans 2×2, rest small (magazine/hero style)
+       -> benefit: A single toggle gives an editorial, magazine-style layout
+       -> benefit: এক toggle-এ ম্যাগাজিন-স্টাইল লেআউট — প্রথম ছবি বড়, বাকিগুলো ছোট
+[ ] Infinite scroll: auto-load more photos on scroll (3rd pagination type)
+       -> benefit: Seamless browsing without clicking Load More; fits the existing pagination architecture
+       -> benefit: Load More চাপা ছাড়াই স্ক্রলে ছবি লোড হতে থাকে; বর্তমান pagination কাঠামোতেই বসে
+[ ] Shuffle button: 🔀 beside the sort dropdown reshuffles the gallery per click
+       -> benefit: Fun engagement booster; pairs naturally with the existing Random sort
+       -> benefit: প্রতি ক্লিকে গ্যালারি নতুন করে এলোমেলো হয়; ভিজিটরের মজা ও engagement বাড়ায়
+[ ] Lightbox counter ("3 / 25") + QR-code share option
+       -> benefit: Scan the QR on a phone to open that photo — unique for events/exhibitions
+       -> benefit: লাইটবক্সে "৩/২৫" কাউন্টার; QR স্ক্যান করে ফোনে ছবিটা খোলা যায় — ইভেন্ট/প্রদর্শনীতে ইউনিক
+[ ] Respect prefers-reduced-motion: auto-disable Ken Burns/animations
+       -> benefit: Accessibility win (WCAG); looks good in wp.org reviews; ~2 lines of CSS
+       -> benefit: ইউজারের OS-এ motion কমানো থাকলে অ্যানিমেশন অটো বন্ধ; accessibility প্লাস — মাত্র ২ লাইন CSS
+[ ] Custom "No results" text (editable empty-state message for search)
+       -> benefit: Site owners can localize/brand the message shown when search finds nothing
+       -> benefit: সার্চে কিছু না মিললে যে মেসেজ দেখায় সেটা মালিক নিজে লিখতে পারবেন
+[ ] RTL support audit for gallery, search bar and lightbox
+       -> benefit: Correct layout for Arabic/Hebrew sites — a large market, small effort
+       -> benefit: আরবি/হিব্রু সাইটে গ্যালারি ঠিকভাবে উল্টে বসে কিনা যাচাই — বড় বাজার, ছোট কাজ
+
 ==================================================================
  PRO VERSION  (monetization / upsell)
 ==================================================================
