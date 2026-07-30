@@ -1,5 +1,5 @@
-=== Gallery for Google Photos – Import and Display Photo Albums ===
-Contributors: abuhayat, bplugins, btechnologies
+=== Gallery for Google Photos – share your albums right on your site ===
+Contributors: bplugins, abuhayat, btechnologies
 Donate link: https://www.buymeacoffee.com/abuhayat
 Tags: block, photos, google photos, gallery, album
 Requires at least: 6.5
@@ -7,176 +7,203 @@ Tested up to: 7.0
 Stable tag: 1.3.0
 Requires PHP: 7.1
 License: GPLv3 or later
-License URI: http://www.gnu.org/licenses/gpl-3.0.html
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Embed stunning Google Photos galleries directly into your WordPress site with the Embed Google Photos plugin.
+Gallery for Google Photos is a WordPress gallery plugin that lets you import your Google Photos and display them as responsive grid, masonry, carousel, or story galleries using the Gutenberg block & shortcode.
 
 == Description ==
 
-The Embed Google Photos plugin offers a seamless solution for integrating beautiful Google Photos galleries directly into your WordPress website. With its intuitive interface and robust functionality, this plugin simplifies the process of showcasing your photos and galleries in a visually stunning way. Whether you're a photographer, blogger, or business owner, this plugin provides a convenient and efficient way to share your visual content with your audience. With features like customizable layouts, responsive design, and easy-to-use settings, you can effortlessly create and manage your Google Photos galleries with ease. Say goodbye to complex embedding codes and manual updates – streamline your workflow and enhance your website's visual appeal with the Embed Google Photos plugin.
+**Import photos and videos straight from your Google Photos account and display them as responsive grid, masonry, carousel, and story galleries in WordPress. Pick your media with Google's official Photos Picker, save it to your own Media Library, then design the gallery in the block editor with simple block and shortcode support.**
 
-**[Demos](https://bplugins.com/products/embed-google-photos/#demos)** | **[Documentation](https://bplugins.com/docs/embed-google-photos/)**  
+[Gallery for Google Photos](https://bplugins.com/products/embed-google-photos/) | [Documentation](https://www.youtube.com/watch?v=ufKMktJm1ho) | [Pricing](https://bplugins.com/products/embed-google-photos/pricing/) | [Support](https://bplugins.com/support/) | [Demo](https://bplugins.com/products/embed-google-photos/#demos)
 
-= Free Features =
+https://www.youtube.com/watch?v=ufKMktJm1ho
+
+[Gallery for Google Photos](https://bplugins.com/products/embed-google-photos/) makes it easy to publish your Google Photos library without coding. Choose a layout, set responsive columns, add captions and hover effects, and open photos in a full-screen lightbox with video playback. Because the photos you pick are copied into your own WordPress Media Library, your galleries keep working even when your Google session expires.
+
+You can use it for photography portfolios, travel blogs, event recaps, real-estate listings, or client galleries. It works with any WordPress theme. Add a gallery using the Gutenberg block, or place it anywhere with a shortcode.
+
+=== Key Features – Free Version ===
 
 **Import & Connection**
-- Import photos **and** videos directly from Google Photos using the official Google Photos Picker.
-- Imported media is saved to your WordPress Media Library.
-- Self-hosted OAuth — your own Google credentials stay on your server and are never sent to us.
-- Authorization sidebar with field validation, loading state, and connect/disconnect.
-- Media Type filter — show All Media, Photos only, or Videos only.
+- **Photo & Video Import** – Import photos and videos directly from Google Photos using the official Google Photos Picker.
+- **Saved to Media Library** – Imported media is stored in your own WordPress Media Library, so galleries keep working.
+- **Self-Hosted OAuth** – Your own Google credentials stay on your server and are never sent to us.
+- **Authorization Sidebar** – Field validation, loading state, and one-click connect/disconnect.
+- **Media Type Filter** – Show All Media, Photos only, or Videos only.
 
 **Layouts**
-- Grid layout (fully responsive).
-- Masonry layout (Pinterest style — each image keeps its own ratio).
-- Carousel / Slider with autoplay, loop, navigation arrows, and pagination dots.
-- Memories / Stories layout — Google Photos–style round story bubbles.
-- Responsive columns — separate column counts for desktop, tablet, and mobile.
-- Adjustable column gap and row gap.
-- Image aspect ratio control (16:9, 4:3, 1:1, 3:4, 9:16).
-- Image border — width, style, color, and radius.
+- **Grid Layout** – A fully responsive photo grid.
+- **Masonry Layout** – Pinterest-style layout where every image keeps its own ratio.
+- **Carousel / Slider** – Autoplay, loop, navigation arrows, and pagination dots.
+- **Memories / Stories Layout** – Google Photos–style round story bubbles.
+- **Responsive Columns** – Separate column counts for desktop, tablet, and mobile.
+- **Column & Row Gap** – Adjustable spacing in both directions.
+- **Aspect Ratio Control** – Choose 16:9, 4:3, 1:1, 3:4, or 9:16.
+- **Image Border** – Width, style, color, and radius.
 
 **Captions & Hover**
-- Captions from the image title or date.
-- Caption position — below the image or as an overlay on hover.
-- Caption typography and color controls.
-- Hover effects — zoom, overlay, and caption slide-in.
-- Meta overlay — show each photo's date and dimensions on hover.
+- **Captions** – Pull captions from the image title or date.
+- **Caption Position** – Show below the image or as an overlay on hover.
+- **Caption Styling** – Typography and color controls.
+- **Hover Effects** – Zoom, overlay, and caption slide-in.
+- **Meta Overlay** – Show each photo's date and dimensions on hover.
 
 **Search & Filtering**
-- Live search bar (always-visible or expandable) — filter the gallery by photo title or date as visitors type.
-- Voice search — search by speaking, using the browser's built-in speech recognition (hidden automatically where unsupported).
-- Autocomplete suggestions — matching titles and dates drop down as visitors type.
-- Highlighted matches — the matched text is highlighted in results and suggestions.
-- Live result count — a "3 of 125 photos" indicator while filtering.
-- Year filter chips — one-click chips to filter the gallery by year.
-- Each search feature can be toggled on or off individually.
+- **Live Search Bar** – Always-visible or expandable; filters the gallery by photo title or date as visitors type.
+- **Voice Search** – Search by speaking, using the browser's built-in speech recognition (hidden automatically where unsupported).
+- **Autocomplete Suggestions** – Matching titles and dates drop down as visitors type.
+- **Highlighted Matches** – The matched text is highlighted in both results and suggestions.
+- **Live Result Count** – A "3 of 125 photos" indicator while filtering.
+- **Year Filter Chips** – One-click chips to filter the gallery by year.
+- **Individual Toggles** – Every search feature can be turned on or off on its own.
 
 **Photo Filters & Cropping**
-- Visual filter presets — Grayscale, Sepia, Vintage, Warm, and Cool, with an optional "reveal original on hover" transition.
-- Focal point crop control — set one crop focus for all images with a live preview, or fine-tune individual photos so faces and subjects are never cut off in cropped layouts.
-- Ken Burns motion — slow, continuous zoom / pan on images with an adjustable speed; great for hero backgrounds and kiosks.
+- **Visual Filter Presets** – Grayscale, Sepia, Vintage, Warm, and Cool, with an optional reveal-original-on-hover transition.
+- **Focal Point Crop** – Set one crop focus for all images with a live preview, or fine-tune individual photos so faces and subjects are never cut off in cropped layouts.
+- **Ken Burns Motion** – Slow, continuous zoom / pan with an adjustable speed; great for hero backgrounds and kiosks.
 
 **Lightbox**
-- Fancybox lightbox with photo and video playback.
-- Lightbox caption, keyboard navigation, slideshow autoplay, and thumbnails bar.
-- Optional download button in the lightbox toolbar so visitors can save the original image.
-- Social share buttons — Facebook, X, Pinterest and Copy-link in the lightbox toolbar.
-- Deep-link to a photo — the open photo is reflected in the URL (?photo=N) so a shared link reopens it.
-- Video options — controls, autoplay, muted, loop, and fit-to-window.
+- **Fancybox Lightbox** – Full-screen viewer with photo and video playback.
+- **Lightbox Navigation** – Caption, keyboard navigation, slideshow autoplay, and a thumbnails bar.
+- **Download Button** – Optional toolbar button so visitors can save the original image.
+- **Social Share Buttons** – Facebook, X, Pinterest, and Copy-link in the lightbox toolbar.
+- **Deep Link to a Photo** – The open photo is reflected in the URL (?photo=N) so a shared link reopens it.
+- **Video Options** – Controls, autoplay, muted, loop, and fit-to-window.
 
 **Pagination**
-- Show All, Load More, or numbered Pagination.
-- Configurable items per page.
-- Custom "Load More" button text.
-- Customize the "Load More" button's color, typography, border, and padding.
+- **Three Modes** – Show All, Load More, or numbered pagination.
+- **Items Per Page** – Configure exactly how many photos load at a time.
+- **Custom Button Text** – Set your own "Load More" label.
+- **Button Styling** – Customize the button's color, typography, border, and padding.
 
 **Performance & SEO**
-- Lazy-load images with a blur / low-res placeholder for an instant-feeling page.
-- Responsive srcset so the browser downloads the right image size (faster loads, less bandwidth).
-- Schema.org ImageObject markup for Google Images and rich results.
-- Per-image alt text editing for accessibility and SEO.
+- **Lazy Loading** – Blur / low-res placeholders make the page feel instant.
+- **Responsive Images** – srcset so the browser downloads the right image size (faster loads, less bandwidth).
+- **Schema.org Markup** – ImageObject structured data for Google Images and rich results.
+- **Per-Image Alt Text** – Editable alt text for accessibility and SEO.
 
 **Usability**
-- Drag-to-reorder selected photos in the editor.
-- Frontend sort dropdown — let visitors reorder the gallery (Newest, Oldest, or Random).
-- Photo count badge — show a "125 photos" badge above the gallery.
-- Preview limit + "View all" — show only the first N photos with a button to reveal the rest.
-- Import / Export — copy a gallery's styling and layout as JSON to reuse on another gallery or site.
-- Shortcode support — [google_photos id=..] to embed outside Gutenberg.
-- Polished empty / not-connected states with guided actions.
-- Modern React admin dashboard.
-- Works with any WordPress theme and supports wide / full alignment.
+- **Drag-to-Reorder** – Rearrange selected photos in the editor.
+- **Frontend Sort Dropdown** – Let visitors reorder the gallery by Newest, Oldest, or Random.
+- **Photo Count Badge** – Show a "125 photos" badge above the gallery.
+- **Preview Limit & View All** – Show only the first N photos with a button to reveal the rest.
+- **Import / Export** – Copy a gallery's styling and layout as JSON to reuse on another gallery or site.
+- **Shortcode Support** – Insert galleries anywhere on your site, even outside Gutenberg, using [google_photos id=..].
+- **Guided Empty States** – Polished empty and not-connected states with clear next actions.
+- **Modern React Dashboard** – Demos and help built right into wp-admin.
+- **Theme Compatible** – Works with any WordPress theme and supports wide / full alignment.
 
-= Pro Features =
+=== Gallery for Google Photos Pro – Unlock Premium Features ===
+[Gallery for Google Photos Pro](https://bplugins.com/products/embed-google-photos/pricing/) gives you more design power and control. Add advanced layouts, album automation, client-delivery tools, and gallery protection to run a professional photo workflow straight from WordPress.
+
+==What's New in the Pro Version?==
 
 **Advanced Layouts & Display**
-- Justified / Mosaic layout — images fill every row edge-to-edge with varying widths.
-- Timeline layout — group photos by day, month, or year with date headers and sticky headers; perfect for travel blogs and event recaps.
-- Advanced Carousel options — slide effect, speed, slides-per-group, centered slides, grab cursor, pause-on-hover, and free-mode.
-- Frontend media filter bar — let visitors filter by Photos, Videos, or All with customizable button labels.
-- Design Presets — apply a complete look in one click (Clean Grid, Dark Portfolio, Polaroid, Magazine, and more) and save your own settings as reusable presets.
+- **Justified / Mosaic Layout** – Images fill every row edge-to-edge with varying widths.
+- **Timeline Layout** – Group photos by day, month, or year with sticky date headers; perfect for travel blogs and event recaps.
+- **Advanced Carousel Options** – Slide effect, speed, slides-per-group, centered slides, grab cursor, pause-on-hover, and free-mode.
+- **Frontend Media Filter Bar** – Let visitors filter by Photos, Videos, or All with customizable button labels.
+- **Design Presets** – Apply a complete look in one click (Clean Grid, Dark Portfolio, Polaroid, Magazine, and more) and save your own settings as reusable presets.
 
 **Premium Lightbox & Hover**
-- Premium lightbox skins — choose from multiple visual themes for the lightbox viewer.
-- Video autoplay in lightbox — videos start playing automatically when opened.
-- EXIF display in lightbox — show each photo's camera, lens, aperture, shutter speed, and ISO (read from the image's embedded data).
-- Per-image custom link — link any image to an external URL (opens in a new tab).
-- Advanced hover / overlay styling — grayscale effect, hover icon, and gradient overlay on hover.
+- **Premium Lightbox Skins** – Choose from multiple visual themes for the lightbox viewer.
+- **Video Autoplay in Lightbox** – Videos start playing automatically when opened.
+- **EXIF Display** – Show each photo's camera, lens, aperture, shutter speed, and ISO, read from the image's embedded data.
+- **Per-Image Custom Link** – Link any image to an external URL, opening in a new tab.
+- **Advanced Hover Styling** – Grayscale effect, hover icon, and gradient overlay on hover.
 
-**Advanced Search (Pro)**
-- Fuzzy / typo-tolerant search — "beech" still finds "beach".
-- "/" keyboard shortcut — focus the search box from anywhere on the page.
-- Recent searches — remembered per gallery in a dropdown.
-- "Did you mean…" suggestion when a search returns no results.
-- Sticky search bar that follows scroll on long galleries.
+**Advanced Search**
+- **Fuzzy / Typo-Tolerant Search** – "beech" still finds "beach".
+- **"/" Keyboard Shortcut** – Focus the search box from anywhere on the page.
+- **Recent Searches** – Remembered per gallery in a dropdown.
+- **"Did You Mean…" Suggestion** – Offered when a search returns no results.
+- **Sticky Search Bar** – Follows scroll on long galleries.
 
-**Client Delivery (Photographers)**
-- Client Picks (Proofing) — visitors heart/select their favorite photos and submit them; the selection is emailed to you AND saved in the admin (Google Photos → Client Picks), with optional per-photo comments. Pairs with password protection for private client galleries.
-- Download as ZIP — let visitors download the whole gallery as a single ZIP of the original files (only possible because photos are stored locally).
-- Gallery expiry — automatically hide a gallery after a chosen date, with a custom message (great for time-limited client delivery).
+**Client Delivery for Photographers**
+- **Client Picks (Proofing)** – Visitors heart their favorite photos and submit them; the selection is emailed to you and saved in the admin under Google Photos → Client Picks, with optional per-photo comments.
+- **Download as ZIP** – Let visitors download the whole gallery as a single ZIP of the original files.
+- **Gallery Expiry** – Automatically hide a gallery after a chosen date, with a custom message.
 
 **Analytics & Maintenance**
-- Gallery Analytics — count gallery views and lightbox opens, with an admin dashboard showing totals, a "most viewed" table, and a bar chart.
-- Media Cleanup Manager — see the Media Library storage used per gallery, delete orphaned imported photos in one click, and optionally delete a gallery's photos when the gallery is deleted.
+- **Gallery Analytics** – Count gallery views and lightbox opens, with an admin dashboard showing totals, a most-viewed table, and a bar chart.
+- **Media Cleanup Manager** – See the Media Library storage used per gallery, delete orphaned imported photos in one click, and optionally delete a gallery's photos when the gallery is deleted.
 
 **Image Styling**
-- Image box shadow — add depth with customizable shadow settings.
-- Advanced border radius — per-corner radius control for unique shapes.
-- Gradient overlays — apply gradient effects over gallery images.
+- **Image Box Shadow** – Add depth with customizable shadow settings.
+- **Advanced Border Radius** – Per-corner radius control for unique shapes.
+- **Gradient Overlays** – Apply gradient effects over gallery images.
 
 **Album Sync & Automation**
-- Album auto-sync — paste a shared Google Photos album URL and new photos appear automatically via WP-Cron.
-- Sync interval choice — check the album every 15 minutes, hourly, or daily.
-- Live Event / Wedding Mode — visitors' open pages refresh on their own and show newly synced photos with no reload (a pulsing "Live · N new" badge). Guests drop photos into the shared album and the gallery wall updates itself.
-- Multi-album per gallery — pull photos from several shared albums into one gallery, with an optional album-tab switcher on the frontend.
-- Shared album embed — display any public shared Google Photos album without full OAuth setup.
-- Bulk album import — import all photos from a shared album in a single sync operation.
+- **Album Auto-Sync** – Paste a shared Google Photos album URL and new photos appear automatically via WP-Cron.
+- **Sync Interval Choice** – Check the album every 15 minutes, hourly, or daily.
+- **Live Event / Wedding Mode** – Open pages refresh on their own and show newly synced photos with no reload, behind a pulsing "Live · N new" badge. Guests drop photos into the shared album and the gallery wall updates itself.
+- **Multi-Album per Gallery** – Pull photos from several shared albums into one gallery, with an optional album-tab switcher on the frontend.
+- **Shared Album Embed** – Display any public shared Google Photos album without full OAuth setup.
+- **Bulk Album Import** – Import all photos from a shared album in a single sync operation.
 
 **Gallery Protection**
-- Password-protected gallery — restrict gallery access with a password.
-- Right-click & download protection — disable right-click context menu to discourage image downloading.
-- Automatic watermark — apply a logo watermark on all images during import (server-side, position/opacity/size controls).
+- **Password-Protected Gallery** – Restrict gallery access with a password.
+- **Right-Click Protection** – Disable the right-click context menu to discourage image downloading.
+- **Automatic Watermark** – Apply a logo watermark to all images during import, server-side, with position, opacity, and size controls.
 
 **Performance**
-- Auto WebP conversion — automatically convert imported images to WebP format for faster page loads and smaller file sizes.
+- **Auto WebP Conversion** – Automatically convert imported images to WebP for faster page loads and smaller files.
 
-= How to use =
-- First, install the Embed Google Photos plugin.
-- Add the Embed Google Photos from the block category called "Widgets" in the Gutenberg editor.
-- You can change block settings from the right-side settings sidebar.
-- Enjoy!
+[Upgrade to Pro](https://bplugins.com/products/embed-google-photos/pricing/) to unlock all premium features.
+
+=== How to Use Gallery for Google Photos – Quick Start Guide ===
+
+Getting started is easy!
+
+===Step-by-Step Setup===
+1. Go to **Plugins → Add New**.
+2. Search for **Gallery for Google Photos**.
+3. Click **Install Now**, then **Activate**.
+4. Add your own Google API credentials (Client ID, Client Secret, Refresh Token) in the block's Authorization sidebar and connect your account. See the [documentation](https://www.youtube.com/watch?v=ufKMktJm1ho) for the one-time Google Cloud setup.
+5. In the block editor, add the **Gallery for Google Photos block**, click **Select Photos**, pick your media, choose a layout, configure settings, and publish.
+6. Or insert the provided **shortcode** anywhere to show your gallery.
+
+Enjoy fast, responsive Google Photos galleries on your site!
+
+[Live Demo](https://bplugins.com/products/embed-google-photos/#demos) | [Try the Pro Version](https://bplugins.com/products/embed-google-photos/pricing/)
 
 * For installation help click on Installation Tab
- 
 
-= Feedback =
-- Liked that plugin? Hate it? Want a new feature? [Send me some feedback](mailto:support@bplugins.com 'Send feedback')
+### User Feedback
 
+#### - Did you like this plugin? Dislike it? Have a feature request? [Please share your feedback with us](mailto:support@bplugins.com 'Send feedback')
+
+=== Check out our other WordPress Plugins ===
+- [bSlider](https://bplugins.com/products/b-slider/) – Create responsive image, post, product, and video sliders.
+- [HTML5 Audio Player](https://bplugins.com/products/html5-audio-player/) – Best audio player plugin for WordPress.
+- [PDF Poster](https://bplugins.com/products/pdf-poster/) – A fully-featured PDF Viewer Plugin for WordPress.
+- [StreamCast](https://bplugins.com/products/streamcast-radio-player/) – A fully-featured Radio Player Plugin for WordPress.
+- [3D Viewer](https://bplugins.com/products/3d-viewer/) – Display interactive 3D models on the web.
 
 == Installation ==
 
-= From Gutenberg Editor: =
+### From Gutenberg Editor:
 1. Go to the WordPress Block/Gutenberg Editor
-2. Search For **Embed Google Photos**
-3. Click on the **Embed Google Photos** to add the block
+2. Search For **Gallery for Google Photos**
+3. Click on the **Gallery for Google Photos** block to add the block
 
-= Download & Upload: =
-1. Download the **Embed Google Photos** plugin (*.zip file*)
+### Download & Upload:
+1. Download the **Gallery for Google Photos** plugin (*.zip file*)
 2. In your admin area, go to the Plugins menu and click on **Add New**
 3. Click on **Upload Plugin** and choose the **`embed-google-photos.zip`** file and click on **Install Now**
 4. Activate the plugin and Enjoy!
 
-= Manually: =
-1. Download and upload the **Embed Google Photos** plugin to the **`/wp-content/plugins/`** directory
+### Manually:
+1. Download and upload the **Gallery for Google Photos** plugin to the **`/wp-content/plugins/`** directory
 2. Activate the plugin through the Plugins menu in WordPress
 
 
 == Frequently Asked Questions ==
 
-= Is Embed Google Photos block free? =
+= Is Gallery for Google Photos free? =
 
-Yes, Embed Google Photos block is a free Gutenberg block plugin. The free version includes Grid, Masonry, and Carousel layouts, Fancybox lightbox, pagination, captions, hover effects, lazy loading, and more.
+Yes, Gallery for Google Photos is a free Gutenberg block plugin. The free version includes Grid, Masonry, Carousel, and Memories layouts, the Fancybox lightbox, pagination, captions, hover effects, live search, visual filters, focal-point cropping, lazy loading, and more.
 
 = What extra features does the Pro version add? =
 
@@ -188,7 +215,7 @@ Yes. Your Google Client ID, Client Secret, and Refresh Token are stored only in 
 
 = How does Album Auto-Sync work? =
 
-Paste a public shared Google Photos album URL into the block. The plugin uses WP-Cron to check the album hourly and automatically imports any new photos into your Media Library and gallery. No manual re-importing needed.
+Paste a public shared Google Photos album URL into the block. The plugin uses WP-Cron to check the album on your chosen interval and automatically imports any new photos into your Media Library and gallery. No manual re-importing needed.
 
 = Can I embed a shared Google Photos album without OAuth? =
 
@@ -214,13 +241,17 @@ Yes. Every gallery generates a shortcode [google_photos id=..] that works in the
 
 Yes, it works with any standard WordPress theme and supports wide and full alignment.
 
-= Can I filter images and videos? =
+= Can I change block settings? =
 
-Yes. In the free version you can filter by media type (All, Photos, Videos) in the editor. The Pro version also adds a frontend filter bar so visitors can filter on the live page.
+Yes, you can change all gallery settings from the Gutenberg block editor's right sidebar.
 
 = How many galleries can I create? =
 
 Unlimited. You can create as many galleries as you need.
+
+= Can I filter images and videos? =
+
+Yes. In the free version you can filter by media type (All, Photos, Videos) in the editor. The Pro version also adds a frontend filter bar so visitors can filter on the live page.
 
 = Why do my Google Photos credentials/refresh token expire after 7 days? =
 
@@ -229,6 +260,11 @@ If your Google Cloud OAuth app is set to "Testing" mode, Google automatically ex
 = Where can I get support? =
 
 You can post your questions on the [support forum here](https://wordpress.org/support/plugin/embed-google-photos/)
+
+= Where do I report security bugs found in this plugin? =
+
+Please report security bugs found in the source code of the Gallery for Google Photos plugin through the [Patchstack Vulnerability Disclosure Program](https://patchstack.com/database/vdp/). The Patchstack team will assist you with verification, CVE assignment, and notify the developers of this plugin.
+
 
 == Screenshots ==
 
@@ -315,7 +351,13 @@ You can post your questions on the [support forum here](https://wordpress.org/su
 
 == Upgrade Notice ==
 
-= 1.2.1 =
+= 1.3.0 - 18 July, 2026 =
+* Adds live search with voice input and year filters, visual filter presets, focal-point cropping, Ken Burns motion, the Memories layout, lightbox sharing and downloads, and JSON import/export. Also includes a security hardening pass (per-image link sanitization and SSRF-hardened album fetching) and uninstall cleanup for stored credentials.
+
+= 1.2.2 - 16 July, 2026 =
+* Minor bug fix.
+
+= 1.2.1 - 14 July, 2026 =
 Important: Google shut down the old Google Photos API this plugin used, so galleries built the old way may no longer show your images. This version adds Google's new Photos Picker system — after updating, open the block, reconnect your Google account, and re-select your photos (they are now saved to your own Media Library and keep working). Also a recommended security fix (stored XSS + write-only credentials).
 
 = 1.0.9 - 28 Dec, 2024 =
@@ -353,7 +395,7 @@ Important: Google shut down the old Google Photos API this plugin used, so galle
 == Source Code ==
 
 You can find the source code, report bugs, and contribute to the development of this plugin on our GitHub repository:
-[**Embed Google Photos on GitHub**](https://github.com/bPlugins/new-embed-google-photos)
+[**Gallery for Google Photos on GitHub**](https://github.com/bPlugins/new-embed-google-photos)
 
 
 == External Services ==
@@ -404,7 +446,7 @@ This plugin bundles the following third-party JavaScript/PHP libraries.
 = Fancybox (@fancyapps/ui) =
 * **Source:** https://fancyapps.com/fancybox/
 * **GitHub:** https://github.com/fancyapps/ui
-* **License:** Fancyapps UI License – https://fancyapps.com/pricing/ (note: this is a proprietary license, not MIT/GPL — see the security/compatibility note below).
+* **License:** Fancyapps UI License – https://fancyapps.com/pricing/ (note: this is a proprietary license, not MIT/GPL).
 * **Purpose:** The lightbox that opens photos and videos in a full-screen viewer.
 
 = Immer =
@@ -432,7 +474,7 @@ This plugin bundles the following third-party JavaScript/PHP libraries.
 * **Purpose:** Provides scalable vector icons used in the block and editor interface.
 
 = bpl-tools =
-* **Source:** https://github.com/bPlugins/bpl-tools
+* **Source / GitHub:** https://github.com/bPlugins/bpl-tools
 * **License:** GPL-2.0-or-later – https://www.gnu.org/licenses/gpl-2.0.html
 * **Purpose:** Shared utility library providing admin dashboard components and common Gutenberg editor controls.
 * **External Services:** The library may connect to bPlugins, WordPress.org, and Freemius services for product data and checkout functionality. See full details: https://github.com/bPlugins/bpl-tools#external-requests--why-they-are-made

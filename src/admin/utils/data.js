@@ -18,10 +18,12 @@ export const dashboardInfo = (info) => {
             logo: `https://ps.w.org/${slug}/assets/icon-128x128.png`,
             banner: `https://ps.w.org/${slug}/assets/banner-772x250.png`,
             thumbnail: `https://bplugins.com/wp-content/themes/b-technologies/assets/images/products/${slug}.png`,
+            video: 'https://www.youtube.com/watch?v=ufKMktJm1ho',
+            isYoutube: true
         },
         pages: {
             org: `https://wordpress.org/plugins/${slug}/`,
-            docs: `https://bplugins.github.io/new-embed-google-photos/`,
+            docs: `https://www.youtube.com/watch?v=ufKMktJm1ho`,
             pricing: `https://bplugins.com/products/${slug}/pricing`,
         },
         freemius: {

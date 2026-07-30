@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Gallery for Google Photos – Import and Display Photo Albums
+ * Plugin Name: Gallery for Google Photos – share your albums right on your site
  * Plugin URI: https://bplugins.com/plugins/gallery-for-google-photos/
  * Description: Embed stunning Google Photos galleries directly into your WordPress site with the Google Photos Block plugin.
  * Version: 1.3.0
