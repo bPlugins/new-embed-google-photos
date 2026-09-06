@@ -5,6 +5,7 @@ import { registerPlugin } from '@wordpress/plugins';
 import { PluginSidebar, PluginSidebarMoreMenuItem } from '@wordpress/edit-post';
 import useWPAjax from '../../utils/useWPAjax';
 import { blockIcon, googleIcon } from '../../utils/icons';
+import { authDocsUrl } from '../../admin/utils/data';
 
 const bpgpbEvent = new CustomEvent('bpgpbEventEdit');
 
@@ -148,12 +149,22 @@ const RenderPlugin = () => {
 							<span className="bpgpb-auth-head__icon">{googleIcon}</span>
 							<p className="bpgpb-auth-head__text">
 								{__('Enter your Google API credentials to connect your account.', 'embed-google-photos')}
-								{' '}
-								<a target="_blank" rel="noreferrer" href="https://www.youtube.com/watch?v=ufKMktJm1ho">
-									{__('Need help?', 'embed-google-photos')}
-								</a>
 							</p>
 						</div>
+
+						{!connected && (
+							<a
+								className="bpgpb-docs-callout"
+								href={authDocsUrl}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								<strong>{__('First time? Read the setup guide →', 'embed-google-photos')}</strong>
+								<span>
+									{__('Step-by-step: create a Google Cloud project, enable the Photos Picker API and generate your Client ID, Client Secret and Refresh Token.', 'embed-google-photos')}
+								</span>
+							</a>
+						)}
 
 						{connected && (
 							<div className="bpgpb-notice bpgpb-notice--success">
@@ -164,6 +175,14 @@ const RenderPlugin = () => {
 						{notice && (
 							<div className={`bpgpb-notice bpgpb-notice--${notice.type}`}>
 								{notice.text}
+								{notice.type === 'error' && (
+									<>
+										{' '}
+										<a href={authDocsUrl} target="_blank" rel="noopener noreferrer">
+											{__('See the setup guide', 'embed-google-photos')}
+										</a>
+									</>
+								)}
 							</div>
 						)}
 

@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-07-30T06:53:37+00:00\n"
+"POT-Creation-Date: 2026-09-06T11:53:09+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: embed-google-photos\n"
@@ -39,66 +39,106 @@ msgstr ""
 msgid "http://bplugins.com"
 msgstr ""
 
-#: includes/admin-menu.php:66
-#: includes/admin-menu.php:67
-msgid "Demo & Help"
+#: embed-google-photos.php:77
+msgid "Dashboard!"
 msgstr ""
 
-#: includes/custom-post.php:34
+#: embed-google-photos.php:84
+msgid "Docs"
+msgstr ""
+
+#: includes/admin-menu.php:66
+#: includes/admin-menu.php:68
+msgid "Help & Demos"
+msgstr ""
+
+#: includes/custom-post.php:41
+msgid "Gallery for Google Photos"
+msgstr ""
+
+#: includes/custom-post.php:43
+msgid "Create a gallery, pick your photos from Google Photos, then copy the shortcode from the ShortCode column and paste it anywhere."
+msgstr ""
+
+#: includes/custom-post.php:44
+msgid "Connecting your Google account"
+msgstr ""
+
+#: includes/custom-post.php:45
+msgid "The plugin uses your own Google API credentials. The guide below walks through creating a Google Cloud project, enabling the Photos Picker API and generating a Client ID, Client Secret and Refresh Token."
+msgstr ""
+
+#: includes/custom-post.php:46
+msgid "Google Authorization Guide"
+msgstr ""
+
+#: includes/custom-post.php:50
+msgid "For more information:"
+msgstr ""
+
+#: includes/custom-post.php:51
+msgid "Documentation"
+msgstr ""
+
+#: includes/custom-post.php:52
+msgid "Support Forum"
+msgstr ""
+
+#: includes/custom-post.php:61
 msgid "Galleries"
 msgstr ""
 
-#: includes/custom-post.php:35
+#: includes/custom-post.php:62
 msgid "Gallery"
 msgstr ""
 
-#: includes/custom-post.php:36
+#: includes/custom-post.php:63
 #: build/index.js:1
 msgid "Google Photos"
 msgstr ""
 
-#: includes/custom-post.php:37
+#: includes/custom-post.php:64
 msgid "All Galleries"
 msgstr ""
 
-#: includes/custom-post.php:38
+#: includes/custom-post.php:65
 msgid "Add New"
 msgstr ""
 
-#: includes/custom-post.php:39
+#: includes/custom-post.php:66
 msgid "Add New Gallery"
 msgstr ""
 
-#: includes/custom-post.php:40
+#: includes/custom-post.php:67
 msgid "Edit Gallery"
 msgstr ""
 
-#: includes/custom-post.php:41
+#: includes/custom-post.php:68
 msgid "New Gallery"
 msgstr ""
 
-#: includes/custom-post.php:42
+#: includes/custom-post.php:69
 msgid "View Gallery"
 msgstr ""
 
-#: includes/custom-post.php:43
+#: includes/custom-post.php:70
 msgid "Search Galleries"
 msgstr ""
 
-#: includes/custom-post.php:44
+#: includes/custom-post.php:71
 msgid "No galleries found."
 msgstr ""
 
-#: includes/custom-post.php:112
+#: includes/custom-post.php:139
 msgid "ShortCode"
 msgstr ""
 
-#: includes/custom-post.php:113
+#: includes/custom-post.php:140
 #: build/index.js:1
 msgid "Date"
 msgstr ""
 
-#: includes/custom-post.php:127
+#: includes/custom-post.php:154
 #: assets/js/admin.js:9
 msgid "Copy To Clipboard"
 msgstr ""
@@ -957,11 +997,19 @@ msgid "Enter your Google API credentials to connect your account."
 msgstr ""
 
 #: build/index.js:1
-msgid "Need help?"
+msgid "First time? Read the setup guide →"
+msgstr ""
+
+#: build/index.js:1
+msgid "Step-by-step: create a Google Cloud project, enable the Photos Picker API and generate your Client ID, Client Secret and Refresh Token."
 msgstr ""
 
 #: build/index.js:1
 msgid "✓ Connected. For your security, saved credentials are never shown again — leave a field blank to keep it, or re-enter to replace it."
+msgstr ""
+
+#: build/index.js:1
+msgid "See the setup guide"
 msgstr ""
 
 #: build/index.js:1
@@ -1062,6 +1110,10 @@ msgstr ""
 
 #: build/index.js:1
 msgid "Open authorization"
+msgstr ""
+
+#: build/index.js:1
+msgid "How to get your Google credentials →"
 msgstr ""
 
 #: build/block.json

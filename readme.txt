@@ -3,7 +3,7 @@ Contributors: bplugins, abuhayat, btechnologies
 Donate link: https://www.buymeacoffee.com/abuhayat
 Tags: block, photos, google photos, gallery, album
 Requires at least: 6.5
-Tested up to: 7.0
+Tested up to: 7.1
 Stable tag: 1.3.0
 Requires PHP: 7.1
 License: GPLv3 or later
@@ -15,9 +15,9 @@ Import your Google Photos into WordPress and show them as responsive grid, mason
 
 **Import photos and videos from your Google Photos account and show them as responsive grid, masonry, carousel, and story galleries. Pick your media with Google's official Photos Picker, save it to your own Media Library, then design the gallery in the block editor — block or shortcode.**
 
-[Gallery for Google Photos](https://bplugins.com/products/embed-google-photos/) | [Documentation](https://www.youtube.com/watch?v=ufKMktJm1ho) | [Pricing](https://bplugins.com/products/embed-google-photos/pricing/) | [Support](https://bplugins.com/support/) | [Demo](https://bplugins.com/products/embed-google-photos/#demos)
+[Gallery for Google Photos](https://bplugins.com/products/embed-google-photos/) | [Documentation](https://bplugins.com/docs/embed-google-photos/getting-started/) | [Pricing](https://bplugins.com/products/embed-google-photos/pricing/) | [Support](https://bplugins.com/support/) | [Demo](https://bplugins.com/products/embed-google-photos/#demos)
 
-https://www.youtube.com/watch?v=ufKMktJm1ho
+https://www.youtube.com/watch?v=91YUPCNaBGQ
 
 [Gallery for Google Photos](https://bplugins.com/products/embed-google-photos/) publishes your Google Photos library without coding. Choose a layout, set responsive columns, add captions and hover effects, and open photos in a full-screen lightbox with video playback. Because the photos you pick are copied into your own Media Library, your galleries keep working even after your Google session expires.
 
@@ -174,11 +174,13 @@ Use it for photography portfolios, travel blogs, event recaps, real-estate listi
 
 Getting started is easy!
 
+https://www.youtube.com/watch?v=ufKMktJm1ho
+
 ===Step-by-Step Setup===
 1. Go to **Plugins → Add New**.
 2. Search for **Gallery for Google Photos**.
 3. Click **Install Now**, then **Activate**.
-4. Add your own Google API credentials (Client ID, Client Secret, Refresh Token) in the block's Authorization sidebar and connect. See the [documentation](https://www.youtube.com/watch?v=ufKMktJm1ho) for the one-time Google Cloud setup.
+4. Add your own Google API credentials (Client ID, Client Secret, Refresh Token) in the block's Authorization sidebar and connect. See the [Google Authorization guide](https://bplugins.com/docs/embed-google-photos/getting-started/#google-authorization) for the one-time Google Cloud setup.
 5. Add the **Gallery for Google Photos block**, click **Select Photos**, pick your media, choose a layout, configure settings, and publish.
 6. Or insert the generated **shortcode** anywhere to show your gallery.
 
@@ -218,6 +220,10 @@ Enjoy fast, responsive Google Photos galleries on your site!
 
 
 == Frequently Asked Questions ==
+
+= How do I get my Google Client ID, Client Secret and Refresh Token? =
+
+It is a one-time setup in the Google Cloud Console: create a project, enable the Photos Picker API, create an OAuth client, then generate a refresh token. The [Google Authorization guide](https://bplugins.com/docs/embed-google-photos/getting-started/#google-authorization) walks through every step with screenshots. You can also open it any time from the block's Authorization sidebar or the **Help** tab on the Google Photos screens.
 
 = Is Gallery for Google Photos free? =
 
@@ -485,7 +491,7 @@ This plugin bundles the following third-party JavaScript/PHP libraries.
 * **Source:** https://reactrouter.com/
 * **GitHub:** https://github.com/remix-run/react-router
 * **License:** MIT – https://github.com/remix-run/react-router/blob/main/LICENSE.md
-* **Purpose:** Client-side routing for the plugin's admin "Demo & Help" dashboard.
+* **Purpose:** Client-side routing for the plugin's admin "Help & Demos" dashboard.
 
 = Font Awesome =
 * **Source:** https://fontawesome.com/

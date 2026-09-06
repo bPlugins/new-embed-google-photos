@@ -2,6 +2,11 @@ import { elementorTabIcon, gutenbergTabIcon, phpTabIcon, shortcodeTabIcon } from
 
 const slug = 'embed-google-photos';
 
+// Single source of truth for the documentation links used across the dashboard,
+// the block sidebar and the gallery screens.
+export const docsUrl = 'https://bplugins.com/docs/embed-google-photos/getting-started/';
+export const authDocsUrl = `${docsUrl}#google-authorization`;
+
 export const dashboardInfo = (info) => {
     const { version, adminUrl } = info;
 
@@ -23,7 +28,7 @@ export const dashboardInfo = (info) => {
         },
         pages: {
             org: `https://wordpress.org/plugins/${slug}/`,
-            docs: `https://www.youtube.com/watch?v=ufKMktJm1ho`,
+            docs: docsUrl,
             pricing: `https://bplugins.com/products/${slug}/pricing`,
         },
         freemius: {
@@ -71,6 +76,8 @@ export const pricingInfo = {
 export const welcomeInfo = (adminUrl) => ({
     keywords: ['Grid', 'Masonry', 'Carousel', 'Lightbox'],
     keywordsLabel: 'Layouts',
+    // Renders the "Open Documentation →" button under the Getting Started tabs.
+    pages: { docs: docsUrl },
     gettingStarted: {
         tabs: [
             {
@@ -87,7 +94,8 @@ export const welcomeInfo = (adminUrl) => ({
                     {
                         num: 2,
                         title: 'Connect & pick photos',
-                        body: 'Authorize your Google account in the block sidebar, then click <strong>Select from Google Photos</strong> to import images and videos.',
+                        body: 'Authorize your Google account in the block sidebar, then click <strong>Select from Google Photos</strong> to import images and videos. First time here? Follow the step-by-step guide to get your Client ID, Client Secret and Refresh Token.',
+                        link: { url: authDocsUrl, label: 'Google Authorization Guide', external: true },
                     },
                     {
                         num: 3,

@@ -13,6 +13,7 @@ import Gallery from '../Frontend/Gallery';
 import Style from '../Common/Style';
 import ClipBoard from './ShortcodeCopy';
 import { googleIcon } from '../../utils/icons';
+import { authDocsUrl } from '../../admin/utils/data';
 
 const Edit = (props) => {
 	const { attributes, setAttributes, clientId } = props;
@@ -128,6 +129,14 @@ const Edit = (props) => {
 					<Button variant="primary" className="bpgpb-btn" onClick={openAuthSidebar}>
 						{__('Open authorization', 'embed-google-photos')}
 					</Button>
+					<a
+						className="bpgpb-card__docsLink"
+						href={authDocsUrl}
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						{__('How to get your Google credentials →', 'embed-google-photos')}
+					</a>
 				</div>
 			</div>
 		);

@@ -65,6 +65,18 @@ $primaryColor: #4527a4;
 		line-height: 1.5;
 		color: #6b7280;
 	}
+
+	&__docsLink {
+		margin-top: 10px;
+		font-size: 12.5px;
+		font-weight: 600;
+		color: #2f5aae;
+		text-decoration: none;
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
 }
 
 // Primary button used across the block UI
@@ -169,6 +181,37 @@ $primaryColor: #4527a4;
 			}
 		}
 
+		// Setup-guide callout, shown until the account is connected
+		.bpgpb-docs-callout {
+			display: block;
+			padding: 12px;
+			background: #eef4ff;
+			border: 1px solid #c7d9fb;
+			border-left: 3px solid #2f5aae;
+			border-radius: 8px;
+			text-decoration: none;
+			color: inherit;
+
+			strong {
+				display: block;
+				font-size: 12.5px;
+				color: #2f5aae;
+			}
+
+			span {
+				display: block;
+				margin-top: 4px;
+				font-size: 12px;
+				line-height: 1.5;
+				color: #4b5563;
+			}
+
+			&:hover {
+				background: #e4edff;
+				border-color: #9dbcf7;
+			}
+		}
+
 		// Fields
 		.bpgpb-field {
 			.components-input-base,
@@ -212,6 +255,11 @@ $primaryColor: #4527a4;
 				background: #fcf0f1;
 				border-color: #f1b0b3;
 				color: #b32d2e;
+			}
+
+			a {
+				color: inherit;
+				font-weight: 600;
 			}
 		}
 
