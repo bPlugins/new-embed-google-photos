@@ -308,6 +308,127 @@ $primaryColor: #4527a4;
 	justify-content: center;
 }
 
+// Shared album link on the block (free: add an album; auto-sync is Pro).
+.bpgpb-album-sync {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	width: 100%;
+	max-width: 460px;
+	margin-top: 18px;
+
+	// "or auto-sync a shared album" — centered label with a rule on each side.
+	&__or {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		font-size: 11px;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.07em;
+		color: #9aa1af;
+
+		&::before,
+		&::after {
+			content: '';
+			flex: 1;
+			height: 1px;
+			background: #e6e8f0;
+		}
+	}
+
+	&__row {
+		display: flex;
+		align-items: stretch;
+		gap: 8px;
+		width: 100%;
+	}
+
+	// The URL field, styled to match the card (white, soft border, brand focus).
+	&__input {
+		flex: 1 1 auto;
+		margin: 0 !important;
+
+		.components-text-control__input {
+			width: 100%;
+			height: 40px;
+			padding: 0 12px;
+			background: #fff;
+			border: 1px solid #d7dbe6;
+			border-radius: 8px;
+			font-size: 13px;
+			color: #1e1e1e;
+			box-shadow: none;
+			transition: border-color 0.12s ease, box-shadow 0.12s ease;
+
+			&::placeholder {
+				color: #a7adba;
+			}
+
+			&:focus {
+				border-color: #2f5aae;
+				box-shadow: 0 0 0 2px rgba(47, 90, 174, 0.18);
+				outline: none;
+			}
+		}
+	}
+
+	// Keep the Save & Sync button flush with the input height.
+	.components-button.bpgpb-btn {
+		flex: 0 0 auto;
+		min-height: 40px;
+		white-space: nowrap;
+	}
+
+	&__storage {
+		align-self: center;
+		margin: 0 !important;
+
+		.components-toggle-control__label {
+			font-size: 13px;
+			color: #50575e;
+		}
+	}
+}
+
+// No Google credentials: shared albums still work; only the picker needs keys.
+.bpgpb-keys-notice {
+	width: 100%;
+	max-width: 460px;
+	margin-top: 18px;
+	padding: 12px 14px;
+	background: #fff8e5;
+	border: 1px solid #f0d78a;
+	border-left: 4px solid #dba617;
+	border-radius: 8px;
+	text-align: left;
+
+	p {
+		margin: 0 0 10px;
+		font-size: 13px;
+		line-height: 1.5;
+		color: #3c434a;
+	}
+
+	&__actions {
+		display: flex;
+		align-items: center;
+		gap: 14px;
+		flex-wrap: wrap;
+
+		a {
+			font-size: 12.5px;
+			font-weight: 600;
+			color: #2f5aae;
+			text-decoration: none;
+
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+	}
+}
+
 .bpgpb-picker-note {
 	margin: 0;
 	text-align: center;
@@ -788,4 +909,71 @@ $primaryColor: #4527a4;
 	text-transform: uppercase;
 	letter-spacing: 0.04em;
 	color: #757575;
+}
+
+// "▶" video link next to the block's album label (opens YouTube in a new tab).
+.bpgpb-video-tip.bpgpb-video-tip {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 18px;
+	height: 18px;
+	margin-left: 6px;
+	border-radius: 50%;
+	background: #e5322d;
+	vertical-align: middle;
+	text-decoration: none;
+
+	svg {
+		width: 11px;
+		height: 11px;
+		margin-left: 1px;
+		fill: #fff;
+	}
+}
+
+// "▶ Watch video" link at the bottom of a settings panel (VideoRow).
+.bpgpb-video-row {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	margin: 14px 0 0 !important;
+	font-size: 12px;
+	line-height: 1.4;
+	color: #757575;
+
+	svg {
+		flex: 0 0 14px;
+		width: 14px;
+		height: 14px;
+		padding: 2px;
+		border-radius: 50%;
+		background: #e5322d;
+		fill: #fff;
+	}
+
+	a {
+		font-weight: 600;
+		color: #2f5aae;
+		text-decoration: none;
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+}
+
+// Promo video links inside a Pro notice (open YouTube in a new tab).
+.bpgpb-promo-links {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	margin-top: 8px;
+
+	a {
+		font-size: 12px;
+		font-weight: 600;
+		color: inherit;
+		text-decoration: underline;
+	}
 }

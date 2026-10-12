@@ -7,6 +7,23 @@ const slug = 'embed-google-photos';
 export const docsUrl = 'https://bplugins.com/docs/embed-google-photos/getting-started/';
 export const authDocsUrl = `${docsUrl}#google-authorization`;
 
+// YouTube videos linked from the block settings (opened in a new tab).
+const yt = (id) => `https://www.youtube.com/watch?v=${id}`;
+export const videos = {
+    keepOnGoogle: yt('bCVATx0aCN4'),
+    reusePromo: yt('aQnGQH1QP34'),
+    layouts: yt('7HSCQyEcj4Q'),
+    lightbox: yt('iqEEWkPLGhg'),
+    search: yt('Xhtj8BHlCis'),
+    photosVideos: yt('66xcoyUd0-4'),
+    hover: yt('PdxgwOOt8jM'),
+    pagination: yt('j3qaTZW8BRo'),
+    carousel: yt('7g4miYg2Ah8'),
+    responsiveSeo: yt('hiF4acT4JnQ'),
+    delivery: yt('i4cJV2gwrRs'),
+};
+
+
 export const dashboardInfo = (info) => {
     const { version, adminUrl } = info;
 

@@ -293,9 +293,9 @@ const Gallery = ({ attributes, cId, isBackend = false, setAttributes }) => {
 		// pause on slide change and tear them down when the lightbox closes.
 		const players = [];
 		const destroyPlayers = () => {
-			players.forEach((p) => {
+			players.forEach(({ player }) => {
 				try {
-					p.destroy();
+					player.destroy();
 				} catch (e) {
 					/* already gone */
 				}
@@ -337,14 +337,18 @@ const Gallery = ({ attributes, cId, isBackend = false, setAttributes }) => {
 			const href = a.getAttribute('href');
 			// downloadSrc powers the toolbar download button (images are sideloaded
 			// into the Media Library, so they're same-origin and download cleanly).
-			if (a.classList.contains('is-video')) {
-				return { type: 'html', html: videoHtml(a), caption, downloadSrc: href };
+			// data-poster is only set on videos (Memories items lack the is-video class).
+			if (a.classList.contains('is-video') || a.hasAttribute('data-poster')) {
+				// HTML slides get no auto thumbnail, so feed the poster to the Thumbs bar.
+				const thumbSrc = escAttr(a.getAttribute('data-poster') || '');
+				return { type: 'html', html: videoHtml(a), caption, downloadSrc: href, thumbSrc };
 			}
 			return { src: href, caption, downloadSrc: href };
 		};
 
+		// Autoplay is driven by playCurrent(), so preloaded neighbour slides stay silent.
 		const plyrOptions = {
-			autoplay: !!video.autoplay,
+			autoplay: false,
 			muted: !!video.muted || !!video.autoplay,
 			loop: { active: !!video.loop },
 			controls:
@@ -417,6 +421,27 @@ const Gallery = ({ attributes, cId, isBackend = false, setAttributes }) => {
 			}
 		};
 
+		// Play only the video on the open slide (when autoplay is on), pause the
+		// rest, and keep the deep-link / share index on that slide.
+		const syncCurrent = (fancybox) => {
+			const current = fancybox.getSlide();
+			players.forEach(({ el, player }) => {
+				try {
+					if (current?.el?.contains(el)) {
+						if (video.autoplay) {
+							player.play()?.catch?.(() => {});
+						}
+					} else {
+						player.pause();
+					}
+				} catch (e) {
+					/* not ready */
+				}
+			});
+			currentSlideIndex = current?.index ?? 0;
+			setPhotoParam(currentSlideIndex + 1);
+		};
+
 		const options = {
 			contentClick: 'toggleZoom',
 			// Thumbnails bar along the bottom of the lightbox.
@@ -428,23 +453,35 @@ const Gallery = ({ attributes, cId, isBackend = false, setAttributes }) => {
 			on: {
 				// Enhance each video slide with Plyr once it's in the DOM, and keep
 				// the deep-link URL in sync with the revealed slide.
+				// reveal also fires for preloaded neighbours, so only the slide on screen
+				// plays or updates the index.
 				reveal: (fancybox, slide) => {
 					const el = slide?.el?.querySelector?.('video.bpgpb-plyr');
 					if (el) {
-						players.push(new Plyr(el, plyrOptions));
-					}
-					currentSlideIndex = slide?.index ?? 0;
-					setPhotoParam(currentSlideIndex + 1);
-				},
-				// Pause every player when the user navigates to another slide.
-				'Carousel.change': () => {
-					players.forEach((p) => {
-						try {
-							p.pause();
-						} catch (e) {
-							/* not ready */
+						players.push({ el, player: new Plyr(el, plyrOptions) });
+						// Slideshow: hold while the video plays, move on once it ends
+						// (a looping video never ends, so the timer keeps running then).
+						if (!video.loop) {
+							const autoplay = () => fancybox.carousel?.plugins?.Autoplay;
+							el.addEventListener('timeupdate', () => {
+								if (!el.paused && 'play' === autoplay()?.state) {
+									autoplay().pause();
+								}
+							});
+							el.addEventListener('ended', () => {
+								if (autoplay()?.isActive) {
+									fancybox.next();
+								}
+							});
 						}
-					});
+					}
+					if (fancybox.getSlide() === slide) {
+						syncCurrent(fancybox);
+					}
+				},
+				// Pause the other players when the user navigates to another slide.
+				'Carousel.change': (fancybox) => {
+					syncCurrent(fancybox);
 				},
 				destroy: () => {
 					destroyPlayers();
@@ -513,7 +550,7 @@ const Gallery = ({ attributes, cId, isBackend = false, setAttributes }) => {
 			// Overrides for Memories layout to look and behave like Google Photos Stories
 			const activeOptions = { ...options };
 			if (isMemories) {
-				activeOptions.Slideshow = { playOnStart: true, timeout: 4000 };
+				// Slideshow follows the "Slideshow Autoplay" setting; the toolbar ▶ still starts it.
 				activeOptions.Thumbs = false; // Hide thumbnails for story view
 				activeOptions.Toolbar = {
 					display: {
@@ -1123,7 +1160,9 @@ const Gallery = ({ attributes, cId, isBackend = false, setAttributes }) => {
 			modules: [Navigation, Pagination, Autoplay],
 			slidesPerView: 'auto',
 			spaceBetween,
-			loop: !!carousel.loop,
+			// Swiper's loop breaks with auto-width slides when few overflow (it
+			// reorders slides without animating); rewind wraps around reliably.
+			rewind: !!carousel.loop,
 			autoplay: carousel.autoplay
 				? { delay: carousel.autoplaySpeed || 3000, disableOnInteraction: false }
 				: false,

@@ -1,6 +1,7 @@
 import { __ } from '@wordpress/i18n';
 import { PanelBody, TextControl } from '@wordpress/components';
 import { produce } from 'immer';
+import { VideoRow } from '../VideoLink';
 
 /**
  * Inspector panel for editing each selected image's alt text.
@@ -53,6 +54,7 @@ const AltText = ({ selectedPhotos = [], setAttributes }) => {
 					);
 				})}
 			</div>
+			<VideoRow topic="responsiveSeo" />
 		</PanelBody>
 	);
 };

@@ -476,6 +476,11 @@ html {
 			opacity: 0.4;
 			cursor: default;
 		}
+
+		// Swiper locks the arrows when every slide already fits; hide them then.
+		&.swiper-button-lock {
+			display: none;
+		}
 	}
 
 	.bpgpb-swiper-pagination {
@@ -687,7 +692,7 @@ html {
 .bpgpb-memories-swiper {
 	width: 100%;
 	padding: 15px 5px;
-	overflow: visible; // Allows hover shadow/scale not to be cropped
+	overflow: hidden; // Keep the row inside the block; the padding leaves room for the hover shadow.
 }
 
 .bpgpb-memory-item {

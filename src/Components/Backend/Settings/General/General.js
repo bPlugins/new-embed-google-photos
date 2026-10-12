@@ -7,6 +7,8 @@ import { BDevice } from '../../../../../../bpl-tools/Components/Deprecated';
 import { emUnit, perUnit, pxUnit } from '../../../../../../bpl-tools/utils/options';
 import { captionPositionOpt, captionSourceOpt, layoutOpt, mediaTypeOpt, paginationOpt, ratioOpt } from '../../../../utils/options';
 import IconPicker from './IconPicker';
+import { VideoRow } from '../../VideoLink';
+import { videos } from '../../../../admin/utils/data';
 
 const General = ({ setAttributes, mediaType, layout, carousel = {}, caption = {}, lightbox = {}, video = {}, paginationType, perPage, loadMoreText, columns, columnGap, rowGap, coverImage, showSearch, searchPlaceholder, searchAlign, searchWidth, searchIcon, searchStyle, showVoiceSearch, searchAutocomplete, searchHighlight, searchResultCount, searchChips, showSort, previewLimit, showCountBadge, deepLink, lightboxShare }) => {
 
@@ -37,7 +39,9 @@ const General = ({ setAttributes, mediaType, layout, carousel = {}, caption = {}
 
             <ProNotice status='premium' isIcon={true} className='mt10'>
                 {__('Pro features: Add More Photos (unlimited galleries), Album Auto-Sync (every 15 min / hourly / daily), Live Event / Wedding Mode (the gallery updates itself with no reload), Multi-album galleries with tabs, WebP conversion, and Watermark stamping.', 'embed-google-photos')}
+                <span className='bpgpb-promo-links'><a href={videos.keepOnGoogle} target='_blank' rel='noopener noreferrer'>{__('▶ Auto-Sync in action · 35 sec', 'embed-google-photos')}</a></span>
             </ProNotice>
+            <VideoRow topic="photosVideos" />
         </PanelBody>
 
         <PanelBody className='bPlPanelBody' title={__('Caption', 'embed-google-photos')} initialOpen={false}>
@@ -88,6 +92,7 @@ const General = ({ setAttributes, mediaType, layout, carousel = {}, caption = {}
             <ProNotice status='premium' isIcon={true} className='mt10'>
                 {__('Advanced Search (Pro): fuzzy / typo-tolerant matching ("beech" finds "beach"), a "/" focus shortcut, recent searches, "Did you mean…" suggestions, and a sticky search bar.', 'embed-google-photos')}
             </ProNotice>
+            <VideoRow topic="search" />
         </PanelBody>
 
         <PanelBody className='bPlPanelBody' title={__('Gallery Extras', 'embed-google-photos')} initialOpen={false}>
@@ -106,6 +111,7 @@ const General = ({ setAttributes, mediaType, layout, carousel = {}, caption = {}
             <ProNotice status='premium' isIcon={true}>
                 {__('Turn any gallery into a client-delivery tool with the Pro version: password-protect the gallery, Client Proofing (visitors heart/select photos and submit them to you by email, with per-photo comments — a Pixieset-style workflow), Media Cleanup Manager, and a Gallery Expiry date that auto-hides the gallery after a set time.', 'embed-google-photos')}
             </ProNotice>
+            <VideoRow topic="delivery" />
         </PanelBody>
 
         <PanelBody className='bPlPanelBody' title={__('Lightbox', 'embed-google-photos')} initialOpen={false}>
@@ -130,6 +136,7 @@ const General = ({ setAttributes, mediaType, layout, carousel = {}, caption = {}
             <ProNotice status='premium' isIcon={true} className='mt10'>
                 {__('Pro adds premium lightbox skins (Dark, Light, Glass, Minimal) and EXIF display — camera, lens, aperture, shutter and ISO under each photo.', 'embed-google-photos')}
             </ProNotice>
+            <VideoRow topic="lightbox" />
         </PanelBody>
 
         {'photo' !== mediaType && <PanelBody className='bPlPanelBody' title={__('Video', 'embed-google-photos')} initialOpen={false}>
@@ -146,14 +153,6 @@ const General = ({ setAttributes, mediaType, layout, carousel = {}, caption = {}
             <ProNotice status='premium' isIcon={true} className='mt10'>
                 {__('Autoplay videos right in the gallery grid as live previews with the Pro version.', 'embed-google-photos')}
             </ProNotice>
-        </PanelBody>}
-
-        {layout !== 'memories' && <PanelBody className='bPlPanelBody' title={__('Pagination', 'embed-google-photos')} initialOpen={false}>
-            <SelectControl label={__('Type', 'embed-google-photos')} labelPosition='side' value={paginationType} options={paginationOpt} onChange={val => setAttributes({ paginationType: val })} />
-
-            {paginationType !== 'none' && <RangeControl className='mt10' label={__('Items Per Page', 'embed-google-photos')} value={perPage} onChange={val => setAttributes({ perPage: val })} min={1} max={60} step={1} />}
-
-            {paginationType === 'load_more' && <TextControl className='mt10' label={__('Button Text', 'embed-google-photos')} value={loadMoreText} onChange={val => setAttributes({ loadMoreText: val })} />}
         </PanelBody>}
 
         {('carousel' !== layout && 'memories' !== layout) && <PanelBody className='bPlPanelBody' title={__('Frontend Filter', 'embed-google-photos')} initialOpen={false}>
@@ -187,7 +186,17 @@ const General = ({ setAttributes, mediaType, layout, carousel = {}, caption = {}
 
                 <UnitControl className='mt20' label={__('Row Gap:', 'embed-google-photos')} labelPosition='left' value={rowGap} onChange={val => setAttributes({ rowGap: val })} units={[pxUnit(40), perUnit(3), emUnit(2.5)]} isResetValueOnUnitChange={true} />
             </>}
+            <VideoRow topic="layouts" />
         </PanelBody>
+
+        {!['memories', 'carousel'].includes(layout) && <PanelBody className='bPlPanelBody' title={__('Pagination', 'embed-google-photos')} initialOpen={false}>
+            <SelectControl label={__('Type', 'embed-google-photos')} labelPosition='side' value={paginationType} options={paginationOpt} onChange={val => setAttributes({ paginationType: val })} />
+
+            {paginationType !== 'none' && <RangeControl className='mt10' label={__('Items Per Page', 'embed-google-photos')} value={perPage} onChange={val => setAttributes({ perPage: val })} min={1} max={60} step={1} />}
+
+            {paginationType === 'load_more' && <TextControl className='mt10' label={__('Button Text', 'embed-google-photos')} value={loadMoreText} onChange={val => setAttributes({ loadMoreText: val })} />}
+            <VideoRow topic="pagination" />
+        </PanelBody>}
 
         {('carousel' === layout || 'memories' === layout) && <PanelBody className='bPlPanelBody' title={__('Carousel Settings', 'embed-google-photos')} initialOpen={true}>
             <ToggleControl label={__('Autoplay', 'embed-google-photos')} checked={!!carousel.autoplay} onChange={val => setCarousel('autoplay', val)} />
@@ -203,6 +212,7 @@ const General = ({ setAttributes, mediaType, layout, carousel = {}, caption = {}
             <ProNotice status='premium' isIcon={true} className='mt10'>
                 {__('Advanced carousel options (effects, transition speed, centered slides, free mode…) are available in the Pro version.', 'embed-google-photos')}
             </ProNotice>
+            <VideoRow topic="carousel" />
         </PanelBody>}
     </>
 }

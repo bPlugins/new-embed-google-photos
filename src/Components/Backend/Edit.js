@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { useBlockProps } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
-import { Button, Spinner } from '@wordpress/components';
-import { __ } from '@wordpress/i18n';
+import { Button, Spinner, TextControl, ToggleControl } from '@wordpress/components';
+import { __, sprintf } from '@wordpress/i18n';
 
 import { Notice as ProNotice } from '../../../../bpl-tools/Components';
 import useIframeAssetSync from '../../../../bpl-tools/hooks/useIframeAssetSync';
@@ -13,7 +13,10 @@ import Gallery from '../Frontend/Gallery';
 import Style from '../Common/Style';
 import ClipBoard from './ShortcodeCopy';
 import { googleIcon } from '../../utils/icons';
-import { authDocsUrl } from '../../admin/utils/data';
+import { albumStorageMode } from '../../utils/albumStorage';
+import { syncAlbum } from '../../utils/syncAlbum';
+import { authDocsUrl, videos } from '../../admin/utils/data';
+import { VideoTip } from './VideoLink';
 
 const Edit = (props) => {
 	const { attributes, setAttributes, clientId } = props;
@@ -62,6 +65,8 @@ const Edit = (props) => {
 	const [isError, setIsError] = useState(false);
 	// Lets the Cancel button stop an in-flight picker session.
 	const abortRef = useRef(null);
+	// Lets the same Cancel button stop a multi-request album sync.
+	const stopSyncRef = useRef(false);
 
 	const pickPhotos = async () => {
 		setBusy(true);
@@ -95,7 +100,50 @@ const Edit = (props) => {
 
 	const cancelPicker = () => {
 		abortRef.current?.abort();
+		stopSyncRef.current = true;
 		setStatus(__('Cancelling…', 'embed-google-photos'));
+	};
+
+	// Add the photos of a shared album (no Google credentials needed). Photos
+	// already in the gallery are skipped, so clicking again adds only new ones.
+	// Automatic background sync is a Pro feature.
+	const syncAlbumLink = async () => {
+		const url = (attributes.syncUrl || '').trim();
+		if (!url) {
+			setIsError(true);
+			setStatus(__('Paste a shared album link first.', 'embed-google-photos'));
+			return;
+		}
+
+		setBusy(true);
+		setIsError(false);
+		setStatus(__('Adding album photos from Google Photos…', 'embed-google-photos'));
+
+		stopSyncRef.current = false;
+		try {
+			const photos = await syncAlbum(
+				{ url, storage: albumStorageMode(attributes.keepOnGoogle, selectedPhotos) },
+				selectedPhotos.map((p) => p.syncKey).filter(Boolean),
+				(added) => {
+					setAttributes({ selectedPhotos: [...selectedPhotos, ...added] });
+					setStatus(sprintf(/* translators: %d: number of photos */ __('Adding… %d photos so far', 'embed-google-photos'), added.length));
+				},
+				() => stopSyncRef.current
+			);
+			if (photos.length) {
+				setAttributes({ selectedPhotos: [...selectedPhotos, ...photos] });
+			}
+			setIsError(false);
+			setStatus(
+				photos.length
+					? sprintf(/* translators: %d: number of photos */ __('%d photo(s) added from the album.', 'embed-google-photos'), photos.length)
+					: __('No new photos in this album.', 'embed-google-photos')
+			);
+		} catch (err) {
+			setIsError(true);
+			setStatus((err && (err.message || err)) || __('Could not add the album. Check the link.', 'embed-google-photos'));
+		}
+		setBusy(false);
 	};
 
 	const openAuthSidebar = () =>
@@ -114,33 +162,9 @@ const Edit = (props) => {
 		);
 	}
 
-	// Not connected yet — send the admin to the authorization sidebar.
-	if (!token?.connected) {
-		return (
-			<div {...blockProps}>
-				<div className="bpgpbSelectArea bpgpb-card">
-					<span className="bpgpb-card__icon">{googleIcon}</span>
-					<h2 className="bpgpb-card__title">
-						{__('Connect your Google Photos account', 'embed-google-photos')}
-					</h2>
-					<p className="bpgpb-card__desc">
-						{__('Authorize the plugin to start embedding your Google Photos galleries.', 'embed-google-photos')}
-					</p>
-					<Button variant="primary" className="bpgpb-btn" onClick={openAuthSidebar}>
-						{__('Open authorization', 'embed-google-photos')}
-					</Button>
-					<a
-						className="bpgpb-card__docsLink"
-						href={authDocsUrl}
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						{__('How to get your Google credentials →', 'embed-google-photos')}
-					</a>
-				</div>
-			</div>
-		);
-	}
+	// Shared albums need no Google credentials; only "Select from Google Photos"
+	// (the Picker API) does.
+	const connected = !!token?.connected;
 
 	return (
 		<>
@@ -182,22 +206,77 @@ const Edit = (props) => {
 								<>
 									<span className="bpgpb-card__icon">{googleIcon}</span>
 									<h2 className="bpgpb-card__title">
-										{__('Select photos from Google Photos', 'embed-google-photos')}
+										{connected
+											? __('Select photos from Google Photos', 'embed-google-photos')
+											: __('Add a shared Google Photos album', 'embed-google-photos')}
 									</h2>
 									<p className="bpgpb-card__desc">
-										{__('Pick images and videos to display in your gallery.', 'embed-google-photos')}
+										{connected
+											? __('Pick images and videos to display in your gallery.', 'embed-google-photos')
+											: __('Paste the link of a shared album. No Client ID or Client Secret needed.', 'embed-google-photos')}
 									</p>
 								</>
 							)}
-							<Button variant="primary" className="bpgpb-btn" onClick={pickPhotos}>
-								{selectedPhotos.length
-									? __('Change photos', 'embed-google-photos')
-									: __('Select from Google Photos', 'embed-google-photos')}
-							</Button>
-							<ProNotice status="premium" isIcon={true} className="mt10">
-								{__('Auto-sync a shared Google Photos album — new photos appear automatically — with the Pro version.', 'embed-google-photos')}
-							</ProNotice>
+							{connected && (
+								<Button variant="primary" className="bpgpb-btn" onClick={pickPhotos}>
+									{selectedPhotos.length
+										? __('Change photos', 'embed-google-photos')
+										: __('Select from Google Photos', 'embed-google-photos')}
+								</Button>
+							)}
+
+							<div className="bpgpb-album-sync">
+								<span className="bpgpb-album-sync__or">
+									{connected
+										? __('or add a shared album', 'embed-google-photos')
+										: __('Shared album link', 'embed-google-photos')}
+									<VideoTip url={videos.keepOnGoogle} title={__('Shared albums on Google Photos', 'embed-google-photos')} />
+								</span>
+								<div className="bpgpb-album-sync__row">
+									<TextControl
+										type="url"
+										className="bpgpb-album-sync__input"
+										value={attributes.syncUrl || ''}
+										placeholder="https://photos.app.goo.gl/…"
+										onChange={(val) => setAttributes({ syncUrl: val })}
+										__nextHasNoMarginBottom
+									/>
+									<Button variant="secondary" className="bpgpb-btn" onClick={syncAlbumLink}>
+										{__('Save & Sync', 'embed-google-photos')}
+									</Button>
+								</div>
+								<ToggleControl
+									className="bpgpb-album-sync__storage"
+									label={__('Keep photos on Google Photos', 'embed-google-photos')}
+									checked={'google' === albumStorageMode(attributes.keepOnGoogle, selectedPhotos)}
+									onChange={(val) => setAttributes({ keepOnGoogle: val })}
+									__nextHasNoMarginBottom
+								/>
+							</div>
+
 							{status && <p className={`bpgpb-picker-note${isError ? ' is-error' : ''}`}>{status}</p>}
+
+							{!connected && (
+								<div className="bpgpb-keys-notice">
+									<p>{__('Want to choose photos one by one with “Select from Google Photos”? Add your Google Client ID and Client Secret first.', 'embed-google-photos')}</p>
+									<div className="bpgpb-keys-notice__actions">
+										<Button variant="secondary" size="compact" onClick={openAuthSidebar}>
+											{__('Add Client ID & Secret', 'embed-google-photos')}
+										</Button>
+										<a href={authDocsUrl} target="_blank" rel="noopener noreferrer">
+											{__('How to get them →', 'embed-google-photos')}
+										</a>
+									</div>
+								</div>
+							)}
+
+							<ProNotice status="premium" isIcon={true} className="mt10">
+								{__('New album photos appear automatically with Auto-Sync in the Pro version.', 'embed-google-photos')}
+								<span className="bpgpb-promo-links">
+									<a href={videos.keepOnGoogle} target="_blank" rel="noopener noreferrer">{__('▶ Auto-Sync in action · 35 sec', 'embed-google-photos')}</a>
+									<a href={videos.reusePromo} target="_blank" rel="noopener noreferrer">{__('▶ One gallery design for every album · 35 sec', 'embed-google-photos')}</a>
+								</span>
+							</ProNotice>
 						</>
 					)}
 				</div>

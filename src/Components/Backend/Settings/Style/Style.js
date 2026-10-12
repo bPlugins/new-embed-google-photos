@@ -6,6 +6,7 @@ import { BorderControl } from '../../../../../../bpl-tools/Components/Deprecated
 
 import { emUnit, pxUnit } from '../../../../../../bpl-tools/utils/options';
 import { hoverEffectOpt, imageFilterOpt } from '../../../../utils/options';
+import { VideoRow } from '../../VideoLink';
 
 const Style = ({ setAttributes, layout, paginationType, imgBorder, hoverEffect, imageFilter = 'none', imageFilterHover = false, kenBurns = false, kenBurnsSpeed = 12, metaOverlay = false, hover = {}, caption = {}, captionTypo, captionColor, loadMoreBtnTypo, loadMoreBtnColors, loadMoreBtnBorder, loadMoreBtnPadding, showSearch, searchBgColor, searchTextColor, searchBorderColor, searchBorderRadius, searchBorderWidth, searchTypo, searchIconColor, searchIconSize, searchHeight, showSort, showCountBadge, sortColors, sortBorderColor, sortTypo, countColors, countTypo }) => {
     const btnPanelTitle = 'pagination' === paginationType
@@ -44,6 +45,7 @@ const Style = ({ setAttributes, layout, paginationType, imgBorder, hoverEffect, 
             <ProNotice status='premium' isIcon={true} className='mt10'>
                 {__('Pro unlocks advanced image styling — box shadow, advanced (per-corner) radius, gradient overlays, hover icon — plus per-image custom links, right-click / download protection and password-protected galleries.', 'embed-google-photos')}
             </ProNotice>
+            <VideoRow topic="hover" />
         </PanelBody>
 
         {caption.show && <PanelBody className='bPlPanelBody' title={__('Caption', 'embed-google-photos')} initialOpen={false}>
@@ -72,7 +74,7 @@ const Style = ({ setAttributes, layout, paginationType, imgBorder, hoverEffect, 
             <RangeControl className='mt10' label={__('Border Radius (px)', 'embed-google-photos')} value={parseInt(searchBorderRadius, 10) || 8} onChange={val => setAttributes({ searchBorderRadius: `${val}px` })} min={0} max={50} step={1} />
         </PanelBody>}
 
-        {'none' !== paginationType && 'memories' !== layout && <PanelBody className='bPlPanelBody' title={btnPanelTitle} initialOpen={false}>
+        {'none' !== paginationType && !['memories', 'carousel'].includes(layout) && <PanelBody className='bPlPanelBody' title={btnPanelTitle} initialOpen={false}>
             <Typography className='mt10' label={__('Typography', 'embed-google-photos')} value={loadMoreBtnTypo} onChange={val => setAttributes({ loadMoreBtnTypo: val })} produce={produce} />
 
             <ColorsControl className='mt10 mb10' label={__('Colors', 'tiktok')} value={loadMoreBtnColors} onChange={val => setAttributes({ loadMoreBtnColors: val })} defaults={{ color: '#fff', bg: '#ff3b5c' }} />
